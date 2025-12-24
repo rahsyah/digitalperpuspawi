@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Personality Test - Temukan Hero Kariermu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero-header {
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-header h1 {
+            font-size: 3em;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+        }
+
+        .hero-header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .game-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .name-input-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .name-input-section h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .name-input-section input {
+            padding: 15px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .start-btn {
+            margin-top: 20px;
+            padding: 15px 50px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .question-section {
+            display: none;
+        }
+
+        .question-card {
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .question-card h3 {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .question-progress {
+            background: rgba(255,255,255,0.2);
+            height: 10px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 20px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(10px);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .result-section {
+            display: none;
+            text-align: center;
+        }
+
+        .hero-showcase {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+        }
+
+        .hero-icon {
+            font-size: 6em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3em;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .stat-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .stat-card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .restart-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .hero-header h1 {
+                font-size: 2em;
+            }
+            .hero-title {
+                font-size: 1.8em;
+            }
+            .hero-icon {
+                font-size: 4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-header">
+            <h1>🎮 HERO PERSONALITY TEST</h1>
+            <p>Temukan Hero Karier yang Sesuai dengan Kepribadianmu!</p>
+        </div>
+
+        <div class="game-card">
+            <div id="nameSection" class="name-input-section">
+                <h2>Selamat Datang, Hero!</h2>
+                <p style="margin-bottom: 20px;">Siapa nama pejuang karier kita hari ini?</p>
+                <input type="text" id="playerName" placeholder="Masukkan nama Anda..." maxlength="50">
+                <br>
+                <button class="start-btn" onclick="startTest()">Mulai Petualangan</button>
+            </div>
+
+            <div id="questionSection" class="question-section">
+                <div class="question-progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="question-card">
+                    <h3 id="questionText"></h3>
+                    <div class="options" id="optionsContainer"></div>
+                </div>
+            </div>
+
+            <div id="resultSection" class="result-section">
+                <div class="hero-showcase">
+                    <div class="hero-icon" id="heroIcon"></div>
+                    <div class="hero-title" id="heroTitle"></div>
+                    <div class="hero-subtitle" id="heroSubtitle"></div>
+                    <p id="heroDescription" style="font-size: 1.1em; line-height: 1.8; margin: 20px 0;"></p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-card">
+                            <h4>⚡ Kekuatan Unik</h4>
+                            <p id="heroPower"></p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>🎯 Peran Terbaik</h4>
+                            <p id="heroRole"></p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>💪 Keunggulan</h4>
+                            <p id="heroStrength"></p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>📚 Strategi Belajar</h4>
+                            <p id="heroStrategy"></p>
+                        </div>
+                    </div>
+                </div>
+                <button class="restart-btn" onclick="restartTest()">Coba Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let playerName = '';
+        let currentQuestion = 0;
+        let answers = [];
+        let shuffledQuestions = [];
+
+        const questions = [
+            {
+                question: "Dalam guild adventurer, peran apa yang paling cocok untukmu?",
+                options: [
+                    { text: "Guild Master yang memimpin dan mengkoordinasi semua member", type: 'A' },
+                    { text: "Tactician yang menganalisis musuh dan merancang strategi pertempuran", type: 'B' },
+                    { text: "Inventor yang menciptakan skill combo dan taktik baru", type: 'C' },
+                    { text: "Healer yang support dan menjaga party tetap solid", type: 'D' },
+                    { text: "Scout yang eksplorasi dan mencari peluang baru", type: 'E' },
+                    { text: "Diplomat yang negosiasi dan bangun alliance", type: 'F' },
+                    { text: "Guardian yang protect dan stabilkan tim", type: 'G' },
+                    { text: "Enchanter yang boost motivasi dan moral party", type: 'H' }
+                ]
+            },
+            {
+                question: "Boss besar muncul dengan deadline super ketat! Apa movemu?",
+                options: [
+                    { text: "Take control! Bagi tugas dan lead team ke victory", type: 'A' },
+                    { text: "Analyze boss pattern, bikin execution plan yang perfect", type: 'B' },
+                    { text: "Improvise! Cari exploit dan strategi speedrun", type: 'C' },
+                    { text: "Coordinate bareng team, pastikan semua ready dan support maksimal", type: 'D' },
+                    { text: "Langsung action! Trial error sampe nemuin cara tercepat", type: 'E' },
+                    { text: "Diskusi bareng party, cari win-win solution untuk semua", type: 'F' },
+                    { text: "Stay calm, ikutin proven method yang aman dan reliable", type: 'G' },
+                    { text: "Pump up the team! Bikin semangat membara untuk clutch play", type: 'H' }
+                ]
+            },
+            {
+                question: "Apa yang bikin EXP bar kamu terisi paling cepat?",
+                options: [
+                    { text: "Achieve target dan jadi MVP dalam quest", type: 'A' },
+                    { text: "Solve puzzle level nightmare dengan logic sempurna", type: 'B' },
+                    { text: "Create build/combo original yang belum ada di meta", type: 'C' },
+                    { text: "Help party member level up dan reach potential mereka", type: 'D' },
+                    { text: "Unlock hidden area dan discover konten baru", type: 'E' },
+                    { text: "Build reputation dan jadi influencer di community", type: 'F' },
+                    { text: "Complete achievement dan unlock rare title", type: 'G' },
+                    { text: "Share meme dan vibe positif yang bikin guild aktif", type: 'H' }
+                ]
+            },
+            {
+                question: "Style komunikasi kamu saat raid meeting gimana?",
+                options: [
+                    { text: "Direct dan assertive, langsung point tanpa basa-basi", type: 'A' },
+                    { text: "Data-driven, share stat dan mechanic explanation", type: 'B' },
+                    { text: "Storytelling dengan visual, bikin plan terdengar epic", type: 'C' },
+                    { text: "Listen first, kasih input yang membangun dan inklusif", type: 'D' },
+                    { text: "Energetic dan spontan, throw ide-ide wild", type: 'E' },
+                    { text: "Persuasive dan diplomatic, align semua perspektif", type: 'F' },
+                    { text: "Calm dan clear, pastikan semua paham step by step", type: 'G' },
+                    { text: "Hype dan inspiring, bikin semua excited buat execute", type: 'H' }
+                ]
+            },
+            {
+                question: "Meta game berubah drastis! New patch drop. Reaksimu?",
+                options: [
+                    { text: "Langsung adapt dan lead team master meta baru", type: 'A' },
+                    { text: "Deep dive patch notes, calculate impact ke build", type: 'B' },
+                    { text: "Experiment wild! Test semua possibility yang baru muncul", type: 'C' },
+                    { text: "Help team transition, pastikan no one left behind", type: 'D' },
+                    { text: "Excited! Saatnya explore dan discover new meta", type: 'E' },
+                    { text: "Diskusi community, gather feedback tentang patch", type: 'F' },
+                    { text: "Wait and see, stick to proven strategy dulu", type: 'G' },
+                    { text: "Turn it into meme, bikin community chill dengan change", type: 'H' }
+                ]
+            },
+            {
+                question: "Grinding style kamu yang paling efisien itu:",
+                options: [
+                    { text: "Fast-paced multitasking, optimize setiap detik", type: 'A' },
+                    { text: "Structured routine, sistem yang calculated", type: 'B' },
+                    { text: "Freestyle experimental, test build baru tiap hari", type: 'C' },
+                    { text: "Cooperative, grinding bareng party lebih seru", type: 'D' },
+                    { text: "Solo adventure, explore map sambil grinding", type: 'E' },
+                    { text: "Social grind, networking sambil farm", type: 'F' },
+                    { text: "Steady dan consistent, sesuai daily checklist", type: 'G' },
+                    { text: "Santai tapi fun, vibe positif yang sustainable", type: 'H' }
+                ]
+            },
+            {
+                question: "Saat harus pick skill tree untuk endgame build, kamu:",
+                options: [
+                    { text: "Instinct player, trust pengalaman dan gut feeling", type: 'A' },
+                    { text: "Spreadsheet warrior, calculate DPS dan optimal path", type: 'B' },
+                    { text: "Intuitive theorycrafter, vision build yang ahead of meta", type: 'C' },
+                    { text: "Ask party, pilih yang benefit tim secara keseluruhan", type: 'D' },
+                    { text: "YOLO spec, pilih yang interesting meski off-meta", type: 'E' },
+                    { text: "Popular consensus, ikutin recommendation community", type: 'F' },
+                    { text: "Proven build, ikutin guide dari top player", type: 'G' },
+                    { text: "Fun over meta, yang bikin enjoy jangka panjang", type: 'H' }
+                ]
+            },
+            {
+                question: "Server realm yang kamu pilih join untuk maksimal career grind:",
+                options: [
+                    { text: "Competitive PvP server, fast promotion dan cutthroat", type: 'A' },
+                    { text: "Structured PvE server, clear progression system", type: 'B' },
+                    { text: "Experimental test server, freedom buat innovate", type: 'C' },
+                    { text: "Friendly RP server, supportive community culture", type: 'D' },
+                    { text: "Open world server, unlimited exploration", type: 'E' },
+                    { text: "Social hub server, networking dan connections", type: 'F' },
+                    { text: "Legacy server, established dan stable", type: 'G' },
+                    { text: "Party-focused server, event-driven dan lively", type: 'H' }
+                ]
+            },
+            {
+                question: "Dapat rare item quest yang butuh team effort. Pendekatan kamu?",
+                options: [
+                    { text: "Lead the charge! Organize dan drive team ke completion", type: 'A' },
+                    { text: "Research quest mechanics, share detailed guide", type: 'B' },
+                    { text: "Suggest creative shortcuts atau alternate methods", type: 'C' },
+                    { text: "Make sure semua dapat loot fair dan happy", type: 'D' },
+                    { text: "Explore semua possibilities dan hidden objectives", type: 'E' },
+                    { text: "Network dengan guild lain untuk alliance quest", type: 'F' },
+                    { text: "Follow quest log carefully, no rush semua aman", type: 'G' },
+                    { text: "Turn it into fun event, celebrate tiap milestone", type: 'H' }
+                ]
+            },
+            {
+                question: "Kalau kamu jadi Class Representative di academy, fokus kamu:",
+                options: [
+                    { text: "Set high goals, push class jadi yang terbaik", type: 'A' },
+                    { text: "Optimize schedule dan resource allocation", type: 'B' },
+                    { text: "Innovate learning method yang lebih engaging", type: 'C' },
+                    { text: "Ensure semua student comfortable dan supported", type: 'D' },
+                    { text: "Organize field trip dan praktik langsung", type: 'E' },
+                    { text: "Build connection dengan kelas lain dan mentor", type: 'F' },
+                    { text: "Maintain stability dan tradition yang proven", type: 'G' },
+                    { text: "Create fun activities yang boost class morale", type: 'H' }
+                ]
+            },
+            {
+                question: "Saat solo quest, soundtrack yang match vibe kamu:",
+                options: [
+                    { text: "Epic battle theme, energetic dan powerful", type: 'A' },
+                    { text: "Strategic BGM, calculated dan focused", type: 'B' },
+                    { text: "Experimental electronic, unique dan futuristic", type: 'C' },
+                    { text: "Peaceful ambient, calming dan supportive", type: 'D' },
+                    { text: "Adventure theme, exciting dan uplifting", type: 'E' },
+                    { text: "Social tavern music, lively dan communal", type: 'F' },
+                    { text: "Classic orchestral, traditional dan reliable", type: 'G' },
+                    { text: "Upbeat pop, fun dan mood-boosting", type: 'H' }
+                ]
+            },
+            {
+                question: "Party member rage quit mid-dungeon. Kamu:",
+                options: [
+                    { text: "Take charge, reallocate role dan push forward", type: 'A' },
+                    { text: "Analyze situation, adjust strategy accordingly", type: 'B' },
+                    { text: "Improvise creative solution dengan remaining team", type: 'C' },
+                    { text: "Reach out ke member itu, cari tau masalahnya", type: 'D' },
+                    { text: "See it as challenge, prove bisa clear dengan fewer", type: 'E' },
+                    { text: "Mediasi situasi, cari replacement via network", type: 'F' },
+                    { text: "Retreat dan regroup, safety first", type: 'G' },
+                    { text: "Lighten mood dengan humor, prevent more tilt", type: 'H' }
+                ]
+            },
+            {
+                question: "New skill unlock! Cara belajar kamu:",
+                options: [
+                    { text: "Jump in dan learn by doing, practice makes perfect", type: 'A' },
+                    { text: "Read tooltip detail, understand mechanic dulu", type: 'B' },
+                    { text: "Experiment combo dengan skill lain, find synergy", type: 'C' },
+                    { text: "Ask veteran player untuk tips dan tricks", type: 'D' },
+                    { text: "Test di berbagai scenario dan situasi", type: 'E' },
+                    { text: "Check community guide dan discussion", type: 'F' },
+                    { text: "Practice di training dummy sampai perfect", type: 'G' },
+                    { text: "Share excitement ke guild dan belajar bareng", type: 'H' }
+                ]
+            },
+            {
+                question: "Event crossover collab datang! Attitude kamu:",
+                options: [
+                    { text: "Grind semua reward ASAP, complete everything", type: 'A' },
+                    { text: "Calculate optimal route untuk max efficiency", type: 'B' },
+                    { text: "Explore semua easter egg dan hidden content", type: 'C' },
+                    { text: "Help newbie clear event content", type: 'D' },
+                    { text: "Try semua new feature yang ditambahkan", type: 'E' },
+                    { text: "Join community event dan gathering", type: 'F' },
+                    { text: "Focus ke reward yang actually useful", type: 'G' },
+                    { text: "Just enjoy the vibe dan have fun", type: 'H' }
+                ]
+            },
+            {
+                question: "Kamu dapat title 'Mentor'. Teaching style kamu:",
+                options: [
+                    { text: "Challenging mentor, push student ke limit mereka", type: 'A' },
+                    { text: "Systematic tutor, structured lesson plan", type: 'B' },
+                    { text: "Creative teacher, unorthodox tapi effective method", type: 'C' },
+                    { text: "Patient coach, adapt ke pace tiap student", type: 'D' },
+                    { text: "Hands-on instructor, learning by experience", type: 'E' },
+                    { text: "Networking mentor, connect student ke opportunities", type: 'F' },
+                    { text: "Traditional sensei, proven technique dan discipline", type: 'G' },
+                    { text: "Inspiring guru, motivate dan energize student", type: 'H' }
+                ]
+            },
+            {
+                question: "Main quest clear! End credits roll. Yang kamu rasakan:",
+                options: [
+                    { text: "Victory! Langsung planning NG+ dengan target lebih tinggi", type: 'A' },
+                    { text: "Satisfaction dari perfect execution dan completion", type: 'B' },
+                    { text: "Pride dari creative approach yang digunakan", type: 'C' },
+                    { text: "Grateful untuk party yang support journey", type: 'D' },
+                    { text: "Excited untuk explore post-game content", type: 'E' },
+                    { text: "Happy sharing achievement ke community", type: 'F' },
+                    { text: "Relief dan sense of accomplishment", type: 'G' },
+                    { text: "Joy dari memorable experience yang dibuat", type: 'H' }
+                ]
+            }
+        ];
+
+        const heroTypes = {
+            'A': {
+                icon: '⚔️',
+                title: 'THE COMMANDER',
+                subtitle: 'Guild Master yang Born to Lead',
+                description: 'Kamu adalah leader natural yang punya aura authority kuat. Decisive, competitive, dan nggak takut ambil responsibility besar. Energy kamu infectious dan bikin team termotivasi push limit mereka.',
+                power: 'Executive Presence - Kemampuan command respect, make tough calls under pressure, dan drive team towards ambitious goals dengan confidence yang unshakeable.',
+                role: 'CEO, Operations Manager, Team Leader, Project Director, Startup Founder, Sales Director',
+                strength: 'Goal-oriented beast, decisive af, natural risk-taker, commanding presence, result-driven mindset, excellent di delegate dan mobilize resources.',
+                strategy: 'Level up: Ambil course Leadership & Management di Coursera/LinkedIn Learning. Belajar active listening dan emotional intelligence lewat buku "Leaders Eat Last" by Simon Sinek. Practice public speaking di Toastmasters atau komunitas speaker. Ikuti mentorship program buat refine strategic thinking. Challenge: belajar slow down dan empower team, bukan just command.'
+            },
+            'B': {
+                icon: '🧠',
+                title: 'THE STRATEGIST',
+                subtitle: 'Mastermind dengan IQ 200',
+                description: 'Otak kamu literally supercomputer. Data, logic, dan analytical thinking adalah native language kamu. Detail-oriented banget dan bisa spot pattern yang orang lain miss. Problem solver yang methodical dan precise.',
+                power: 'Strategic Analytics - Kemampuan god-tier dalam process complex information, identify trends, construct air-tight arguments, dan predict outcomes dengan data-driven insights.',
+                role: 'Data Scientist, Business Analyst, Strategy Consultant, Financial Analyst, Research Scientist, System Architect, Operations Analyst',
+                strength: 'Critical thinker, detail-obsessed, logical reasoning on point, excellent problem-solving, patient dengan complex tasks, systematic approach ke challenges.',
+                strategy: 'Level up: Master tools analytics - Python, SQL, Tableau via DataCamp atau Kaggle. Ambil Google Data Analytics Certificate atau AWS certification. Belajar data storytelling via "Storytelling with Data" by Cole Nussbaumer. Practice presentation skills biar analisis kompleks jadi digestible. Join data science communities dan ikut hackathon buat sharpen skills.'
+            },
+            'C': {
+                icon: '🎨',
+                title: 'THE INNOVATOR',
+                subtitle: 'Creative Genius yang Think Different',
+                description: 'Mind kamu playground unlimited ideas. Kamu see possibilities dimana others see walls. Visionary, imaginative, dan always ahead of the curve. Original thinker yang bikin breakthrough solutions.',
+                power: 'Creative Disruption - Kemampuan legendary dalam generate novel ideas, think outside the box, connect unrelated concepts, dan transform abstract visions into tangible innovations.',
+                role: 'Product Manager, Creative Director, UX/UI Designer, Content Strategist, Innovation Lead, Brand Manager, Marketing Director',
+                strength: 'Visioner af, adaptable ke changes, fearless experimenter, lateral thinking master, trend-setter, excellent di brainstorming dan ideation sessions.',
+                strategy: 'Level up: Belajar Design Thinking via Stanford d.school atau IDEO U courses. Master tools kreative - Figma, Adobe Creative Suite, prototyping tools. Ambil Google UX Design Certificate. Bangun portfolio di Behance/Dribbble. Join innovation workshops dan design sprints. Baca "Creative Confidence" by Tom & David Kelley. Network di creative communities.'
+            },
+            'D': {
+                icon: '🤝',
+                title: 'THE HARMONIZER',
+                subtitle: 'People Person yang Bikin Team Solid',
+                description: 'Empati kamu level max. Kamu naturally understand people, build connections, dan create safe space buat semua berkembang. Team glue yang bikin workplace jadi home.',
+                power: 'Emotional Intelligence Mastery - Kemampuan epic dalam build trust, facilitate collaboration, resolve conflicts gracefully, dan nurture talent dalam team dynamics.',
+                role: 'HR Business Partner, People Development Manager, Customer Success Lead, Team Coach, Community Manager, Employee Engagement Specialist',
+                strength: 'Empati through the roof, conflict resolution pro, great listener, supportive energy, relationship builder, culture champion yang create psychological safety.',
+                strategy: 'Level up: Ambil SHRM atau HRCI certification untuk HR track. Belajar coaching via ICF-accredited programs. Master organizational psychology lewat courses di Coursera. Baca "Dare to Lead" by Brené Brown dan "Crucial Conversations". Practice facilitation skills di workshops. Join HR communities dan people-focused networking events.'
+            },
+            'E': {
+                icon: '🗡️',
+                title: 'THE EXPLORER',
+                subtitle: 'Adventure Seeker yang Fearless',
+                description: 'Kamu thrive di uncertainty dan love discovery. Risk-taker yang energetic, spontaneous, dan always ready untuk next challenge. Action-oriented dan learn best by doing.',
+                power: 'Adaptive Agility - Kemampuan insane dalam quickly adapt to new environments, take calculated risks, learn on the fly, dan turn obstacles into opportunities dengan resourcefulness.',
+                role: 'Business Development Manager, Field Sales Executive, Startup Growth Hacker, Travel Content Creator, Event Manager, Account Executive',
+                strength: 'Energetic powerhouse, super flexible, hands-on learner, resilient af, opportunity spotter, excellent di networking dan building connections on the go.',
+                strategy: 'Level up: Ambil courses Sales & Negotiation di LinkedIn Learning. Belajar Growth Hacking strategies lewat Reforge atau GrowthTribe. Master CRM tools dan sales analytics. Baca "The Lean Startup" by Eric Ries. Practice pitching dan storytelling. Join startup communities dan attend networking events regularly. Develop personal brand di LinkedIn.'
+            },
+            'F': {
+                icon: '👑',
+                title: 'THE INFLUENCER',
+                subtitle: 'Social Butterfly dengan Charisma Max',
+                description: 'Network adalah superpowermu. Charismatic, persuasive, dan naturally good di connect dengan diverse people. Kamu build bridges dan open doors buat semua.',
+                power: 'Social Capital Architect - Kemampuan legendary dalam build extensive networks, influence opinions, negotiate win-win outcomes, dan create opportunities through relationships.',
+                role: 'Public Relations Manager, Partnership Manager, Brand Ambassador, Social Media Strategist, Communications Director, Corporate Affairs',
+                strength: 'Charisma on fleek, persuasion expert, excellent communicator, politically savvy, relationship cultivator, great di reading rooms dan situations.',
+                strategy: 'Level up: Master digital marketing via Google Digital Garage atau HubSpot Academy. Belajar PR strategies dan crisis communication. Ambil courses Negotiation dan Influence. Baca "Influence" by Robert Cialdini dan "Never Split the Difference". Build strong LinkedIn presence. Join Toastmasters dan professional networking groups. Practice content creation consistently.'
+            },
+            'G': {
+                icon: '🛡️',
+                title: 'THE GUARDIAN',
+                subtitle: 'Reliable AF dan Rock Solid',
+                description: 'Stability dan reliability adalah trademark kamu. Responsible, organized, dan bisa dipercaya 100%. Kamu yang bikin everything runs smoothly dengan consistency.',
+                power: 'Operational Excellence - Kemampuan superior dalam maintain quality standards, ensure compliance, manage risks, dan deliver consistent results dengan reliability yang unmatched.',
+                role: 'Operations Manager, Quality Assurance Lead, Compliance Officer, Administrative Manager, Project Coordinator, Risk Manager',
+                strength: 'Dependable king/queen, detail perfectionist, process-oriented, risk-aware, disciplined worker, excellent di planning dan execution yang thorough.',
+                strategy: 'Level up: Ambil PMP (Project Management Professional) certification. Belajar Six Sigma atau Lean methodology. Master project management tools - Asana, Monday, MS Project. Baca "The Checklist Manifesto" by Atul Gawande. Take courses Operations Management. Join PMI atau operations-focused professional groups. Practice agile methodologies.'
+            },
+            'H': {
+                icon: '✨',
+                title: 'THE ENTERTAINER',
+                subtitle: 'Energy Booster yang Bikin Vibe Lit',
+                description: 'Kamu literally human sunshine. Enthusiastic, fun, dan bikin atmosphere instantly better. People magnet yang spread positive vibes dan keep morale high.',
+                power: 'Morale Catalyst - Kemampuan magical dalam energize teams, create engaging experiences, boost motivation through positivity, dan make work feel less like work.',
+                role: 'Events Manager, Content Creator, Employee Engagement Lead, Entertainment Producer, Social Media Manager, Host/MC Professional',
+                strength: 'Enthusiastic mood-maker, spontaneous entertainer, great storyteller, vibe creator, team energizer, excellent di create memorable experiences.',
+                strategy: 'Level up: Belajar content creation - video editing, copywriting, social media strategies. Ambil courses Event Management atau Entertainment Business. Master engagement tools dan platforms. Baca "Contagious" by Jonah Berger. Practice public speaking dan MC skills. Build personal brand di social media. Join content creator communities dan collab dengan others.'
+            }
+        };
+
+        function startTest() {
+            playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Silakan masukkan nama Anda terlebih dahulu!');
+                return;
+            }
+
+            // Shuffle pertanyaan agar random setiap kali mulai
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+
+            document.getElementById('nameSection').classList.add('hidden');
+            document.getElementById('questionSection').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= shuffledQuestions.length) {
+                showResult();
+                return;
+            }
+
+            const q = shuffledQuestions[currentQuestion];
+            document.getElementById('questionText').textContent = `${currentQuestion + 1}. ${q.question}`;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option.text;
+                btn.onclick = () => selectAnswer(option.type);
+                optionsContainer.appendChild(btn);
+            });
+
+            updateProgress();
+        }
+
+        function selectAnswer(type) {
+            answers.push(type);
+            currentQuestion++;
+            showQuestion();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion) / shuffledQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            const counts = {};
+            answers.forEach(answer => {
+                counts[answer] = (counts[answer] || 0) + 1;
+            });
+
+            let maxCount = 0;
+            let resultType = 'A';
+            for (let type in counts) {
+                if (counts[type] > maxCount) {
+                    maxCount = counts[type];
+                    resultType = type;
+                }
+            }
+
+            return resultType;
+        }
+
+        function showResult() {
+            const resultType = calculateResult();
+            const hero = heroTypes[resultType];
+
+            document.getElementById('questionSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+
+            document.getElementById('heroIcon').textContent = hero.icon;
+            document.getElementById('heroTitle').textContent = `${playerName}, Kamu adalah ${hero.title}!`;
+            document.getElementById('heroSubtitle').textContent = hero.subtitle;
+            document.getElementById('heroDescription').textContent = hero.description;
+            document.getElementById('heroPower').textContent = hero.power;
+            document.getElementById('heroRole').textContent = hero.role;
+            document.getElementById('heroStrength').textContent = hero.strength;
+            document.getElementById('heroStrategy').textContent = hero.strategy;
+        }
+
+        function restartTest() {
+            currentQuestion = 0;
+            answers = [];
+            shuffledQuestions = [];
+            document.getElementById('playerName').value = '';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('nameSection').classList.remove('hidden');
+            document.getElementById('progressBar').style.width = '0%';
+        }
+    </script>
+</body>
+</html>

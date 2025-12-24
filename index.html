@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Magician Codex</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .sparkles {
+            font-size: 2em;
+        }
+
+        .progress-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 8px;
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 8px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            transition: background 0.3s;
+        }
+
+        .progress-segment.completed {
+            background: #4ade80;
+        }
+
+        .progress-segment.current {
+            background: #fbbf24;
+        }
+
+        .timer-score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin-bottom: 25px;
+        }
+
+        .timer-box, .score-box {
+            text-align: center;
+        }
+
+        .timer-box h3, .score-box h3 {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            color: #e9d5ff;
+        }
+
+        .timer-display {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+
+        .timer-display.warning {
+            color: #ef4444;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .score-display {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .final-results {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(249, 115, 22, 0.2));
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .final-results h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #fbbf24;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .name-input-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .name-input-container input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            border: 2px solid #7c3aed;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .name-input-container input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .name-input-container input:focus {
+            outline: none;
+            border-color: #a78bfa;
+        }
+
+        .story-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .story-title {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .concept-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .story-image {
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .story-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .story-image svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .story-text {
+            line-height: 1.6;
+            color: #e9d5ff;
+        }
+
+        .task-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .task-title {
+            color: #fbbf24;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .task-description {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #1a1a1a;
+            color: #4ade80;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 1em;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: 2px solid #a78bfa;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn-submit {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-hint {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-next {
+            background: #7c3aed;
+            color: white;
+            margin-left: auto;
+        }
+
+        .btn-restart {
+            background: #7c3aed;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+        }
+
+        .hint-box {
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .feedback.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .feedback.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .completion-screen {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(249, 115, 22, 0.2));
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .completion-screen h2 {
+            font-size: 2.5em;
+            margin: 20px 0;
+        }
+
+        .sparkle-icon {
+            font-size: 4em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn-next {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <span class="sparkles">✨</span>
+                <h1>Quest Codex Arch Mage</h1>
+                <span class="sparkles">✨</span>
+            </div>
+            <p style="color: #e9d5ff; margin-top: 10px;">belajar menulis coding melalui petualangan fantasy!</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span style="font-weight: bold;">Perjalananmu</span>
+                <span id="progress-text">0 / 5 Level</span>
+            </div>
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress-segment" data-level="0"></div>
+                <div class="progress-segment" data-level="1"></div>
+                <div class="progress-segment" data-level="2"></div>
+                <div class="progress-segment" data-level="3"></div>
+                <div class="progress-segment" data-level="4"></div>
+            </div>
+        </div>
+
+        <!-- Game Content -->
+        <div id="name-input-screen" class="name-input-container">
+    <h2 style="margin-bottom: 20px;">
+        Seorang Arch Mage memberikan sebuah misi kepada anda.<br>
+        Jika bersedia silahkan tuliskan nama anda...
+    </h2>
+    <input type="text" id="player-name" placeholder="Masukkan nama kamu..." maxlength="20">
+    <button class="btn-submit" onclick="startGame()" style="padding: 15px 40px; font-size: 1.1em;">
+        Link Start! 🎮
+    </button>
+    <img src="https://irowiki.org/w/images/thumb/6/62/Elemental_Master_Artwork.png/375px-Elemental_Master_Artwork.png?20240102232928" />
+</div>
+        <div id="game-content" class="hidden">
+            <!-- Story Card -->
+            <div class="story-card">
+                <h2 class="story-title" id="level-title"></h2>
+                <span class="concept-badge" id="level-concept"></span>
+                <div class="story-image" id="level-image"></div>
+                <p class="story-text" id="level-story"></p>
+            </div>
+
+            <!-- Timer and Score -->
+            <div class="timer-score-container">
+                <div class="timer-box">
+                    <h3>⏱️ Waktu Tersisa</h3>
+                    <div class="timer-display" id="timer">30</div>
+                </div>
+                <div class="score-box">
+                    <h3>⭐ Nilai</h3>
+                    <div class="score-display" id="score">100</div>
+                </div>
+            </div>
+
+            <!-- Task Card -->
+            <div class="task-card">
+                <h3 class="task-title">Tugasmu:</h3>
+                <p class="task-description" id="task-description"></p>
+                
+                <textarea id="code-input" placeholder="Declaration Elemental Code di sini..."></textarea>
+
+                <div class="button-group">
+                    <button class="btn-submit" onclick="submitCode()">✓ Lempar Mantra</button>
+                    <button class="btn-hint" onclick="toggleHint()">💡 <span id="hint-btn-text">Call</span> Sight</button>
+                    <button class="btn-next hidden" id="next-btn" onclick="nextLevel()">Next Level →</button>
+                </div>
+
+                <div class="hint-box hidden" id="hint-box">
+                    <p><strong>💡 Sight:</strong> <span id="hint-text"></span></p>
+                </div>
+
+                <div class="feedback hidden" id="feedback"></div>
+            </div>
+        </div>
+
+        <!-- Completion Screen -->
+        <div id="completion-screen" class="completion-screen hidden">
+            <div class="sparkle-icon">✨</div>
+            <h2>🎉 Petualangan Selesai!</h2>
+            <p style="font-size: 1.3em; margin: 20px 0;">Kamu sudah menguasai dasar-dasar sihir coding!</p>
+            <p style="color: #e9d5ff; margin-bottom: 30px;">Kamu sudah belajar: Variabel, Kondisional, Perulangan, Fungsi, dan cara menggabungkannya!</p>
+            
+            <div class="final-results">
+                <h3>🏆 Hasil Akhir</h3>
+                <div class="result-item">
+                    <span>👤 Nama Magician:</span>
+                    <strong id="final-name">-</strong>
+                </div>
+                <div class="result-item">
+                    <span>⭐ Nilai Akhir:</span>
+                    <strong id="final-score" style="color: #4ade80; font-size: 1.3em;">-</strong>
+                </div>
+                <div class="result-item">
+                    <span>📊 Level Diselesaikan:</span>
+                    <strong>5 / 5</strong>
+                </div>
+            </div>
+            
+            <button class="btn-restart" onclick="restartGame()">Mulai Petualangan Baru</button>
+        </div>
+    </div>
+
+    <script>
+        const levels = [
+            {
+                title: "Cursed Forest",
+                concept: "Variabel",
+                story: "Kamu adalah seorang Magician muda. Mentormu meninggalkan gulungan ajaib berisi petunjuk, Untuk membuka warp portal di ruang harta Sang Naga. Catat semua spell yang berhasil kamu declare di Memorize untuk melawannya di akhir perjalanan. sekarang bangkitkan kekuatan dirimu dengan menggunakan spell mantra 'let'.",
+                task: "Cast Spell Elemen Variabel bernama 'namaMagician' dan isi dengan namamu (dalam tanda kutip).",
+                hint: "Coba: let namaMagician = \"Lilis Rahayu\";",
+                image: `<img src="https://raw.githubusercontent.com/rahsyah/Codequest/refs/heads/main/img/hutan.jpg" alt="Hutan Terkutuk">
+                <svg viewBox="0 0 400 300" style="width:100%; height:100%;">
+                    <rect fill="#1a5f3f" width="400" height="300"/>
+                    <circle cx="80" cy="80" r="40" fill="#2d7a4f"/>
+                    <circle cx="180" cy="60" r="50" fill="#2d7a4f"/>
+                    <circle cx="300" cy="100" r="45" fill="#2d7a4f"/>
+                    <rect x="170" y="180" width="60" height="80" fill="#5d4037"/>
+                    <path d="M 150 180 L 200 140 L 250 180 Z" fill="#6d4c41"/>
+                    <rect x="185" y="210" width="30" height="40" fill="#3e2723"/>
+                    <circle cx="200" cy="120" r="3" fill="#ffeb3b"/>
+                    <circle cx="220" cy="115" r="2" fill="#ffeb3b"/>
+                    <circle cx="180" cy="125" r="2" fill="#ffeb3b"/>
+                </svg>`,
+                check: (code) => code.includes('let') && code.includes('namamagician') && code.includes('=') && (code.includes('"') || code.includes("'")),
+                explanation: `<strong>📚 Pengetahuan Variabel:</strong><br><br>
+                <strong>Apa itu Variabel?</strong><br>
+                Variabel adalah wadah atau kotak untuk menyimpan data dalam program. Seperti kotak penyimpanan yang diberi label!<br><br>
+                
+                <strong>Kata Kunci 'let':</strong><br>
+                • <code>let</code> digunakan untuk mendeklarasikan (membuat) variabel baru<br>
+                • Nilai variabel yang dibuat dengan <code>let</code> bisa diubah nantinya<br>
+                • Contoh: <code>let umur = 15;</code><br><br>
+                
+                <strong>Alternatif lain:</strong><br>
+                • <code>const</code> - untuk variabel yang nilainya tetap/tidak berubah<br>
+                • <code>var</code> - cara lama (tidak disarankan lagi)<br><br>
+                
+                <strong>Aturan Penamaan:</strong><br>
+                • Nama variabel harus dimulai dengan huruf, underscore (_), atau dollar ($)<br>
+                • Tidak boleh pakai spasi (gunakan camelCase: namaMagician)<br>
+                • Case-sensitive (namaMagician ≠ namamagician)<br><br>
+                
+                <strong>Contoh Penggunaan:</strong><br>
+                <code>let nama = "Merlin";</code><br>
+                <code>let kekuatan = 100;</code><br>
+                <code>let isAktif = true;</code>`
+            },
+            {
+                title: "Decision Bridge",
+                concept: "Kondisional (pernyataan if)",
+                story: "Sebuah jembatan ajaib muncul, tapi hanya mengizinkan penyihir dengan kekuatan magis 77+ untuk menyeberang. Cek apakah level kekuatanmu cukup tinggi!",
+                task: "Create Elemental pernyataan if yang mengecek apakah kekuatanMagis lebih besar atau sama dengan 77.",
+                hint: "Coba: if (kekuatanMagis >= 85) { }",
+                image: `<img src="https://raw.githubusercontent.com/rahsyah/Codequest/refs/heads/main/img/jembatan.PNG" alt="Jembatan Keputusan">
+                <svg viewBox="0 0 400 300" style="width:100%; height:100%;">
+                    <rect fill="#87ceeb" width="400" height="300"/>
+                    <ellipse cx="200" cy="250" rx="150" ry="30" fill="#4682b4"/>
+                    <rect x="120" y="150" width="160" height="15" fill="#8b4513" rx="5"/>
+                    <line x1="120" y1="150" x2="100" y2="240" stroke="#654321" stroke-width="4"/>
+                    <line x1="280" y1="150" x2="300" y2="240" stroke="#654321" stroke-width="4"/>
+                    <line x1="160" y1="150" x2="150" y2="240" stroke="#654321" stroke-width="3"/>
+                    <line x1="240" y1="150" x2="250" y2="240" stroke="#654321" stroke-width="3"/>
+                    <circle cx="50" cy="80" r="30" fill="#ffeb3b" opacity="0.8"/>
+                    <text x="200" y="165" font-size="24" fill="#ffffff" text-anchor="middle" font-weight="bold">?</text>
+                </svg>`,
+                check: (code) => code.includes('if') && code.includes('kekuatanmagis') && (code.includes('>=') || code.includes('>')),
+                explanation: `<strong>📚 Pengetahuan Kondisional (If Statement):</strong><br><br>
+                <strong>Apa itu If Statement?</strong><br>
+                If statement membuat program bisa membuat keputusan. Seperti "Jika hujan, bawa payung".<br><br>
+                
+                <strong>Struktur Dasar:</strong><br>
+                <code>if (kondisi) {<br>
+                &nbsp;&nbsp;// kode yang dijalankan jika kondisi benar<br>
+                }</code><br><br>
+                
+                <strong>Operator Perbandingan:</strong><br>
+                • <code>></code> lebih besar dari<br>
+                • <code><</code> lebih kecil dari<br>
+                • <code>>=</code> lebih besar atau sama dengan<br>
+                • <code><=</code> lebih kecil atau sama dengan<br>
+                • <code>==</code> sama dengan (nilai)<br>
+                • <code>===</code> sama dengan (nilai dan tipe data)<br>
+                • <code>!=</code> tidak sama dengan<br><br>
+                
+                <strong>Variasi If:</strong><br>
+                • <code>if...else</code> - dua pilihan<br>
+                • <code>if...else if...else</code> - banyak pilihan<br><br>
+                
+                <strong>Contoh Nyata:</strong><br>
+                <code>let nilai = 80;<br>
+                if (nilai >= 75) {<br>
+                &nbsp;&nbsp;console.log("Lulus!");<br>
+                } else {<br>
+                &nbsp;&nbsp;console.log("Belum lulus");<br>
+                }</code>`
+            },
+            {
+                title: "Crystal Dungeon",
+                concept: "Perulangan (Loop)",
+                story: "Kamu menemukan 5 kristal ajaib! Setiap kristal perlu diisi dengan mantra. Kamu harus melempar mantra berulang-ulang.",
+                task: "Create Elemental perulangan for yang menghitung dari 1 sampai 5.",
+                hint: "Coba: for (let i = 1; i <= 5; i++) { }",
+                image: `<img src="https://raw.githubusercontent.com/rahsyah/Codequest/refs/heads/main/img/crystal.jpg" alt="Gua Kristal">
+                <svg viewBox="0 0 400 300" style="width:100%; height:100%;">
+                    <rect fill="#2c1b47" width="400" height="300"/>
+                    <ellipse cx="200" cy="280" rx="180" ry="40" fill="#1a0f2e"/>
+                    <polygon points="80,120 100,180 60,180" fill="#9c27b0" opacity="0.7"/>
+                    <polygon points="140,100 160,170 120,170" fill="#e91e63" opacity="0.7"/>
+                    <polygon points="200,80 220,160 180,160" fill="#00bcd4" opacity="0.7"/>
+                    <polygon points="260,100 280,170 240,170" fill="#4caf50" opacity="0.7"/>
+                    <polygon points="320,120 340,180 300,180" fill="#ffc107" opacity="0.7"/>
+                    <circle cx="90" cy="130" r="4" fill="#ffffff"/>
+                    <circle cx="150" cy="110" r="4" fill="#ffffff"/>
+                    <circle cx="210" cy="90" r="4" fill="#ffffff"/>
+                    <circle cx="270" cy="110" r="4" fill="#ffffff"/>
+                    <circle cx="330" cy="130" r="4" fill="#ffffff"/>
+                </svg>`,
+                check: (code) => code.includes('for') && code.includes('let') && code.includes('<=') && code.includes('i++'),
+                explanation: `<strong>📚 Pengetahuan Perulangan (Loop):</strong><br><br>
+                <strong>Apa itu Loop?</strong><br>
+                Loop adalah cara untuk menjalankan kode yang sama berulang kali tanpa harus menulis ulang. Hemat waktu dan efisien!<br><br>
+                
+                <strong>Struktur For Loop:</strong><br>
+                <code>for (inisialisasi; kondisi; increment) {<br>
+                &nbsp;&nbsp;// kode yang diulang<br>
+                }</code><br><br>
+                
+                <strong>Bagian-bagian For Loop:</strong><br>
+                • <strong>Inisialisasi</strong>: <code>let i = 1</code> - titik awal<br>
+                • <strong>Kondisi</strong>: <code>i <= 5</code> - kapan berhenti<br>
+                • <strong>Increment</strong>: <code>i++</code> - naik 1 setiap loop<br><br>
+                
+                <strong>Jenis Loop Lain:</strong><br>
+                • <code>while</code> - loop selama kondisi benar<br>
+                • <code>do...while</code> - jalankan dulu, cek kondisi kemudian<br>
+                • <code>for...of</code> - loop untuk array<br>
+                • <code>for...in</code> - loop untuk object<br><br>
+                
+                <strong>Operator Increment:</strong><br>
+                • <code>i++</code> atau <code>++i</code> - tambah 1<br>
+                • <code>i--</code> atau <code>--i</code> - kurang 1<br>
+                • <code>i += 2</code> - tambah 2<br><br>
+                
+                <strong>Contoh Praktis:</strong><br>
+                <code>for (let i = 1; i <= 5; i++) {<br>
+                &nbsp;&nbsp;console.log("Mantra ke-" + i);<br>
+                }<br>
+                // Output: Mantra ke-1, Mantra ke-2, dst...</code>`
+            },
+            {
+                title: "Spell Library",
+                concept: "Fungsi",
+                story: "Perpustakaan kuno berisi buku-buku mantra. Kamu perlu membuat mantramu sendiri yang bisa digunakan berulang kali!",
+                task: "Cast Spell Elemen fungsi bernama 'lemparMantra' tanpa parameter.",
+                hint: "Coba: function lemparMantra() { }",
+                image: `<img src="https://raw.githubusercontent.com/rahsyah/Codequest/refs/heads/main/img/perpus.PNG" alt="Perpustakaan Mantra">
+                <svg viewBox="0 0 400 300" style="width:100%; height:100%;">
+                    <rect fill="#5d4037" width="400" height="300"/>
+                    <rect x="40" y="80" width="80" height="180" fill="#3e2723"/>
+                    <rect x="50" y="90" width="15" height="20" fill="#d32f2f"/>
+                    <rect x="70" y="90" width="15" height="20" fill="#1976d2"/>
+                    <rect x="90" y="90" width="15" height="20" fill="#388e3c"/>
+                    <rect x="160" y="60" width="80" height="200" fill="#3e2723"/>
+                    <rect x="170" y="70" width="15" height="20" fill="#fbc02d"/>
+                    <rect x="190" y="70" width="15" height="20" fill="#7b1fa2"/>
+                    <rect x="210" y="70" width="15" height="20" fill="#0288d1"/>
+                    <rect x="280" y="90" width="80" height="170" fill="#3e2723"/>
+                    <rect x="290" y="100" width="15" height="20" fill="#c2185b"/>
+                    <rect x="310" y="100" width="15" height="20" fill="#00796b"/>
+                    <rect x="330" y="100" width="15" height="20" fill="#f57c00"/>
+                    <circle cx="200" cy="30" r="15" fill="#ffeb3b" opacity="0.6"/>
+                    <rect x="195" y="30" width="10" height="40" fill="#ffeb3b" opacity="0.4"/>
+                </svg>`,
+                check: (code) => code.includes('function') && code.includes('lemparmantra') && code.includes('(') && code.includes(')'),
+                explanation: `<strong>📚 Pengetahuan Fungsi (Function):</strong><br><br>
+                <strong>Apa itu Fungsi?</strong><br>
+                Fungsi adalah blok kode yang bisa digunakan berulang kali. Seperti resep masakan yang bisa kamu ikuti kapan saja!<br><br>
+                
+                <strong>Struktur Dasar:</strong><br>
+                <code>function namaFungsi(parameter) {<br>
+                &nbsp;&nbsp;// kode yang dijalankan<br>
+                &nbsp;&nbsp;return hasil;<br>
+                }</code><br><br>
+                
+                <strong>Cara Memanggil Fungsi:</strong><br>
+                <code>namaFungsi();</code> atau <code>namaFungsi(nilai);</code><br><br>
+                
+                <strong>Komponen Fungsi:</strong><br>
+                • <strong>Nama</strong>: identifier unik untuk fungsi<br>
+                • <strong>Parameter</strong>: input yang diterima (opsional)<br>
+                • <strong>Body</strong>: kode yang dijalankan<br>
+                • <strong>Return</strong>: output yang dikembalikan (opsional)<br><br>
+                
+                <strong>Jenis Fungsi:</strong><br>
+                • <strong>Function Declaration</strong>: <code>function nama() { }</code><br>
+                • <strong>Function Expression</strong>: <code>const nama = function() { }</code><br>
+                • <strong>Arrow Function</strong>: <code>const nama = () => { }</code><br><br>
+                
+                <strong>Keuntungan Fungsi:</strong><br>
+                • Kode lebih rapi dan terorganisir<br>
+                • Bisa digunakan berulang kali<br>
+                • Mudah di-debug dan diperbaiki<br>
+                • Membuat kode lebih modular<br><br>
+                
+                <strong>Contoh Lengkap:</strong><br>
+                <code>function sapa(nama) {<br>
+                &nbsp;&nbsp;return "Halo, " + nama + "!";<br>
+                }<br><br>
+                let pesan = sapa("Merlin");<br>
+                console.log(pesan); // Output: Halo, Merlin!</code>`
+            },
+            {
+                title: "Dragon Quest",
+                concept: "Menggabungkan Konsep",
+                story: "Naga menjaga harta karun! Dia bertanya: 'Gabungkan semua pengetahuanmu - buat mantra yang menggunakan variabel, mengecek kondisi, melakukan perulangan, dan dalam sebuah fungsi!'",
+                task: "Cast Spell Elemen fungsi dengan variabel, pernyataan if, dan perulangan for.",
+                hint: "Gabungkan semua yang sudah kamu pelajari! Mulai dengan 'function'...",
+                image: `<img src="https://raw.githubusercontent.com/rahsyah/Codequest/refs/heads/main/img/naga.jpg" alt="Tantangan Naga">
+                <svg viewBox="0 0 400 300" style="width:100%; height:100%;">
+                    <rect fill="#ff6b35" width="400" height="300"/>
+                    <ellipse cx="200" cy="180" rx="80" ry="60" fill="#d32f2f"/>
+                    <ellipse cx="180" cy="140" rx="50" ry="40" fill="#c62828"/>
+                    <circle cx="160" cy="130" r="8" fill="#ffeb3b"/>
+                    <circle cx="200" cy="130" r="8" fill="#ffeb3b"/>
+                    <path d="M 150 100 L 170 80 L 160 100 Z" fill="#d32f2f"/>
+                    <path d="M 210 100 L 190 80 L 200 100 Z" fill="#d32f2f"/>
+                    <path d="M 220 180 L 280 160 L 270 190 Z" fill="#b71c1c"/>
+                    <path d="M 220 200 L 280 220 L 270 200 Z" fill="#b71c1c"/>
+                    <ellipse cx="140" cy="240" rx="30" ry="15" fill="#ffd700"/>
+                    <ellipse cx="180" cy="245" rx="25" ry="12" fill="#ffd700"/>
+                    <ellipse cx="160" cy="250" rx="20" ry="10" fill="#ffeb3b"/>
+                    <path d="M 150 150 Q 180 165 150 170" fill="none" stroke="#ff9800" stroke-width="3"/>
+                </svg>`,
+                check: (code) => code.includes('function') && code.includes('let') && code.includes('if') && code.includes('for'),
+                explanation: `<strong>📚 Pengetahuan Menggabungkan Konsep:</strong><br><br>
+                <strong>Kekuatan Kombinasi!</strong><br>
+                Programmer profesional tidak menggunakan konsep secara terpisah, tapi menggabungkannya untuk membuat program yang powerful!<br><br>
+                
+                <strong>Contoh Program Lengkap:</strong><br>
+                <code>function cekNilaiSiswa() {<br>
+                &nbsp;&nbsp;let daftarNilai = [75, 80, 65, 90, 85];<br>
+                &nbsp;&nbsp;<br>
+                &nbsp;&nbsp;for (let i = 0; i < daftarNilai.length; i++) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;let nilai = daftarNilai[i];<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;if (nilai >= 75) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log("Siswa " + (i+1) + " LULUS");<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} else {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log("Siswa " + (i+1) + " TIDAK LULUS");<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;}<br>
+                }<br><br>
+                cekNilaiSiswa();</code><br><br>
+                
+                <strong>Penjelasan Program di Atas:</strong><br>
+                1. <strong>Fungsi</strong>: Membungkus semua logika dalam satu unit<br>
+                2. <strong>Variabel</strong>: Menyimpan array nilai dan nilai individual<br>
+                3. <strong>Loop</strong>: Mengiterasi setiap nilai dalam array<br>
+                4. <strong>Kondisional</strong>: Menentukan lulus atau tidak<br><br>
+                
+                <strong>Best Practices:</strong><br>
+                • Gunakan nama variabel yang deskriptif<br>
+                • Indentasi yang rapi untuk keterbacaan<br>
+                • Buat fungsi untuk tugas spesifik<br>
+                • Hindari kode yang terlalu dalam/nested<br>
+                • Tambahkan komentar untuk bagian kompleks<br><br>
+                
+                <strong>Langkah Selanjutnya:</strong><br>
+                • Pelajari Array dan Object<br>
+                • Pahami scope dan closure<br>
+                • Eksplorasi asynchronous programming<br>
+                • Coba framework seperti React atau Vue<br>
+                • Latihan dengan project nyata!<br><br>
+                
+                <strong>🎉 Selamat!</strong> Kamu sudah menguasai fondasi programming. Terus berlatih dan eksperimen dengan kombinasi konsep ini!`
+            }
+        ];
+
+        let currentLevel = 0;
+        let completedLevels = [];
+        let timer = null;
+        let timeLeft = 0;
+        let score = 100;
+        let playerName = "";
+        let gameStarted = false;
+
+        function startGame() {
+            const nameInput = document.getElementById('player-name').value.trim();
+            if (!nameInput) {
+                alert('Masukkan nama kamu dulu! 😊');
+                return;
+            }
+            playerName = nameInput;
+            gameStarted = true;
+            document.getElementById('name-input-screen').classList.add('hidden');
+            document.getElementById('game-content').classList.remove('hidden');
+            loadLevel();
+        }
+
+        function startTimer() {
+            // Clear existing timer
+            if (timer) clearInterval(timer);
+            
+            // Set time based on level (30s for levels 1-4, 60s for level 5)
+            timeLeft = currentLevel === 4 ? 60 : 30;
+            updateTimerDisplay();
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.textContent = timeLeft;
+            
+            if (timeLeft <= 10) {
+                timerDisplay.classList.add('warning');
+            } else {
+                timerDisplay.classList.remove('warning');
+            }
+        }
+
+        function handleTimeout() {
+            score = Math.max(0, score - 10);
+            document.getElementById('score').textContent = score;
+            
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback error';
+            feedback.innerHTML = '<p style="font-weight: bold;">⏰ Waktu Habis! Nilai kamu berkurang 10 poin.</p><p style="margin-top: 10px;">Coba lagi dengan lebih cepat! Timer akan restart.</p>';
+            feedback.classList.remove('hidden');
+            
+            // Restart timer
+            setTimeout(() => {
+                feedback.classList.add('hidden');
+                startTimer();
+            }, 2000);
+        }
+
+        function loadLevel() {
+            const level = levels[currentLevel];
+            document.getElementById('level-title').textContent = level.title;
+            document.getElementById('level-concept').textContent = level.concept;
+            document.getElementById('level-image').innerHTML = level.image;
+            document.getElementById('level-story').textContent = level.story;
+            document.getElementById('task-description').textContent = level.task;
+            document.getElementById('hint-text').textContent = level.hint;
+            document.getElementById('code-input').value = '';
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('hint-btn-text').textContent = 'Lihat';
+            document.getElementById('score').textContent = score;
+            
+            updateProgress();
+            startTimer();
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-text').textContent = `${completedLevels.length} / ${levels.length} Level`;
+            
+            const segments = document.querySelectorAll('.progress-segment');
+            segments.forEach((seg, idx) => {
+                seg.classList.remove('completed', 'current');
+                if (completedLevels.includes(idx)) {
+                    seg.classList.add('completed');
+                } else if (idx === currentLevel) {
+                    seg.classList.add('current');
+                }
+            });
+        }
+
+        function submitCode() {
+            const code = document.getElementById('code-input').value.toLowerCase();
+            const level = levels[currentLevel];
+            const feedback = document.getElementById('feedback');
+            
+            if (level.check(code)) {
+                clearInterval(timer);
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `<p style="font-weight: bold;">✨ Benar! Sihirnya berhasil!</p><div style="margin-top: 15px; color: #e9d5ff; font-size: 0.95em; line-height: 1.7;">${level.explanation}</div>`;
+                feedback.classList.remove('hidden');
+                
+                if (!completedLevels.includes(currentLevel)) {
+                    completedLevels.push(currentLevel);
+                    updateProgress();
+                }
+                
+                document.getElementById('next-btn').classList.remove('hidden');
+            } else {
+                feedback.className = 'feedback error';
+                feedback.innerHTML = '<p style="font-weight: bold;">❌ Belum tepat. Coba lagi atau lihat petunjuknya!</p>';
+                feedback.classList.remove('hidden');
+            }
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            const btnText = document.getElementById('hint-btn-text');
+            
+            if (hintBox.classList.contains('hidden')) {
+                hintBox.classList.remove('hidden');
+                btnText.textContent = 'Sembunyikan';
+            } else {
+                hintBox.classList.add('hidden');
+                btnText.textContent = 'Lihat';
+            }
+        }
+
+        function nextLevel() {
+            if (currentLevel < levels.length - 1) {
+                currentLevel++;
+                loadLevel();
+            } else {
+                showCompletion();
+            }
+        }
+
+        function showCompletion() {
+            clearInterval(timer);
+            document.getElementById('game-content').classList.add('hidden');
+            document.getElementById('completion-screen').classList.remove('hidden');
+            document.getElementById('final-name').textContent = playerName;
+            document.getElementById('final-score').textContent = score;
+        }
+
+        function restartGame() {
+            currentLevel = 0;
+            completedLevels = [];
+            score = 100;
+            playerName = "";
+            gameStarted = false;
+            clearInterval(timer);
+            document.getElementById('game-content').classList.add('hidden');
+            document.getElementById('completion-screen').classList.add('hidden');
+            document.getElementById('name-input-screen').classList.remove('hidden');
+            document.getElementById('player-name').value = '';
+        }
+
+        // Initialize - don't load level yet, wait for name input
+    </script>
+</body>
+</html>

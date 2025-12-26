@@ -271,6 +271,112 @@
             color: white;
         }
 
+        .admin-panel {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .admin-panel h3 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .upload-area:hover {
+            background: #f0f0ff;
+            border-color: #764ba2;
+        }
+
+        .upload-area.drag-over {
+            background: #e8ebff;
+            border-color: #764ba2;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 280px;
+            margin: 1rem auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .book-cover.has-image {
+            background: none;
+            padding: 0;
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 gap: 1rem;
@@ -299,9 +405,10 @@
                 <span>Wiyata Pustaka Pawiyatan</span>
             </div>
             <ul class="nav-links">
-                <li><a href="https://digitalperpuspawi.vercel.app/home.html" onclick="showPage('home')">Beranda</a></li>
+                <li><a href="#" onclick="showPage('home')">Beranda</a></li>
                 <li><a href="#" onclick="showPage('all-books')">Semua E-Book</a></li>
-                <li><a href="https://digitalperpuspawi.vercel.app/about.html" onclick="showPage('about')">Tentang Kami</a></li>
+                <li><a href="#" onclick="showPage('upload')">Upload Buku</a></li>
+                <li><a href="#" onclick="showPage('about')">Tentang Kami</a></li>
                 <li><a href="#" onclick="showPage('contact')">Hubungi Kami</a></li>
             </ul>
         </nav>
@@ -433,9 +540,9 @@
             <div class="category">
                 <h2 class="category-title">📝 Modul Ajar</h2>
                 <div class="books-grid">
-                    <a href="https://drive.google.com/file/d/1yBNwgfjj_kU82E1W9NWqEjfUtTsG0LIF/view?usp=sharing" target="_blank" class="book-card">
-                        <div class="book-cover">Modul Praktek Basis Data</div>
-                        <div class="book-title">Modul Praktek Basis Data</div>
+                    <a href="https://drive.google.com/file/d/example21" target="_blank" class="book-card">
+                        <div class="book-cover">Modul Ajar PPKn SD</div>
+                        <div class="book-title">Modul Ajar PPKn SD</div>
                         <div class="book-author">Kurikulum Merdeka</div>
                     </a>
                     <a href="https://drive.google.com/file/d/example22" target="_blank" class="book-card">
@@ -767,6 +874,62 @@
             </div>
         </div>
 
+        <!-- Halaman Upload Buku -->
+        <div id="upload" class="page-content">
+            <h2 style="color: #667eea; margin-bottom: 2rem; font-size: 2rem;">Upload E-Book Baru</h2>
+            
+            <div class="admin-panel">
+                <h3>📤 Tambah Buku ke Katalog</h3>
+                
+                <div class="form-group">
+                    <label for="book-title">Judul Buku *</label>
+                    <input type="text" id="book-title" placeholder="Masukkan judul buku" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="book-author">Penulis *</label>
+                    <input type="text" id="book-author" placeholder="Masukkan nama penulis" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="book-category">Kategori *</label>
+                    <select id="book-category" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="novel">Novel</option>
+                        <option value="paket">Buku Paket</option>
+                        <option value="modul">Modul Ajar</option>
+                        <option value="umum">Buku Umum</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="book-link">Link Google Drive *</label>
+                    <input type="url" id="book-link" placeholder="https://drive.google.com/file/d/..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Cover Buku *</label>
+                    <div class="upload-area" id="upload-area" onclick="document.getElementById('cover-input').click()">
+                        <input type="file" id="cover-input" accept="image/*" style="display: none;">
+                        <p>📷 Klik atau drag & drop gambar cover buku di sini</p>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Format: JPG, PNG, WEBP (Max 5MB)</p>
+                    </div>
+                    <div id="preview-container" style="display: none;">
+                        <img id="preview-image" class="preview-image" alt="Preview">
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <button type="button" class="btn-secondary" onclick="removeImage()">Hapus Gambar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary" onclick="addBook()">✅ Tambahkan ke Katalog</button>
+            </div>
+
+            <div id="success-message" style="display: none; background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                ✅ Buku berhasil ditambahkan ke katalog!
+            </div>
+        </div>
+
         <!-- Halaman Tentang Kami -->
         <div id="about" class="page-content">
             <div class="about-content">
@@ -792,20 +955,20 @@
                 
                 <div class="contact-info">
                     <div class="contact-item">
-                        <strong>📧 Nomor Pokok Perpustakaan:</strong>
-                        <span>3578271H2000003</span>
+                        <strong>📧 Email:</strong>
+                        <span>perpustakaan.digital@example.com</span>
                     </div>
                     <div class="contact-item">
                         <strong>📱 Telepon:</strong>
-                        <span>+62 31-5342-508</span>
+                        <span>+62 812-3456-7890</span>
                     </div>
                     <div class="contact-item">
                         <strong>📍 Alamat:</strong>
-                        <span>Jl. Tangkis Turi No.4-6, Surabaya, Jawa Timur, Indonesia</span>
+                        <span>Jl. Pendidikan No. 123, Surabaya, Jawa Timur, Indonesia</span>
                     </div>
                     <div class="contact-item">
                         <strong>🕐 Jam Operasional:</strong>
-                        <span>Senin - Jumat: 08.00 - 15.00 WIB</span>
+                        <span>Senin - Jumat: 08.00 - 17.00 WIB</span>
                     </div>
                 </div>
                 
@@ -823,15 +986,15 @@
             
             <div class="footer-section">
                 <h3>Kontak Kami</h3>
-                <p>📧 Email: wiyatapustaka46@gmail.com</p>
-                <p>📱 Telepon: +62 31-5342-508</p>
-                <p>🕐 Senin - Jumat: 08.00 - 15.00 WIB</p>
+                <p>📧 Email: perpustakaan.digital@example.com</p>
+                <p>📱 Telepon: +62 812-3456-7890</p>
+                <p>🕐 Senin - Jumat: 08.00 - 17.00 WIB</p>
             </div>
             
             <div class="footer-section">
                 <h3>Alamat</h3>
                 <address>
-                    📍 Jl. Tangkis Turi No.4-6<br>
+                    📍 Jl. Pendidikan No. 123<br>
                     Surabaya, Jawa Timur<br>
                     Indonesia 60123
                 </address>
@@ -840,12 +1003,14 @@
         
         <div class="footer-content">
             <div class="footer-bottom">
-                <p>&copy; 2025 Wiyata Pustaka Pawiyatan. All Rights Reserved.</p>
+                <p>&copy; 2024 Wiyata Pustaka Pawiyatan. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        let uploadedCoverImage = null;
+
         function showPage(pageId) {
             const pages = document.querySelectorAll('.page-content');
             pages.forEach(page => {
@@ -873,6 +1038,142 @@
                     book.style.display = 'none';
                 }
             });
+        }
+
+        // Upload image handling
+        const uploadArea = document.getElementById('upload-area');
+        const coverInput = document.getElementById('cover-input');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+
+        // Click to upload
+        coverInput.addEventListener('change', handleFileSelect);
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                displayImage(file);
+            }
+        });
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                displayImage(file);
+            }
+        }
+
+        function displayImage(file) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran file terlalu besar. Maksimal 5MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedCoverImage = e.target.result;
+                previewImage.src = e.target.result;
+                uploadArea.style.display = 'none';
+                previewContainer.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            uploadedCoverImage = null;
+            previewImage.src = '';
+            coverInput.value = '';
+            uploadArea.style.display = 'block';
+            previewContainer.style.display = 'none';
+        }
+
+        function addBook() {
+            const title = document.getElementById('book-title').value.trim();
+            const author = document.getElementById('book-author').value.trim();
+            const category = document.getElementById('book-category').value;
+            const link = document.getElementById('book-link').value.trim();
+
+            if (!title || !author || !category || !link) {
+                alert('Mohon lengkapi semua field yang wajib diisi!');
+                return;
+            }
+
+            if (!uploadedCoverImage) {
+                alert('Mohon upload cover buku terlebih dahulu!');
+                return;
+            }
+
+            // Create new book card
+            const bookCard = document.createElement('a');
+            bookCard.href = link;
+            bookCard.target = '_blank';
+            bookCard.className = 'book-card';
+            bookCard.dataset.category = category;
+
+            const bookCover = document.createElement('div');
+            bookCover.className = 'book-cover has-image';
+            
+            const coverImg = document.createElement('img');
+            coverImg.src = uploadedCoverImage;
+            coverImg.alt = title;
+            bookCover.appendChild(coverImg);
+
+            const bookTitle = document.createElement('div');
+            bookTitle.className = 'book-title';
+            bookTitle.textContent = title;
+
+            const bookAuthor = document.createElement('div');
+            bookAuthor.className = 'book-author';
+            bookAuthor.textContent = author;
+
+            bookCard.appendChild(bookCover);
+            bookCard.appendChild(bookTitle);
+            bookCard.appendChild(bookAuthor);
+
+            // Add to home page (corresponding category)
+            const categoryMap = {
+                'novel': 0,
+                'paket': 1,
+                'modul': 2,
+                'umum': 3
+            };
+            const categories = document.querySelectorAll('#home .category .books-grid');
+            if (categories[categoryMap[category]]) {
+                categories[categoryMap[category]].appendChild(bookCard.cloneNode(true));
+            }
+
+            // Add to all books page
+            const allBooksGrid = document.getElementById('all-books-grid');
+            allBooksGrid.appendChild(bookCard);
+
+            // Show success message
+            const successMsg = document.getElementById('success-message');
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+
+            // Reset form
+            document.getElementById('book-title').value = '';
+            document.getElementById('book-author').value = '';
+            document.getElementById('book-category').value = '';
+            document.getElementById('book-link').value = '';
+            removeImage();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>

@@ -1,344 +1,877 @@
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Search, Library, GraduationCap, BookMarked, Book, Home, Info, Phone, Menu, X } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiyata Pustaka Pawiyatan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const EbookCatalog = () => {
-  const [activeCategory, setActiveCategory] = useState('semua');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-  // Data katalog e-book dengan link Google Drive
-  const books = {
-    novel: [
-      { id: 1, title: "Laskar Pelangi", author: "Andrea Hirata", cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example1" },
-      { id: 2, title: "Bumi Manusia", author: "Pramoedya Ananta Toer", cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example2" },
-      { id: 3, title: "Ronggeng Dukuh Paruk", author: "Ahmad Tohari", cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example3" },
-      { id: 4, title: "Perahu Kertas", author: "Dee Lestari", cover: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example4" },
-      { id: 5, title: "Negeri 5 Menara", author: "Ahmad Fuadi", cover: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example5" },
-      { id: 6, title: "Ayat-Ayat Cinta", author: "Habiburrahman El Shirazy", cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example6" },
-      { id: 7, title: "Sang Pemimpi", author: "Andrea Hirata", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example7" },
-      { id: 8, title: "Supernova", author: "Dee Lestari", cover: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example8" },
-      { id: 9, title: "Edensor", author: "Andrea Hirata", cover: "https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example9" },
-      { id: 10, title: "Cantik Itu Luka", author: "Eka Kurniawan", cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example10" }
-    ],
-    buku_paket: [
-      { id: 11, title: "Matematika Kelas 10", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example11" },
-      { id: 12, title: "Bahasa Indonesia Kelas 11", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example12" },
-      { id: 13, title: "Fisika Kelas 12", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example13" },
-      { id: 14, title: "Kimia Kelas 10", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example14" },
-      { id: 15, title: "Biologi Kelas 11", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example15" },
-      { id: 16, title: "Sejarah Indonesia Kelas 12", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example16" },
-      { id: 17, title: "Ekonomi Kelas 10", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example17" },
-      { id: 18, title: "Geografi Kelas 11", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example18" },
-      { id: 19, title: "Sosiologi Kelas 12", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example19" },
-      { id: 20, title: "Bahasa Inggris Kelas 10", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example20" }
-    ],
-    modul_ajar: [
-      { id: 21, title: "Modul Pembelajaran Tematik SD", author: "Tim Guru Nusantara", cover: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example21" },
-      { id: 22, title: "Modul PKN Kurikulum Merdeka", author: "Pusat Kurikulum", cover: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example22" },
-      { id: 23, title: "Modul Ajar PJOK SMP", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example23" },
-      { id: 24, title: "Modul Seni Budaya", author: "Tim Penyusun", cover: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example24" },
-      { id: 25, title: "Modul Prakarya SMP", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example25" },
-      { id: 26, title: "Modul IPA Terpadu", author: "Tim Penyusun", cover: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example26" },
-      { id: 27, title: "Modul IPS Terpadu", author: "Tim Penyusun", cover: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example27" },
-      { id: 28, title: "Modul Informatika SMP", author: "Kemendikbud", cover: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example28" },
-      { id: 29, title: "Modul Bahasa Jawa", author: "Dinas Pendidikan", cover: "https://images.unsplash.com/photo-1472173148041-00294f0814a2?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example29" },
-      { id: 30, title: "Modul Pendidikan Agama", author: "Kemenag", cover: "https://images.unsplash.com/photo-1476357471311-43c0db9fb2b4?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example30" }
-    ],
-    buku_umum: [
-      { id: 31, title: "Atomic Habits", author: "James Clear", cover: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example31" },
-      { id: 32, title: "Sapiens", author: "Yuval Noah Harari", cover: "https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example32" },
-      { id: 33, title: "The Psychology of Money", author: "Morgan Housel", cover: "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example33" },
-      { id: 34, title: "Filosofi Teras", author: "Henry Manampiring", cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example34" },
-      { id: 35, title: "The Art of Thinking Clearly", author: "Rolf Dobelli", cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example35" },
-      { id: 36, title: "Man's Search for Meaning", author: "Viktor Frankl", cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example36" },
-      { id: 37, title: "Sebuah Seni untuk Bersikap Bodo Amat", author: "Mark Manson", cover: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example37" },
-      { id: 38, title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example38" },
-      { id: 39, title: "Deep Work", author: "Cal Newport", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example39" },
-      { id: 40, title: "Thinking, Fast and Slow", author: "Daniel Kahneman", cover: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=300&h=400&fit=crop", link: "https://drive.google.com/file/d/example40" }
-    ]
-  };
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
 
-  const categories = [
-    { id: 'semua', name: 'Semua Buku', icon: Library, color: 'bg-blue-500' },
-    { id: 'novel', name: 'Novel', icon: BookOpen, color: 'bg-purple-500' },
-    { id: 'buku_paket', name: 'Buku Paket', icon: GraduationCap, color: 'bg-green-500' },
-    { id: 'modul_ajar', name: 'Modul Ajar', icon: BookMarked, color: 'bg-orange-500' },
-    { id: 'buku_umum', name: 'Buku Umum', icon: Book, color: 'bg-pink-500' }
-  ];
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-  const getFilteredBooks = () => {
-    let allBooks = [];
-    
-    if (activeCategory === 'semua') {
-      Object.values(books).forEach(category => {
-        allBooks = [...allBooks, ...category];
-      });
-    } else {
-      allBooks = books[activeCategory] || [];
-    }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
 
-    if (searchTerm) {
-      allBooks = allBooks.filter(book => 
-        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
 
-    return allBooks;
-  };
+        .nav-links a:hover {
+            color: #667eea;
+        }
 
-  const filteredBooks = getFilteredBooks();
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-  const menuItems = [
-    { name: 'Beranda', icon: Home, href: '#beranda' },
-    { name: 'Tentang Kami', icon: Info, href: '#tentang' },
-    { name: 'Hubungi Kami', icon: Phone, href: '#kontak' }
-  ];
+        .hero {
+            text-align: center;
+            color: white;
+            padding: 3rem 0;
+        }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
-      <header className={`bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'py-3' : 'py-4'}`}>
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3 animate-fade-in">
-              <div className="relative">
-                <Library className="w-10 h-10 text-blue-600 animate-bounce-slow" />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              </div>
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300">
-                  Wiyata Pustaka Pawiyatan
-                </h1>
-                <p className="text-xs text-gray-500 hidden md:block">Gerbang Pengetahuan Digital</p>
-              </div>
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .page-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .category {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 260px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: box-shadow 0.3s;
+        }
+
+        .book-card:hover .book-cover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .book-title {
+            margin-top: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .book-author {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .about-content, .contact-content {
+            line-height: 1.8;
+        }
+
+        .about-content h2, .contact-content h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .about-content p, .contact-content p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-item strong {
+            color: #667eea;
+            min-width: 100px;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            margin-top: 3rem;
+            padding: 2rem 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p, .footer-section address {
+            color: #555;
+            line-height: 1.8;
+            font-style: normal;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+
+        .all-books-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin: 2rem 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .all-books-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .page-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>📚</span>
+                <span>Wiyata Pustaka Pawiyatan</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Beranda</a></li>
+                <li><a href="#" onclick="showPage('all-books')">Semua E-Book</a></li>
+                <li><a href="#" onclick="showPage('about')">Tentang Kami</a></li>
+                <li><a href="#" onclick="showPage('contact')">Hubungi Kami</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Selamat Datang di Wiyata Pustaka Pawiyatan</h1>
+        <p>Koleksi E-Book Lengkap untuk Semua Kebutuhan Anda</p>
+    </div>
+
+    <div class="container">
+        <!-- Halaman Beranda -->
+        <div id="home" class="page-content active">
+            <!-- Kategori Novel -->
+            <div class="category">
+                <h2 class="category-title">📖 Novel</h2>
+                <div class="books-grid">
+                    <a href="https://drive.google.com/file/d/example1" target="_blank" class="book-card">
+                        <div class="book-cover">Laskar Pelangi</div>
+                        <div class="book-title">Laskar Pelangi</div>
+                        <div class="book-author">Andrea Hirata</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example2" target="_blank" class="book-card">
+                        <div class="book-cover">Bumi Manusia</div>
+                        <div class="book-title">Bumi Manusia</div>
+                        <div class="book-author">Pramoedya Ananta Toer</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example3" target="_blank" class="book-card">
+                        <div class="book-cover">Ayat-Ayat Cinta</div>
+                        <div class="book-title">Ayat-Ayat Cinta</div>
+                        <div class="book-author">Habiburrahman El Shirazy</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example4" target="_blank" class="book-card">
+                        <div class="book-cover">Perahu Kertas</div>
+                        <div class="book-title">Perahu Kertas</div>
+                        <div class="book-author">Dee Lestari</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example5" target="_blank" class="book-card">
+                        <div class="book-cover">5 cm</div>
+                        <div class="book-title">5 cm</div>
+                        <div class="book-author">Donny Dhirgantoro</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example6" target="_blank" class="book-card">
+                        <div class="book-cover">Negeri 5 Menara</div>
+                        <div class="book-title">Negeri 5 Menara</div>
+                        <div class="book-author">Ahmad Fuadi</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example7" target="_blank" class="book-card">
+                        <div class="book-cover">Sang Pemimpi</div>
+                        <div class="book-title">Sang Pemimpi</div>
+                        <div class="book-author">Andrea Hirata</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example8" target="_blank" class="book-card">
+                        <div class="book-cover">Ronggeng Dukuh Paruk</div>
+                        <div class="book-title">Ronggeng Dukuh Paruk</div>
+                        <div class="book-author">Ahmad Tohari</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example9" target="_blank" class="book-card">
+                        <div class="book-cover">Supernova</div>
+                        <div class="book-title">Supernova</div>
+                        <div class="book-author">Dee Lestari</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example10" target="_blank" class="book-card">
+                        <div class="book-cover">Cantik Itu Luka</div>
+                        <div class="book-title">Cantik Itu Luka</div>
+                        <div class="book-author">Eka Kurniawan</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kategori Buku Paket -->
+            <div class="category">
+                <h2 class="category-title">📚 Buku Paket</h2>
+                <div class="books-grid">
+                    <a href="https://drive.google.com/file/d/example11" target="_blank" class="book-card">
+                        <div class="book-cover">Matematika Kelas 10</div>
+                        <div class="book-title">Matematika Kelas 10</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example12" target="_blank" class="book-card">
+                        <div class="book-cover">Bahasa Indonesia Kelas 11</div>
+                        <div class="book-title">Bahasa Indonesia Kelas 11</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example13" target="_blank" class="book-card">
+                        <div class="book-cover">Fisika Kelas 12</div>
+                        <div class="book-title">Fisika Kelas 12</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example14" target="_blank" class="book-card">
+                        <div class="book-cover">Kimia Kelas 10</div>
+                        <div class="book-title">Kimia Kelas 10</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example15" target="_blank" class="book-card">
+                        <div class="book-cover">Biologi Kelas 11</div>
+                        <div class="book-title">Biologi Kelas 11</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example16" target="_blank" class="book-card">
+                        <div class="book-cover">Sejarah Indonesia Kelas 12</div>
+                        <div class="book-title">Sejarah Indonesia Kelas 12</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example17" target="_blank" class="book-card">
+                        <div class="book-cover">Ekonomi Kelas 10</div>
+                        <div class="book-title">Ekonomi Kelas 10</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example18" target="_blank" class="book-card">
+                        <div class="book-cover">Geografi Kelas 11</div>
+                        <div class="book-title">Geografi Kelas 11</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example19" target="_blank" class="book-card">
+                        <div class="book-cover">Bahasa Inggris Kelas 12</div>
+                        <div class="book-title">Bahasa Inggris Kelas 12</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example20" target="_blank" class="book-card">
+                        <div class="book-cover">Sosiologi Kelas 10</div>
+                        <div class="book-title">Sosiologi Kelas 10</div>
+                        <div class="book-author">Kemendikbud</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kategori Modul Ajar -->
+            <div class="category">
+                <h2 class="category-title">📝 Modul Ajar</h2>
+                <div class="books-grid">
+                    <a href="https://drive.google.com/file/d/example21" target="_blank" class="book-card">
+                        <div class="book-cover">Modul Ajar PPKn SD</div>
+                        <div class="book-title">Modul Ajar PPKn SD</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example22" target="_blank" class="book-card">
+                        <div class="book-cover">Modul IPA SMP</div>
+                        <div class="book-title">Modul IPA SMP</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example23" target="_blank" class="book-card">
+                        <div class="book-cover">Modul Matematika SMA</div>
+                        <div class="book-title">Modul Matematika SMA</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example24" target="_blank" class="book-card">
+                        <div class="book-cover">Modul Literasi SD</div>
+                        <div class="book-title">Modul Literasi SD</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example25" target="_blank" class="book-card">
+                        <div class="book-cover">Modul Seni Budaya</div>
+                        <div class="book-title">Modul Seni Budaya</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example26" target="_blank" class="book-card">
+                        <div class="book-cover">Modul PJOK</div>
+                        <div class="book-title">Modul PJOK</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example27" target="_blank" class="book-card">
+                        <div class="book-cover">Modul Bahasa Jawa</div>
+                        <div class="book-title">Modul Bahasa Jawa</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example28" target="_blank" class="book-card">
+                        <div class="book-cover">Modul Prakarya</div>
+                        <div class="book-title">Modul Prakarya</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example29" target="_blank" class="book-card">
+                        <div class="book-cover">Modul PAI</div>
+                        <div class="book-title">Modul PAI</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example30" target="_blank" class="book-card">
+                        <div class="book-cover">Modul IPS Terpadu</div>
+                        <div class="book-title">Modul IPS Terpadu</div>
+                        <div class="book-author">Kurikulum Merdeka</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kategori Buku Umum -->
+            <div class="category">
+                <h2 class="category-title">📕 Buku Umum</h2>
+                <div class="books-grid">
+                    <a href="https://drive.google.com/file/d/example31" target="_blank" class="book-card">
+                        <div class="book-cover">Filosofi Teras</div>
+                        <div class="book-title">Filosofi Teras</div>
+                        <div class="book-author">Henry Manampiring</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example32" target="_blank" class="book-card">
+                        <div class="book-cover">Atomic Habits</div>
+                        <div class="book-title">Atomic Habits</div>
+                        <div class="book-author">James Clear</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example33" target="_blank" class="book-card">
+                        <div class="book-cover">Rich Dad Poor Dad</div>
+                        <div class="book-title">Rich Dad Poor Dad</div>
+                        <div class="book-author">Robert Kiyosaki</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example34" target="_blank" class="book-card">
+                        <div class="book-cover">Sapiens</div>
+                        <div class="book-title">Sapiens</div>
+                        <div class="book-author">Yuval Noah Harari</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example35" target="_blank" class="book-card">
+                        <div class="book-cover">Think and Grow Rich</div>
+                        <div class="book-title">Think and Grow Rich</div>
+                        <div class="book-author">Napoleon Hill</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example36" target="_blank" class="book-card">
+                        <div class="book-cover">The Power of Habit</div>
+                        <div class="book-title">The Power of Habit</div>
+                        <div class="book-author">Charles Duhigg</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example37" target="_blank" class="book-card">
+                        <div class="book-cover">Sebuah Seni untuk Bersikap Bodo Amat</div>
+                        <div class="book-title">Sebuah Seni untuk Bersikap Bodo Amat</div>
+                        <div class="book-author">Mark Manson</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example38" target="_blank" class="book-card">
+                        <div class="book-cover">Deep Work</div>
+                        <div class="book-title">Deep Work</div>
+                        <div class="book-author">Cal Newport</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example39" target="_blank" class="book-card">
+                        <div class="book-cover">Start With Why</div>
+                        <div class="book-title">Start With Why</div>
+                        <div class="book-author">Simon Sinek</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/example40" target="_blank" class="book-card">
+                        <div class="book-cover">The Lean Startup</div>
+                        <div class="book-title">The Lean Startup</div>
+                        <div class="book-author">Eric Ries</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Halaman Semua E-Book -->
+        <div id="all-books" class="page-content">
+            <h2 style="color: #667eea; margin-bottom: 2rem; font-size: 2rem;">Semua E-Book</h2>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterBooks('all')">Semua</button>
+                <button class="filter-btn" onclick="filterBooks('novel')">Novel</button>
+                <button class="filter-btn" onclick="filterBooks('paket')">Buku Paket</button>
+                <button class="filter-btn" onclick="filterBooks('modul')">Modul Ajar</button>
+                <button class="filter-btn" onclick="filterBooks('umum')">Buku Umum</button>
+            </div>
+
+            <div class="books-grid" id="all-books-grid">
+                <!-- Novel -->
+                <a href="https://drive.google.com/file/d/example1" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Laskar Pelangi</div>
+                    <div class="book-title">Laskar Pelangi</div>
+                    <div class="book-author">Andrea Hirata</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example2" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Bumi Manusia</div>
+                    <div class="book-title">Bumi Manusia</div>
+                    <div class="book-author">Pramoedya Ananta Toer</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example3" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Ayat-Ayat Cinta</div>
+                    <div class="book-title">Ayat-Ayat Cinta</div>
+                    <div class="book-author">Habiburrahman El Shirazy</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example4" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Perahu Kertas</div>
+                    <div class="book-title">Perahu Kertas</div>
+                    <div class="book-author">Dee Lestari</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example5" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">5 cm</div>
+                    <div class="book-title">5 cm</div>
+                    <div class="book-author">Donny Dhirgantoro</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example6" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Negeri 5 Menara</div>
+                    <div class="book-title">Negeri 5 Menara</div>
+                    <div class="book-author">Ahmad Fuadi</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example7" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Sang Pemimpi</div>
+                    <div class="book-title">Sang Pemimpi</div>
+                    <div class="book-author">Andrea Hirata</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example8" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Ronggeng Dukuh Paruk</div>
+                    <div class="book-title">Ronggeng Dukuh Paruk</div>
+                    <div class="book-author">Ahmad Tohari</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example9" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Supernova</div>
+                    <div class="book-title">Supernova</div>
+                    <div class="book-author">Dee Lestari</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example10" target="_blank" class="book-card" data-category="novel">
+                    <div class="book-cover">Cantik Itu Luka</div>
+                    <div class="book-title">Cantik Itu Luka</div>
+                    <div class="book-author">Eka Kurniawan</div>
+                </a>
+
+                <!-- Buku Paket -->
+                <a href="https://drive.google.com/file/d/example11" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Matematika Kelas 10</div>
+                    <div class="book-title">Matematika Kelas 10</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example12" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Bahasa Indonesia Kelas 11</div>
+                    <div class="book-title">Bahasa Indonesia Kelas 11</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example13" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Fisika Kelas 12</div>
+                    <div class="book-title">Fisika Kelas 12</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example14" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Kimia Kelas 10</div>
+                    <div class="book-title">Kimia Kelas 10</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example15" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Biologi Kelas 11</div>
+                    <div class="book-title">Biologi Kelas 11</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example16" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Sejarah Indonesia Kelas 12</div>
+                    <div class="book-title">Sejarah Indonesia Kelas 12</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example17" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Ekonomi Kelas 10</div>
+                    <div class="book-title">Ekonomi Kelas 10</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example18" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Geografi Kelas 11</div>
+                    <div class="book-title">Geografi Kelas 11</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example19" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Bahasa Inggris Kelas 12</div>
+                    <div class="book-title">Bahasa Inggris Kelas 12</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example20" target="_blank" class="book-card" data-category="paket">
+                    <div class="book-cover">Sosiologi Kelas 10</div>
+                    <div class="book-title">Sosiologi Kelas 10</div>
+                    <div class="book-author">Kemendikbud</div>
+                </a>
+
+                <!-- Modul Ajar -->
+                <a href="https://drive.google.com/file/d/example21" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul Ajar PPKn SD</div>
+                    <div class="book-title">Modul Ajar PPKn SD</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example22" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul IPA SMP</div>
+                    <div class="book-title">Modul IPA SMP</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example23" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul Matematika SMA</div>
+                    <div class="book-title">Modul Matematika SMA</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example24" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul Literasi SD</div>
+                    <div class="book-title">Modul Literasi SD</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example25" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul Seni Budaya</div>
+                    <div class="book-title">Modul Seni Budaya</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example26" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul PJOK</div>
+                    <div class="book-title">Modul PJOK</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example27" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul Bahasa Jawa</div>
+                    <div class="book-title">Modul Bahasa Jawa</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example28" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul Prakarya</div>
+                    <div class="book-title">Modul Prakarya</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example29" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul PAI</div>
+                    <div class="book-title">Modul PAI</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example30" target="_blank" class="book-card" data-category="modul">
+                    <div class="book-cover">Modul IPS Terpadu</div>
+                    <div class="book-title">Modul IPS Terpadu</div>
+                    <div class="book-author">Kurikulum Merdeka</div>
+                </a>
+
+                <!-- Buku Umum -->
+                <a href="https://drive.google.com/file/d/example31" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Filosofi Teras</div>
+                    <div class="book-title">Filosofi Teras</div>
+                    <div class="book-author">Henry Manampiring</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example32" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Atomic Habits</div>
+                    <div class="book-title">Atomic Habits</div>
+                    <div class="book-author">James Clear</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example33" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Rich Dad Poor Dad</div>
+                    <div class="book-title">Rich Dad Poor Dad</div>
+                    <div class="book-author">Robert Kiyosaki</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example34" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Sapiens</div>
+                    <div class="book-title">Sapiens</div>
+                    <div class="book-author">Yuval Noah Harari</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example35" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Think and Grow Rich</div>
+                    <div class="book-title">Think and Grow Rich</div>
+                    <div class="book-author">Napoleon Hill</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example36" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">The Power of Habit</div>
+                    <div class="book-title">The Power of Habit</div>
+                    <div class="book-author">Charles Duhigg</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example37" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Sebuah Seni untuk Bersikap Bodo Amat</div>
+                    <div class="book-title">Sebuah Seni untuk Bersikap Bodo Amat</div>
+                    <div class="book-author">Mark Manson</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example38" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Deep Work</div>
+                    <div class="book-title">Deep Work</div>
+                    <div class="book-author">Cal Newport</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example39" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">Start With Why</div>
+                    <div class="book-title">Start With Why</div>
+                    <div class="book-author">Simon Sinek</div>
+                </a>
+                <a href="https://drive.google.com/file/d/example40" target="_blank" class="book-card" data-category="umum">
+                    <div class="book-cover">The Lean Startup</div>
+                    <div class="book-title">The Lean Startup</div>
+                    <div class="book-author">Eric Ries</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Halaman Tentang Kami -->
+        <div id="about" class="page-content">
+            <div class="about-content">
+                <h2>Tentang Kami</h2>
+                <p>Selamat datang di Perpustakaan Digital kami! Kami adalah platform katalog e-book yang menyediakan akses mudah ke berbagai koleksi buku digital berkualitas.</p>
+                
+                <h2>Visi Kami</h2>
+                <p>Menjadi perpustakaan digital terdepan yang memberikan akses pendidikan dan literasi kepada seluruh masyarakat Indonesia tanpa batasan geografis dan ekonomi.</p>
+                
+                <h2>Misi Kami</h2>
+                <p>Menyediakan koleksi e-book yang lengkap, berkualitas, dan mudah diakses untuk mendukung kegiatan belajar mengajar, meningkatkan minat baca, dan mengembangkan pengetahuan masyarakat.</p>
+                
+                <h2>Koleksi Kami</h2>
+                <p>Kami menyediakan berbagai kategori buku meliputi Novel, Buku Paket Pelajaran, Modul Ajar, dan Buku Umum. Semua buku dapat diakses secara digital melalui Google Drive untuk kemudahan akses dan penyimpanan.</p>
+            </div>
+        </div>
+
+        <!-- Halaman Hubungi Kami -->
+        <div id="contact" class="page-content">
+            <div class="contact-content">
+                <h2>Hubungi Kami</h2>
+                <p>Kami siap membantu Anda! Jika ada pertanyaan, saran, atau ingin berkontribusi dalam pengembangan perpustakaan digital kami, jangan ragu untuk menghubungi kami melalui informasi kontak di bawah ini.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <strong>📧 Email:</strong>
+                        <span>perpustakaan.digital@example.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>📱 Telepon:</strong>
+                        <span>+62 812-3456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>📍 Alamat:</strong>
+                        <span>Jl. Pendidikan No. 123, Surabaya, Jawa Timur, Indonesia</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>🕐 Jam Operasional:</strong>
+                        <span>Senin - Jumat: 08.00 - 17.00 WIB</span>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 2rem;">Kami akan merespons pesan Anda dalam 1-2 hari kerja. Terima kasih atas dukungan Anda untuk perpustakaan digital kami!</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Wiyata Pustaka Pawiyatan</h3>
+                <p>Perpustakaan digital yang menyediakan akses mudah ke berbagai koleksi buku digital berkualitas untuk mendukung pendidikan dan literasi.</p>
             </div>
             
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-6">
-              {menuItems.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 hover:scale-110 group"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <Icon className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-                    <span className="relative">
-                      {item.name}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
-                    </span>
-                  </a>
-                );
-              })}
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-300"
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-
-          {/* Mobile Navigation */}
-          <div className={`md:hidden overflow-hidden transition-all duration-500 ${isMenuOpen ? 'max-h-48 opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
-            <nav className="flex flex-col gap-3 py-2">
-              {menuItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 hover:translate-x-2 p-2 rounded-lg hover:bg-blue-50"
-                  >
-                    <Icon className="w-5 h-5" />
-                    {item.name}
-                  </a>
-                );
-              })}
-            </nav>
-          </div>
-          
-          {/* Search Bar */}
-          <div className="relative animate-slide-up">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 transition-all duration-300" />
-            <input
-              type="text"
-              placeholder="Cari judul buku atau penulis..."
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:shadow-md"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+            <div class="footer-section">
+                <h3>Kontak Kami</h3>
+                <p>📧 Email: perpustakaan.digital@example.com</p>
+                <p>📱 Telepon: +62 812-3456-7890</p>
+                <p>🕐 Senin - Jumat: 08.00 - 17.00 WIB</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Alamat</h3>
+                <address>
+                    📍 Jl. Pendidikan No. 123<br>
+                    Surabaya, Jawa Timur<br>
+                    Indonesia 60123
+                </address>
+            </div>
         </div>
-      </header>
-
-      {/* Categories */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex flex-wrap gap-3 mb-8">
-          {categories.map((category, index) => {
-            const Icon = category.icon;
-            return (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-500 transform hover:-translate-y-1 ${
-                  activeCategory === category.id
-                    ? `${category.color} text-white shadow-lg scale-105 animate-bounce-once`
-                    : 'bg-white text-gray-700 hover:shadow-md hover:scale-105'
-                }`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <Icon className={`w-5 h-5 transition-transform duration-300 ${activeCategory === category.id ? 'rotate-12' : ''}`} />
-                {category.name}
-              </button>
-            );
-          })}
+        
+        <div class="footer-content">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Wiyata Pustaka Pawiyatan. All Rights Reserved.</p>
+            </div>
         </div>
+    </footer>
 
-        {/* Books Grid */}
-        <div className="mb-6 animate-fade-in">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {categories.find(c => c.id === activeCategory)?.name}
-          </h2>
-          <p className="text-gray-600">
-            Menampilkan {filteredBooks.length} buku
-          </p>
-        </div>
-
-        {filteredBooks.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {filteredBooks.map((book, index) => (
-              <a
-                key={book.id}
-                href={book.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group cursor-pointer animate-slide-up"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <div className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:rotate-1">
-                  <div className="relative overflow-hidden aspect-[3/4]">
-                    <img
-                      src={book.cover}
-                      alt={book.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125 group-hover:rotate-3"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-70 transition-all duration-500"></div>
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-lg opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                        Buka Buku
-                      </span>
-                    </div>
-                    <div className="absolute top-2 right-2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-4 group-hover:translate-x-0">
-                      Klik di sini
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-gray-800 mb-1 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
-                      {book.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 line-clamp-1">{book.author}</p>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 animate-fade-in">
-            <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4 animate-pulse" />
-            <p className="text-gray-600 text-lg">Tidak ada buku yang ditemukan</p>
-          </div>
-        )}
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 text-white mt-16 py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-3 animate-fade-in">
-            <Library className="w-6 h-6 animate-pulse" />
-            <p className="text-xl font-bold">Wiyata Pustaka Pawiyatan</p>
-          </div>
-          <p className="mb-2">© 2024 Wiyata Pustaka Pawiyatan</p>
-          <p className="text-gray-400 text-sm">Akses ribuan e-book dengan mudah dan cepat</p>
-        </div>
-      </footer>
-
-      {/* Custom CSS Animations */}
-      <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+    <script>
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
 
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        function filterBooks(category) {
+            const books = document.querySelectorAll('#all-books-grid .book-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            books.forEach(book => {
+                if (category === 'all' || book.dataset.category === category) {
+                    book.style.display = 'block';
+                } else {
+                    book.style.display = 'none';
+                }
+            });
         }
-
-        @keyframes bounceSlow {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
-        }
-
-        @keyframes bounceOnce {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.1);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fadeIn 0.6s ease-out;
-        }
-
-        .animate-slide-up {
-          animation: slideUp 0.6s ease-out;
-          animation-fill-mode: both;
-        }
-
-        .animate-bounce-slow {
-          animation: bounceSlow 2s ease-in-out infinite;
-        }
-
-        .animate-bounce-once {
-          animation: bounceOnce 0.5s ease-in-out;
-        }
-      `}</style>
-    </div>
-  );
-};
-
-export default EbookCatalog;
+    </script>
+</body>
+</html>

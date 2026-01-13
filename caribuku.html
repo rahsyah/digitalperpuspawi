@@ -6,7 +6,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cari Buku</title>
+    <title>Cari Juduk Buku di Perpustakaan</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
@@ -482,7 +482,7 @@
                     headers = rows[0];
                     allData = rows.slice(1).filter(row => row.some(cell => cell));
                     displayData(allData);
-                    document.getElementById('status').textContent = `✅ Berhasil memuat ${allData.length} data dari Perpustakaan`;
+                    document.getElementById('status').textContent = `✅ Berhasil memuat ${allData.length} data dari Perpustakaan Sekolah`;
                 } else {
                     document.getElementById('status').textContent = '❌ Tidak ada data di spreadsheet';
                 }

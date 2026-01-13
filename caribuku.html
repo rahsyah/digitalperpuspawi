@@ -6,7 +6,7 @@
    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel Data Viewer</title>
+    <title>Cari Buku</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
@@ -271,7 +271,7 @@
 <body>
     <div class="header">
         <div class="logo">
-            <span>E</span><span>x</span><span>c</span><span>e</span><span>l</span><span>o</span>
+            <span>S</span><span>M</span><span>K</span><span>P</span><span>A</span><span>W</span><span>I</span><span>Y</span><span>A</span><span>T</span><span>A</span><span>N</span>
         </div>
     </div>
 
@@ -334,7 +334,7 @@
                     headers = rows[0];
                     allData = rows.slice(1).filter(row => row.some(cell => cell));
                     displayData(allData);
-                    document.getElementById('status').textContent = `✅ Berhasil memuat ${allData.length} baris data dari Google Sheets`;
+                    document.getElementById('status').textContent = `✅ Berhasil memuat ${allData.length} baris data dari Perpustakaan`;
                 } else {
                     document.getElementById('status').textContent = '❌ Tidak ada data di spreadsheet';
                 }

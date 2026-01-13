@@ -3,7 +3,7 @@
 <head>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/png">
-    <!DOCTYPE html>
+   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excel Data Viewer</title>
@@ -112,12 +112,37 @@
             animation: fadeInUp 1s ease;
             max-width: 1200px;
             margin: 0 auto;
+            cursor: grab;
+            position: relative;
+        }
+
+        .table-container:active {
+            cursor: grabbing;
+        }
+
+        .table-container::-webkit-scrollbar {
+            height: 12px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             animation: slideIn 0.5s ease;
+            min-width: 800px;
         }
 
         thead {
@@ -304,7 +329,41 @@
         // Load data saat halaman dibuka
         window.onload = function() {
             loadGoogleSheetData();
+            enableDragScroll();
         };
+
+        // Fungsi untuk drag scroll pada tabel
+        function enableDragScroll() {
+            const slider = document.querySelector('.table-container');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                slider.style.cursor = 'grabbing';
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+                slider.style.cursor = 'grab';
+            });
+
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+                slider.style.cursor = 'grab';
+            });
+
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2;
+                slider.scrollLeft = scrollLeft - walk;
+            });
+        }
 
         function displayData(data) {
             const thead = document.getElementById('tableHead');

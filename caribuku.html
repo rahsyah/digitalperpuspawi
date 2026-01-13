@@ -6,7 +6,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel Data Viewer</title>
+    <title>Cari Buku</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
@@ -402,15 +402,15 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">SMK PAWIYATAN</div>
+            <div class="nav-logo">Wiyata Pustaka</div>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#" class="active">🏠 Beranda</a></li>
-                <li><a href="#contact">📞 Contact Us</a></li>
+                <li><a href="https://digitalperpuspawi.vercel.app/home.html" class="active">🏠 Beranda</a></li>
+                <li><a href="https://digitalperpuspawi.vercel.app/#>📞 Contact Us</a></li>
             </ul>
         </div>
     </nav>
@@ -482,7 +482,7 @@
                     headers = rows[0];
                     allData = rows.slice(1).filter(row => row.some(cell => cell));
                     displayData(allData);
-                    document.getElementById('status').textContent = `✅ Berhasil memuat ${allData.length} baris data dari Google Sheets`;
+                    document.getElementById('status').textContent = `✅ Berhasil memuat ${allData.length} data dari Perpustakaan`;
                 } else {
                     document.getElementById('status').textContent = '❌ Tidak ada data di spreadsheet';
                 }

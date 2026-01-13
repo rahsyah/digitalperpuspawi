@@ -20,6 +20,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .header {
@@ -109,8 +110,10 @@
             padding: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             overflow-x: auto;
+            overflow-y: auto;
             animation: fadeInUp 1s ease;
-            max-width: 1200px;
+            max-width: calc(100vw - 40px);
+            max-height: calc(100vh - 400px);
             margin: 0 auto;
             cursor: grab;
             position: relative;
@@ -122,6 +125,7 @@
 
         .table-container::-webkit-scrollbar {
             height: 12px;
+            width: 12px;
         }
 
         .table-container::-webkit-scrollbar-track {
@@ -142,7 +146,6 @@
             width: 100%;
             border-collapse: collapse;
             animation: slideIn 0.5s ease;
-            min-width: 800px;
         }
 
         thead {
@@ -154,12 +157,17 @@
         }
 
         th {
-            padding: 15px;
+            padding: 15px 10px;
             text-align: left;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 14px;
+            white-space: nowrap;
+        }
+
+        td {
+            color: #333;
         }
 
         tbody tr {
@@ -173,9 +181,11 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        td {
-            padding: 15px;
-            color: #333;
+        th, td {
+            padding: 10px;
+            font-size: 13px;
+            white-space: nowrap;
+            min-width: 100px;
         }
 
         .no-data {
@@ -246,7 +256,15 @@
             .logo { font-size: 32px; }
             .search-box input { padding: 12px 20px; }
             .search-box button { padding: 12px 25px; }
-            th, td { padding: 10px; font-size: 12px; }
+            th, td { 
+                padding: 8px; 
+                font-size: 11px;
+                min-width: 80px;
+            }
+            .table-container {
+                padding: 15px;
+                max-height: calc(100vh - 350px);
+            }
         }
     </style>
 </head>

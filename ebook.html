@@ -312,19 +312,108 @@
       font-size: .8rem; color: var(--muted); font-weight: 500;
     }
 
-    /* ========= BOOKS GRID ========= */
+    /* ========= BOOKS CAROUSEL ========= */
     .category { margin-bottom: 5rem; }
 
-    .books-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 1.8rem;
+    /* ── Wrapper posisi relatif ── */
+    .carousel-wrap {
+      position: relative;
     }
 
+    /* ── Tombol panah ── */
+    .c-btn {
+      position: absolute; top: 38%; transform: translateY(-50%);
+      z-index: 20;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(20,17,50,.85);
+      border: 1.5px solid rgba(245,200,66,.45);
+      color: var(--accent); font-size: 1rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background .22s, transform .22s, opacity .22s, box-shadow .22s;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,.4);
+      flex-shrink: 0; line-height: 1;
+    }
+    .c-btn:hover {
+      background: var(--accent); color: var(--ink);
+      transform: translateY(-50%) scale(1.12);
+      box-shadow: 0 6px 28px rgba(245,200,66,.45);
+    }
+    .c-btn.prev { left: -21px; }
+    .c-btn.next { right: -21px; }
+    .c-btn:disabled { opacity: .2; pointer-events: none; }
+
+    /* ── Fade edge kiri-kanan ── */
+    .carousel-wrap::before,
+    .carousel-wrap::after {
+      content: ''; position: absolute; top: 0; width: 55px; height: calc(100% - 42px);
+      z-index: 10; pointer-events: none;
+    }
+    .carousel-wrap::before { left: 0;  background: linear-gradient(to right, var(--ink) 0%, transparent 100%); }
+    .carousel-wrap::after  { right: 0; background: linear-gradient(to left,  var(--ink) 0%, transparent 100%); }
+
+    /* ── Track horizontal scroll ── */
+    .books-grid {
+      display: flex;
+      gap: 1.4rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: .8rem .4rem 1.2rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .books-grid::-webkit-scrollbar { display: none; }
+    .books-grid.grabbing { cursor: grabbing; scroll-behavior: auto; }
+
+    /* ── Kartu buku — lebar tetap ── */
     .book-card {
+      flex: 0 0 168px;
       text-decoration: none; color: inherit;
       display: flex; flex-direction: column;
       cursor: pointer;
+      scroll-snap-align: start;
+    }
+
+    /* ── Progress bar ── */
+    .c-bar {
+      margin-top: .55rem;
+      height: 3px;
+      background: rgba(255,255,255,.07);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .c-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--teal) 100%);
+      border-radius: 4px;
+      width: 0%;
+      transition: width .2s ease;
+    }
+
+    /* ── Dot navigator ── */
+    .c-dots {
+      display: flex; justify-content: center; align-items: center;
+      gap: .4rem; margin-top: .75rem; flex-wrap: wrap;
+    }
+    .c-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,.15); border: none;
+      cursor: pointer; padding: 0;
+      transition: background .25s, transform .25s, width .25s;
+    }
+    .c-dot.active {
+      background: var(--accent);
+      transform: scale(1.35);
+      width: 18px; border-radius: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .book-card { flex: 0 0 145px; }
+      .c-btn { display: none; }
     }
 
     .book-cover {
@@ -576,7 +665,7 @@
     }
     @media (max-width: 600px) {
       nav { padding: 1rem 1.5rem; }
-      .books-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; }
+      .book-card { flex: 0 0 140px; } .c-btn { display: none; }
       .page-content { padding: 1.5rem 1.5rem 4rem; }
       .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; text-align: center; }
@@ -697,7 +786,10 @@
         <h2 class="section-title" id="cat-novel">Novel</h2>
         <span class="section-count">10 buku</span>
       </div>
-      <div class="books-grid" role="list" aria-label="Koleksi novel">
+      <div class="carousel-wrap">
+        <button class="c-btn prev" aria-label="Sebelumnya">&#8592;</button>
+        <button class="c-btn next" aria-label="Berikutnya">&#8594;</button>
+        <div class="books-grid" aria-label="Koleksi novel">
         <a href="https://drive.google.com/file/d/1pBJS1gGVPN5jv0Cnvn-L1DhcHMlfAoYR/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/download.jfif" role="listitem" aria-label="Harry Potter - Batu Bertuah oleh J.K. Rowling">
           <div class="book-cover cover-v1">Harry Potter<div class="overlay"></div><span class="cover-badge">Baca</span></div>
           <div class="book-info"><div class="book-title">Harry Potter - Batu Bertuah</div><div class="book-author">J.K. Rowling</div></div>
@@ -738,6 +830,9 @@
           <div class="book-cover cover-v5">Narnia<div class="overlay"></div><span class="cover-badge">Baca</span></div>
           <div class="book-info"><div class="book-title">Narnia - Singa, Penyihir & Lemari</div><div class="book-author">C.S. Lewis</div></div>
         </a>
+        </div>
+        <div class="c-bar"><div class="c-bar-fill"></div></div>
+        <div class="c-dots"></div>
       </div>
     </article>
 
@@ -748,7 +843,10 @@
         <h2 class="section-title" id="cat-modul">Modul Ajar</h2>
         <span class="section-count">10 modul</span>
       </div>
-      <div class="books-grid" role="list" aria-label="Koleksi modul ajar">
+      <div class="carousel-wrap">
+        <button class="c-btn prev" aria-label="Sebelumnya">&#8592;</button>
+        <button class="c-btn next" aria-label="Berikutnya">&#8594;</button>
+        <div class="books-grid" aria-label="Koleksi modul ajar">
         <a href="https://drive.google.com/file/d/1ZJdtbsTeZ2pmTAoJxDW07YUA9OgjVUnf/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/cover%20kka.png" role="listitem">
           <div class="book-cover cover-v2">Modul KKA<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
           <div class="book-info"><div class="book-title">Modul KKA Kelas X</div><div class="book-author">Kurikulum Merdeka</div></div>
@@ -789,6 +887,9 @@
           <div class="book-cover cover-v3">Sejarah<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
           <div class="book-info"><div class="book-title">Modul Sejarah Fase F</div><div class="book-author">Kurikulum Merdeka</div></div>
         </a>
+        </div>
+        <div class="c-bar"><div class="c-bar-fill"></div></div>
+        <div class="c-dots"></div>
       </div>
     </article>
 
@@ -799,7 +900,10 @@
         <h2 class="section-title" id="cat-umum">Buku Umum</h2>
         <span class="section-count">10 buku</span>
       </div>
-      <div class="books-grid" role="list" aria-label="Koleksi buku umum">
+      <div class="carousel-wrap">
+        <button class="c-btn prev" aria-label="Sebelumnya">&#8592;</button>
+        <button class="c-btn next" aria-label="Berikutnya">&#8594;</button>
+        <div class="books-grid" aria-label="Koleksi buku umum">
         <a href="https://drive.google.com/file/d/1d4RtiK9H7kTuzK5FfbTedXfolzLjwqZy/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/Cover%20Digital/Al%20Quran.PNG" role="listitem">
           <div class="book-cover cover-v3">Al-Quran 1971<div class="overlay"></div><span class="cover-badge">Baca</span></div>
           <div class="book-info"><div class="book-title">Al-Quran 1971</div><div class="book-author">Fahd bin Abdul Azis Al Su'ud</div></div>
@@ -848,6 +952,9 @@
           <div class="book-cover cover-v3">Umar bin Khattab<div class="overlay"></div><span class="cover-badge">Baca</span></div>
           <div class="book-info"><div class="book-title">Umar bin Khattab</div><div class="book-author">Husain Haikal</div></div>
         </a>
+        </div>
+        <div class="c-bar"><div class="c-bar-fill"></div></div>
+        <div class="c-dots"></div>
       </div>
     </article>
   </div>
@@ -1202,6 +1309,72 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
   }
+
+  /* ---- CAROUSEL INIT ---- */
+  function buildCarousel(wrap) {
+    const track = wrap.querySelector('.books-grid');
+    const btnP  = wrap.querySelector('.c-btn.prev');
+    const btnN  = wrap.querySelector('.c-btn.next');
+    const fill  = wrap.querySelector('.c-bar-fill');
+    const dotsC = wrap.querySelector('.c-dots');
+    const cards = track.querySelectorAll('.book-card');
+    const STEP  = 175; // px per klik panah
+
+    // ── Buat dots ──
+    const PAGE = 4; // buku per halaman dot
+    const numDots = Math.max(1, Math.ceil(cards.length / PAGE));
+    for (let i = 0; i < numDots; i++) {
+      const d = document.createElement('button');
+      d.className = 'c-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Halaman ' + (i + 1));
+      d.addEventListener('click', () => {
+        const ratio = numDots > 1 ? i / (numDots - 1) : 0;
+        track.scrollTo({ left: ratio * (track.scrollWidth - track.clientWidth), behavior: 'smooth' });
+      });
+      dotsC.appendChild(d);
+    }
+
+    // ── Update UI ──
+    function update() {
+      const max = track.scrollWidth - track.clientWidth;
+      const r   = max > 0 ? track.scrollLeft / max : 0;
+      fill.style.width = (r * 100).toFixed(1) + '%';
+      if (btnP) btnP.disabled = track.scrollLeft <= 1;
+      if (btnN) btnN.disabled = track.scrollLeft >= max - 1;
+      const ai = Math.round(r * (numDots - 1));
+      dotsC.querySelectorAll('.c-dot').forEach((d, i) => d.classList.toggle('active', i === ai));
+    }
+
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+
+    // ── Tombol ──
+    if (btnP) btnP.addEventListener('click', () => track.scrollBy({ left: -STEP * 3, behavior: 'smooth' }));
+    if (btnN) btnN.addEventListener('click', () => track.scrollBy({ left:  STEP * 3, behavior: 'smooth' }));
+
+    // ── Mouse drag ──
+    let drag = false, sx = 0, sl = 0;
+    track.addEventListener('mousedown', e => {
+      drag = true; sx = e.pageX; sl = track.scrollLeft;
+      track.classList.add('grabbing'); e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!drag) return;
+      track.scrollLeft = sl - (e.pageX - sx);
+    });
+    document.addEventListener('mouseup', () => { drag = false; track.classList.remove('grabbing'); });
+
+    // ── Touch swipe ──
+    let tx = 0;
+    track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend',   e => {
+      const diff = tx - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 25) track.scrollBy({ left: diff * 2, behavior: 'smooth' });
+    }, { passive: true });
+  }
+
+  document.querySelectorAll('.carousel-wrap').forEach(buildCarousel);
 
   /* ---- KEYBOARD ESCAPE closes mobile menu ---- */
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenu(); });

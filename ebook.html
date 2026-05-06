@@ -1,652 +1,1202 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wiyata Pustaka SMK Pawiyatan</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <!-- ===== SEO META TAGS ===== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Wiyata Pustaka Digital SMK Pawiyatan Surabaya — Perpustakaan digital terlengkap dengan koleksi e-book Novel, Modul Ajar, dan Buku Umum berkualitas tinggi untuk mendukung literasi pelajar Indonesia.">
+  <meta name="keywords" content="perpustakaan digital, e-book, SMK Pawiyatan, Surabaya, ebook gratis, novel, modul ajar, buku pelajaran, Kurikulum Merdeka, literasi digital">
+  <meta name="author" content="Wiyata Pustaka SMK Pawiyatan Surabaya">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f0c29">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+  <!-- Open Graph -->
+  <meta property="og:title" content="Wiyata Pustaka Digital — SMK Pawiyatan Surabaya">
+  <meta property="og:description" content="Akses ratusan e-book berkualitas: Novel, Modul Ajar, dan Buku Umum. Dukung literasi digital pelajar Indonesia bersama Wiyata Pustaka.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wiyatapustaka.vercel.app">
+  <meta property="og:image" content="https://revenant-three.vercel.app/img/passe.gif">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="Wiyata Pustaka Digital">
 
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wiyata Pustaka Digital — SMK Pawiyatan Surabaya">
+  <meta name="twitter:description" content="Perpustakaan digital terlengkap untuk pelajar SMK. Akses e-book gratis kapan saja, di mana saja.">
 
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 2rem;
-        }
+  <!-- Canonical -->
+  <link rel="canonical" href="https://wiyatapustaka.vercel.app">
 
-        .logo {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #667eea;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+  <!-- Favicon -->
+  <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/gif">
 
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            transition: color 0.3s;
-            position: relative;
-        }
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Library",
+    "name": "Wiyata Pustaka Digital SMK Pawiyatan",
+    "description": "Perpustakaan digital SMK Pawiyatan Surabaya menyediakan koleksi e-book Novel, Modul Ajar, dan Buku Umum.",
+    "url": "https://wiyatapustaka.vercel.app",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Jl. Tangkis Turi No.4-6",
+      "addressLocality": "Surabaya",
+      "addressRegion": "Jawa Timur",
+      "postalCode": "60275",
+      "addressCountry": "ID"
+    },
+    "telephone": "+62-31-5342-508",
+    "email": "wiyatapustaka46@gmail.com",
+    "openingHours": "Mo-Fr 08:00-15:00"
+  }
+  </script>
 
-        .nav-links a:hover {
-            color: #667eea;
-        }
+  <title>Wiyata Pustaka Digital — SMK Pawiyatan Surabaya</title>
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: #667eea;
-            transition: width 0.3s;
-        }
+  <style>
+    /* ========= RESET & BASE ========= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
+    :root {
+      --ink:     #0d0b1e;
+      --deep:    #1a1535;
+      --panel:   #201b40;
+      --accent:  #f5c842;
+      --gold2:   #e8a020;
+      --teal:    #2de2c4;
+      --rose:    #ff6b8a;
+      --text:    #e8e4ff;
+      --muted:   #9490b8;
+      --radius:  16px;
+      --shadow:  0 20px 60px rgba(0,0,0,.45);
+      --font-head: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
 
-        .hero {
-            text-align: center;
-            color: white;
-            padding: 4rem 2rem;
-        }
+    html { scroll-behavior: smooth; font-size: 16px; }
 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
+    body {
+      font-family: var(--font-body);
+      background: var(--ink);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: none;
+    }
 
-        .hero p {
-            font-size: 1.3rem;
-            opacity: 0.95;
-        }
+    /* ========= CUSTOM CURSOR ========= */
+    #cursor {
+      position: fixed; width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent); pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%); transition: transform .1s, opacity .2s;
+      mix-blend-mode: difference;
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--teal); pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%); transition: all .18s ease;
+      mix-blend-mode: difference;
+    }
+    a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    /* ========= PARTICLE CANVAS ========= */
+    #particle-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
 
-        .page-content {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            margin: 2rem auto;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.15);
-            display: none;
-        }
+    /* ========= HEADER / NAV ========= */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      padding: .1rem 0;
+      transition: background .4s, backdrop-filter .4s;
+    }
+    header.scrolled {
+      background: rgba(13,11,30,.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(245,200,66,.15);
+    }
 
-        .page-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
+    nav {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 2.5rem;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .logo {
+      font-family: var(--font-head);
+      font-size: 1.55rem; font-weight: 900;
+      color: var(--accent);
+      display: flex; align-items: center; gap: .6rem;
+      text-decoration: none;
+      letter-spacing: -.01em;
+    }
+    .logo .logo-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--gold2));
+      color: var(--ink); font-size: 1.1rem;
+    }
 
-        .category {
-            margin-bottom: 4rem;
-        }
+    .nav-links { list-style: none; display: flex; gap: 2.8rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-weight: 500;
+      font-size: .95rem; letter-spacing: .02em;
+      position: relative; transition: color .3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -5px; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width .35s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; }
 
-        .category-title {
-            font-size: 2rem;
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 0.5rem;
-            flex: 1;
-        }
+    /* ========= HERO ========= */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem;
+      overflow: hidden;
+    }
 
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 2.5rem;
-        }
+    .hero-bg-rings {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(245,200,66,.08);
+      animation: pulse-ring 6s ease-in-out infinite;
+    }
+    .ring:nth-child(1) { width: 400px; height: 400px; animation-delay: 0s; }
+    .ring:nth-child(2) { width: 650px; height: 650px; animation-delay: 1.5s; }
+    .ring:nth-child(3) { width: 900px; height: 900px; animation-delay: 3s; }
+    .ring:nth-child(4) { width: 1150px; height: 1150px; animation-delay: 4.5s; }
 
-        .book-card {
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.3s;
-        }
+    @keyframes pulse-ring {
+      0%, 100% { opacity: .3; transform: scale(1); }
+      50%       { opacity: .7; transform: scale(1.03); }
+    }
 
-        .book-card:hover {
-            transform: translateY(-10px);
-        }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(245,200,66,.1); border: 1px solid rgba(245,200,66,.3);
+      color: var(--accent); font-size: .82rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: .4rem 1.1rem; border-radius: 50px;
+      margin-bottom: 2rem;
+      animation: slide-down .8s cubic-bezier(.16,1,.3,1) .2s both;
+    }
+    .hero-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 1.4s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-        .book-cover {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            padding: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            transition: box-shadow 0.3s;
-            font-size: 1.1rem;
-            line-height: 1.4;
-        }
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900; line-height: 1.08;
+      color: #fff;
+      animation: slide-up .9s cubic-bezier(.16,1,.3,1) .35s both;
+    }
+    .hero h1 .highlight {
+      color: var(--accent);
+      text-shadow: 0 0 40px rgba(245,200,66,.4);
+    }
 
-        .book-card:hover .book-cover {
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-        }
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.15rem; color: var(--muted); max-width: 560px;
+      line-height: 1.7;
+      animation: slide-up .9s cubic-bezier(.16,1,.3,1) .5s both;
+    }
 
-        .book-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-        }
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 3.5rem; flex-wrap: wrap; justify-content: center;
+      animation: slide-up .9s cubic-bezier(.16,1,.3,1) .65s both;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .num {
+      font-family: var(--font-head);
+      font-size: 2.4rem; font-weight: 900; color: var(--accent);
+      line-height: 1;
+    }
+    .hero-stat .lbl { font-size: .8rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: .3rem; }
 
-        .book-cover.has-image {
-            background: none;
-            padding: 0;
-        }
+    .hero-cta {
+      margin-top: 2.8rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: slide-up .9s cubic-bezier(.16,1,.3,1) .75s both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: var(--accent); color: var(--ink);
+      font-weight: 700; font-size: .95rem; letter-spacing: .02em;
+      padding: .85rem 2rem; border-radius: 50px; border: none;
+      cursor: pointer; text-decoration: none;
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 8px 30px rgba(245,200,66,.35);
+    }
+    .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 40px rgba(245,200,66,.5); }
 
-        .book-title {
-            margin-top: 1rem;
-            font-weight: 700;
-            text-align: center;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #333;
-        }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: rgba(255,255,255,.06); color: var(--text);
+      font-weight: 600; font-size: .95rem;
+      padding: .85rem 2rem; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,.12); cursor: pointer;
+      text-decoration: none;
+      transition: all .3s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.1); transform: translateY(-2px); }
 
-        .book-author {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 0.5rem;
-        }
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      color: var(--muted); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+      animation: float 2.5s ease-in-out infinite, slide-up .9s .9s both;
+    }
+    .scroll-hint .line { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--muted), transparent); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
-        .about-content, .contact-content {
-            line-height: 1.9;
-        }
+    @keyframes slide-up   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slide-down { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 
-        .about-content h2, .contact-content h2 {
-            color: #667eea;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
+    /* ========= MAIN CONTENT ========= */
+    main { position: relative; z-index: 1; }
 
-        .about-content p, .contact-content p {
-            margin-bottom: 1.5rem;
-            color: #555;
-            font-size: 1.05rem;
-        }
+    /* ========= PAGE SECTIONS ========= */
+    .page-content {
+      display: none;
+      max-width: 1280px; margin: 0 auto;
+      padding: 2rem 2.5rem 6rem;
+    }
+    .page-content.active { display: block; animation: page-enter .55s cubic-bezier(.16,1,.3,1); }
+    @keyframes page-enter { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-        .contact-info {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 2.5rem;
-            border-radius: 15px;
-            margin-top: 2rem;
-        }
+    /* ========= SECTION HEADER ========= */
+    .section-header {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 2.5rem; padding-bottom: 1.2rem;
+      border-bottom: 1px solid rgba(245,200,66,.15);
+    }
+    .section-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .section-icon.novel   { background: rgba(255,107,138,.15); }
+    .section-icon.modul   { background: rgba(45,226,196,.15); }
+    .section-icon.umum    { background: rgba(245,200,66,.15); }
 
-        .contact-item {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 1.9rem; font-weight: 900; color: #fff;
+    }
+    .section-count {
+      margin-left: auto; background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: .3rem .9rem; border-radius: 50px;
+      font-size: .8rem; color: var(--muted); font-weight: 500;
+    }
 
-        .contact-item strong {
-            color: #667eea;
-            min-width: 120px;
-            font-size: 1.05rem;
-        }
+    /* ========= BOOKS GRID ========= */
+    .category { margin-bottom: 5rem; }
 
-        footer {
-            background: rgba(255, 255, 255, 0.95);
-            margin-top: 4rem;
-            padding: 3rem 0 1.5rem;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-        }
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1.8rem;
+    }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-        }
+    .book-card {
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      cursor: pointer;
+    }
 
-        .footer-section h3 {
-            color: #667eea;
-            margin-bottom: 1.2rem;
-            font-size: 1.3rem;
-        }
+    .book-cover {
+      position: relative;
+      width: 100%; aspect-ratio: 2/3;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: linear-gradient(145deg, var(--panel), var(--deep));
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 1.2rem;
+      font-family: var(--font-head);
+      font-weight: 700; font-size: .95rem; line-height: 1.4;
+      color: var(--text);
+      box-shadow: 0 8px 30px rgba(0,0,0,.35);
+      transition: all .4s cubic-bezier(.16,1,.3,1);
+      transform-style: preserve-3d;
+    }
 
-        .footer-section p, .footer-section address {
-            color: #555;
-            line-height: 1.8;
-            font-style: normal;
-            margin-bottom: 0.8rem;
-        }
+    .book-card:hover .book-cover {
+      transform: translateY(-12px) rotateX(4deg) scale(1.03);
+      box-shadow: 0 24px 60px rgba(0,0,0,.6);
+    }
 
-        .footer-bottom {
-            text-align: center;
-            margin-top: 2.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid #e0e0e0;
-            color: #666;
-        }
+    .book-cover img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; border-radius: var(--radius);
+      transition: transform .4s;
+    }
+    .book-card:hover .book-cover img { transform: scale(1.06); }
 
-        .footer-bottom p {
-            margin: 0.3rem 0;
-        }
+    .book-cover .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,11,30,.8) 0%, transparent 50%);
+      border-radius: var(--radius);
+      opacity: 0; transition: opacity .3s;
+    }
+    .book-card:hover .book-cover .overlay { opacity: 1; }
 
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-                font-size: 0.9rem;
-            }
+    .cover-badge {
+      position: absolute; top: 10px; right: 10px;
+      background: var(--accent); color: var(--ink);
+      font-size: .65rem; font-weight: 700;
+      padding: .2rem .6rem; border-radius: 50px;
+      letter-spacing: .06em; text-transform: uppercase;
+      opacity: 0; transform: translateY(-6px);
+      transition: all .3s .05s;
+    }
+    .book-card:hover .cover-badge { opacity: 1; transform: translateY(0); }
 
-            .hero h1 {
-                font-size: 2rem;
-            }
+    .book-info { margin-top: .9rem; }
+    .book-title {
+      font-weight: 600; font-size: .9rem;
+      line-height: 1.4; color: var(--text);
+      transition: color .3s;
+    }
+    .book-card:hover .book-title { color: var(--accent); }
+    .book-author { font-size: .78rem; color: var(--muted); margin-top: .25rem; }
 
-            .hero p {
-                font-size: 1.1rem;
-            }
+    /* Cover color variants */
+    .cover-v1 { background: linear-gradient(135deg, #1a1035, #3d2a6e); }
+    .cover-v2 { background: linear-gradient(135deg, #0d2b3e, #1a5c4a); }
+    .cover-v3 { background: linear-gradient(135deg, #2a0d1a, #6e1a3d); }
+    .cover-v4 { background: linear-gradient(135deg, #1a2e0d, #4a6e1a); }
+    .cover-v5 { background: linear-gradient(135deg, #2a1a0d, #6e3d1a); }
 
-            .books-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 1.5rem;
-            }
+    /* ========= ABOUT PAGE ========= */
+    .about-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem; margin-bottom: 3rem;
+    }
+    .about-card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 20px; padding: 2rem;
+      transition: all .35s;
+      position: relative; overflow: hidden;
+    }
+    .about-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(245,200,66,.04), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .about-card:hover { transform: translateY(-6px); border-color: rgba(245,200,66,.25); }
+    .about-card:hover::before { opacity: 1; }
+    .about-card .card-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+    .about-card h3 {
+      font-family: var(--font-head); font-size: 1.25rem;
+      color: var(--accent); margin-bottom: .8rem;
+    }
+    .about-card p { color: var(--muted); line-height: 1.75; font-size: .95rem; }
 
-            .page-content {
-                padding: 2rem 1.5rem;
-            }
+    /* ========= CONTACT PAGE ========= */
+    .contact-wrapper {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    }
+    .contact-info-panel {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 24px; padding: 2.5rem;
+    }
+    .contact-info-panel h3 {
+      font-family: var(--font-head); font-size: 1.5rem;
+      color: var(--accent); margin-bottom: 2rem;
+    }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .contact-item .ci-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(245,200,66,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-item .ci-body strong { display: block; color: var(--text); font-size: .9rem; margin-bottom: .2rem; }
+    .contact-item .ci-body span { color: var(--muted); font-size: .88rem; line-height: 1.5; }
 
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-    </style>
+    .contact-map-panel {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 24px; overflow: hidden;
+    }
+    .contact-map-panel iframe { width: 100%; height: 100%; min-height: 360px; border: none; }
+
+    /* ========= FOOTER ========= */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--deep);
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 4rem 0 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 2.5rem;
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem;
+    }
+    .footer-brand .logo { font-size: 1.3rem; margin-bottom: 1rem; }
+    .footer-brand p { color: var(--muted); line-height: 1.75; font-size: .9rem; max-width: 300px; }
+    .footer-col h4 { color: var(--text); font-size: .85rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1.2rem; }
+    .footer-col p, .footer-col address { color: var(--muted); font-style: normal; font-size: .88rem; line-height: 1.8; }
+    .footer-bottom {
+      max-width: 1280px; margin: 3rem auto 0; padding: 1.5rem 2.5rem 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      color: var(--muted); font-size: .82rem;
+    }
+    .footer-bottom .flag { font-size: 1.1rem; }
+
+    /* ========= PAGE HERO (for sub-pages) ========= */
+    .page-hero {
+      padding: 8rem 2.5rem 3rem;
+      background: linear-gradient(to bottom, rgba(26,21,53,.95), transparent);
+    }
+    .page-hero h2 {
+      font-family: var(--font-head); font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900; color: #fff;
+    }
+    .page-hero p { color: var(--muted); margin-top: .7rem; font-size: 1.05rem; }
+
+    /* ========= FLOATING BOOK ANIMATION ========= */
+    .floating-books {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    .fb { position: absolute; font-size: 1.8rem; opacity: .06; animation: drift linear infinite; }
+
+    @keyframes drift {
+      0%   { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    /* ========= SEARCH BAR ========= */
+    .search-wrap {
+      max-width: 560px; margin: 0 auto 3.5rem;
+      position: relative;
+    }
+    .search-wrap input {
+      width: 100%; padding: 1rem 3.5rem 1rem 1.5rem;
+      background: var(--panel); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 50px; color: var(--text); font-size: .95rem;
+      font-family: var(--font-body); outline: none;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .search-wrap input:focus {
+      border-color: rgba(245,200,66,.4);
+      box-shadow: 0 0 0 4px rgba(245,200,66,.1);
+    }
+    .search-wrap input::placeholder { color: var(--muted); }
+    .search-wrap .search-icon {
+      position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%);
+      color: var(--muted); pointer-events: none;
+    }
+
+    /* ========= TOAST ========= */
+    #toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      background: var(--panel); border: 1px solid rgba(245,200,66,.3);
+      border-left: 3px solid var(--accent);
+      color: var(--text); padding: .9rem 1.5rem;
+      border-radius: 12px; font-size: .9rem; font-weight: 500;
+      box-shadow: var(--shadow);
+      transform: translateY(100px); opacity: 0;
+      transition: all .4s cubic-bezier(.16,1,.3,1);
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ========= BACK TO TOP ========= */
+    #btt {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 800;
+      width: 46px; height: 46px; border-radius: 50%;
+      background: var(--accent); color: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; border: none; cursor: pointer;
+      box-shadow: 0 8px 30px rgba(245,200,66,.4);
+      opacity: 0; pointer-events: none;
+      transition: all .3s;
+    }
+    #btt.show { opacity: 1; pointer-events: all; }
+    #btt:hover { transform: translateY(-4px); }
+
+    /* ========= MOBILE NAV ========= */
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 850;
+      background: rgba(13,11,30,.97); backdrop-filter: blur(20px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2rem; opacity: 0; pointer-events: none;
+      transition: opacity .35s;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: var(--font-head); font-size: 2.2rem; font-weight: 900;
+      color: var(--text); text-decoration: none;
+      transition: color .3s; letter-spacing: -.02em;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+    .mobile-close {
+      position: absolute; top: 2rem; right: 2rem;
+      background: rgba(255,255,255,.08); border: none; border-radius: 50%;
+      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+      color: var(--text); font-size: 1.3rem; cursor: pointer;
+    }
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .contact-wrapper { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.5rem; }
+      .books-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; }
+      .page-content { padding: 1.5rem 1.5rem 4rem; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .hero-stats { gap: 2rem; }
+      body { cursor: default; }
+      #cursor, #cursor-ring { display: none; }
+    }
+
+    /* ========= ANIMATION UTILITIES ========= */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <span>📚</span>
-                <span>Wiyata Pustaka Digital</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="https://wiyatapustaka.vercel.app" onclick="showPage('home')">Beranda</a></li>
-                <li><a href="https://wiyatapustaka.vercel.app/caribuku.html" onclick="showPage('about')">Cari Buku</a></li>
-                <li><a href="https://wiyatapustaka.vercel.app/about.html" onclick="showPage('contact')">Tentang Kami</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <div class="hero">
-        <h1>Selamat Datang di Wiyata Pustaka SMK Pawiyatan</h1>
-        <p>Akses semua e-book berkualitas untuk mendukung literasi dan pembelajaran </p>
+<!-- Custom Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Particle Canvas -->
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+<!-- ===== HEADER ===== -->
+<header id="main-header">
+  <nav>
+    <a class="logo" href="#" onclick="showPage('home'); return false;" aria-label="Wiyata Pustaka Digital">
+      <span class="logo-icon">📚</span>
+      <span>Wiyata Pustaka</span>
+    </a>
+    <ul class="nav-links" role="navigation" aria-label="Navigasi utama">
+      <li><a href="#" onclick="showPage('home'); return false;" class="active" data-page="home">Beranda</a></li>
+      <li><a href="https://wiyatapustaka.vercel.app/caribuku.html">Cari Buku</a></li>
+      <li><a href="#" onclick="showPage('about'); return false;" data-page="about">Tentang Kami</a></li>
+      <li><a href="#" onclick="showPage('contact'); return false;" data-page="contact">Kontak</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu navigasi">
+  <button class="mobile-close" id="mobile-close" aria-label="Tutup menu">✕</button>
+  <a href="#" onclick="showPage('home'); closeMobileMenu(); return false;">Beranda</a>
+  <a href="https://wiyatapustaka.vercel.app/caribuku.html">Cari Buku</a>
+  <a href="#" onclick="showPage('about'); closeMobileMenu(); return false;">Tentang Kami</a>
+  <a href="#" onclick="showPage('contact'); closeMobileMenu(); return false;">Kontak</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero" aria-label="Halaman utama Wiyata Pustaka">
+  <div class="hero-bg-rings" aria-hidden="true">
+    <div class="ring"></div><div class="ring"></div>
+    <div class="ring"></div><div class="ring"></div>
+  </div>
+
+  <div class="floating-books" aria-hidden="true" id="floating-books"></div>
+
+  <span class="hero-label"><span class="dot"></span> Perpustakaan Digital SMK Pawiyatan</span>
+
+  <h1>
+    Temukan Ilmu,<br>
+    <span class="highlight">Raih Prestasi</span>
+  </h1>
+
+  <p class="hero-sub">
+    Akses ratusan e-book berkualitas tinggi — Novel, Modul Ajar, dan Buku Pengembangan Diri — gratis untuk seluruh sivitas SMK Pawiyatan Surabaya.
+  </p>
+
+  <div class="hero-stats" aria-label="Statistik koleksi">
+    <div class="hero-stat">
+      <div class="num" id="stat-books">0</div>
+      <div class="lbl">Koleksi Buku</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">3</div>
+      <div class="lbl">Kategori</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">24/7</div>
+      <div class="lbl">Akses Digital</div>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#" class="btn-primary" onclick="showPage('home'); return false;" aria-label="Jelajahi koleksi buku">
+      Jelajahi Koleksi <span aria-hidden="true">→</span>
+    </a>
+    <a href="#" class="btn-ghost" onclick="showPage('about'); return false;" aria-label="Tentang kami">
+      Tentang Kami
+    </a>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="line"></div>
+    <span>Gulir</span>
+  </div>
+</section>
+
+<!-- ===== MAIN ===== -->
+<main id="main-content">
+
+  <!-- ===== BERANDA ===== -->
+  <div id="home" class="page-content active" role="main" aria-label="Koleksi buku">
+    <div class="search-wrap reveal" role="search" aria-label="Cari buku">
+      <input type="search" id="book-search" placeholder="Cari judul atau pengarang..." aria-label="Cari buku dalam koleksi">
+      <span class="search-icon" aria-hidden="true">🔍</span>
     </div>
 
-    <div class="container">
-        <!-- Halaman Beranda -->
-        <div id="home" class="page-content active">
-            <!-- Kategori Novel -->
-            <div class="category">
-                <div class="category-header">
-                    <h2 class="category-title">📖 Novel</h2>
-                </div>
-                <div class="books-grid">
-                    <a href="https://drive.google.com/file/d/1pBJS1gGVPN5jv0Cnvn-L1DhcHMlfAoYR/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/download.jfif">
-                        <div class="book-cover">Laskar Pelangi</div>
-                        <div class="book-title">Harry Poter - Batu Bertuah</div>
-                        <div class="book-author">J.K. Rowling</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1dbgr7sOm1IwI4Q-Q1lE27i2tnenb_Jrn/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/bulan.jfif">
-                        <div class="book-cover">Bumi Manusia</div>
-                        <div class="book-title">Bulan Terbelah di Langit Amerika</div>
-                        <div class="book-author">Hanum Salsabiela Rais, Rangga Almahendra</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1YyEZlKO_61is_iHZSxa8TUM3OndNfEZP/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/cantik.jfif">
-                        <div class="book-cover">Ayat-Ayat Cinta</div>
-                        <div class="book-title">Cantik itu Luka</div>
-                        <div class="book-author">Eka Kurniawan</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1LbMm2KbpDfgZ2L-1r_-W75QS2hdlzzs-/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/sajadah.jfif">
-                        <div class="book-cover">Perahu Kertas</div>
-                        <div class="book-title">Diatas Sajadah Cinta</div>
-                        <div class="book-author">Habiburahman El Shirazy</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1q0BbOjJuap5hvWQZvLb9yVwDSRiWvq1-/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/pelangi.jfif">
-                        <div class="book-cover">5 cm</div>
-                        <div class="book-title">Laskar Pelangi</div>
-                        <div class="book-author">Andrea Hirata</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1aattK1-mzRPiTUHvZgh_DI98S-8FHdWL/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/5menara.jpg">
-                        <div class="book-cover">Negeri 5 Menara</div>
-                        <div class="book-title">Negeri 5 Menara</div>
-                        <div class="book-author">Ahmad Fuadi</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1XaKB7KURtHzEXSSq7sUjbrmm_3JUqkk2/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/tentang%20kamu.jfif">
-                        <div class="book-cover">Sang Pemimpi</div>
-                        <div class="book-title">Tentang Kamu</div>
-                        <div class="book-author">Tere Liye</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1zv6JO4bghP5SlqDasdBGeNSHAeaXdPoD/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/kapal%20vanderikj.jfif">
-                        <div class="book-cover">Ronggeng Dukuh Paruk</div>
-                        <div class="book-title">Tenggelamnya Kapal Van Der Wijck</div>
-                        <div class="book-author">Buya Hamka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1lhCRD2vfjuMIEb-VQtPuD2QcQUAWsQC2/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/partikel.jfif">
-                        <div class="book-cover">Supernova</div>
-                        <div class="book-title">Supernova Partikel</div>
-                        <div class="book-author">Dee Lestari</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1QwFw4kAHKBvgLrhKIXHDHhGaJD_Jee-b/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/narnia.jfif">
-                        <div class="book-cover">Cantik Itu Luka</div>
-                        <div class="book-title">Narnia - Singa, Penyihir dan Lemari</div>
-                        <div class="book-author">C.S. Lewis</div>
-                    </a>
-                </div>
-            </div>
+    <!-- NOVEL -->
+    <article class="category reveal" aria-labelledby="cat-novel">
+      <div class="section-header">
+        <div class="section-icon novel" aria-hidden="true">📖</div>
+        <h2 class="section-title" id="cat-novel">Novel</h2>
+        <span class="section-count">10 buku</span>
+      </div>
+      <div class="books-grid" role="list" aria-label="Koleksi novel">
+        <a href="https://drive.google.com/file/d/1pBJS1gGVPN5jv0Cnvn-L1DhcHMlfAoYR/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/download.jfif" role="listitem" aria-label="Harry Potter - Batu Bertuah oleh J.K. Rowling">
+          <div class="book-cover cover-v1">Harry Potter<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Harry Potter - Batu Bertuah</div><div class="book-author">J.K. Rowling</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1dbgr7sOm1IwI4Q-Q1lE27i2tnenb_Jrn/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/bulan.jfif" role="listitem" aria-label="Bulan Terbelah di Langit Amerika">
+          <div class="book-cover cover-v2">Bulan Terbelah<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Bulan Terbelah di Langit Amerika</div><div class="book-author">Hanum Salsabiela Rais</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1YyEZlKO_61is_iHZSxa8TUM3OndNfEZP/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/cantik.jfif" role="listitem" aria-label="Cantik itu Luka oleh Eka Kurniawan">
+          <div class="book-cover cover-v3">Cantik itu Luka<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Cantik itu Luka</div><div class="book-author">Eka Kurniawan</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1LbMm2KbpDfgZ2L-1r_-W75QS2hdlzzs-/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/sajadah.jfif" role="listitem" aria-label="Diatas Sajadah Cinta">
+          <div class="book-cover cover-v4">Sajadah Cinta<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Diatas Sajadah Cinta</div><div class="book-author">Habiburahman El Shirazy</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1q0BbOjJuap5hvWQZvLb9yVwDSRiWvq1-/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/pelangi.jfif" role="listitem" aria-label="Laskar Pelangi oleh Andrea Hirata">
+          <div class="book-cover cover-v1">Laskar Pelangi<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Laskar Pelangi</div><div class="book-author">Andrea Hirata</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1aattK1-mzRPiTUHvZgh_DI98S-8FHdWL/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/5menara.jpg" role="listitem" aria-label="Negeri 5 Menara oleh Ahmad Fuadi">
+          <div class="book-cover cover-v5">Negeri 5 Menara<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Negeri 5 Menara</div><div class="book-author">Ahmad Fuadi</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1XaKB7KURtHzEXSSq7sUjbrmm_3JUqkk2/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/tentang%20kamu.jfif" role="listitem" aria-label="Tentang Kamu oleh Tere Liye">
+          <div class="book-cover cover-v2">Tentang Kamu<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Tentang Kamu</div><div class="book-author">Tere Liye</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1zv6JO4bghP5SlqDasdBGeNSHAeaXdPoD/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/kapal%20vanderikj.jfif" role="listitem" aria-label="Tenggelamnya Kapal Van Der Wijck">
+          <div class="book-cover cover-v3">Kapal Van Der Wijck<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Tenggelamnya Kapal Van Der Wijck</div><div class="book-author">Buya Hamka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1lhCRD2vfjuMIEb-VQtPuD2QcQUAWsQC2/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/partikel.jfif" role="listitem" aria-label="Supernova Partikel oleh Dee Lestari">
+          <div class="book-cover cover-v4">Supernova Partikel<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Supernova Partikel</div><div class="book-author">Dee Lestari</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1QwFw4kAHKBvgLrhKIXHDHhGaJD_Jee-b/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/narnia.jfif" role="listitem" aria-label="Narnia: Singa, Penyihir dan Lemari oleh C.S. Lewis">
+          <div class="book-cover cover-v5">Narnia<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Narnia - Singa, Penyihir & Lemari</div><div class="book-author">C.S. Lewis</div></div>
+        </a>
+      </div>
+    </article>
 
-            <!-- Kategori Modul Ajar -->
-            <div class="category">
-                <div class="category-header">
-                    <h2 class="category-title">📝 Modul Ajar</h2>
-                </div>
-                <div class="books-grid">
-                    <a href="https://drive.google.com/file/d/1ZJdtbsTeZ2pmTAoJxDW07YUA9OgjVUnf/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/cover%20kka.png">
-                        <div class="book-cover">Modul Koding dan Artifisial Intelegent</div>
-                        <div class="book-title">Modul KKA Kelas X</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1MLkbzMFe_KwQUK-GryTVNQ5nWZg4EH0O/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Informatika-KLS-X-Sem-1-Cover.png">
-                        <div class="book-cover">Modul Informatika </div>
-                        <div class="book-title">Modul Informatika Semester 1</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1uw6cxEZHAOXwySiE622lJ2fhjyMUeBhV/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Smk-Informatika-BS-KLS-X2-Cover.png">
-                        <div class="book-cover">Modul Informatika </div>
-                        <div class="book-title">Modul Informatika Semester 2</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1lqKpZxNm1ssIAI6c34LvAuWjvSYX-hhk/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Pendidikan-Pancasila-BS-KLS-X-Cover.png">
-                        <div class="book-cover">Modul Pendidikan Pancasila</div>
-                        <div class="book-title">Modul Pendidikan Pancasila</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/15LNqm-BGkFQoNlwdunp6wwTMXsYVMy6j/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Projek-IPAS-BS-KLS-X-Cover.png">
-                        <div class="book-cover">Modul IPAS</div>
-                        <div class="book-title">Modul Projek IPAS</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/10jND82iAyykMl0RnoxnCzfksakv67QAe/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/PJOK_BS_KLS_X_Cover.png">
-                        <div class="book-cover">Modul PJOK</div>
-                        <div class="book-title">Modul PJOK</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1mqQwkWlFYCBHwIgJnqWGdrUYmd1GNapw/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Islam-BS-KLS-X-Cover.png">
-                        <div class="book-cover">Modul Pendidikan Agama Islam</div>
-                        <div class="book-title">Modul Pendidikan Agama Islam</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1nxDq9vC1AZQZ0CUJv4lKuKPGskROBEoY/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Bahasa_Indonesia_BS_KLS_X_Rev_Cover.png">
-                        <div class="book-cover">Modul Bahasa Indonesia</div>
-                        <div class="book-title">Modul Bahasa Indonesia</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1yBNwgfjj_kU82E1W9NWqEjfUtTsG0LIF/view?usp=drive_link" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/pangkldata.png">
-                        <div class="book-cover">Modul Basis Data</div>
-                        <div class="book-title">Modul Praktikum PostgreSQL</div>
-                        <div class="book-author">Kurikulum K-13</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1RJHo8AmJ-tdmvGiiWjwX6vwaIF-89pPT/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Sejarah-BS-KLS-XI-cover.png">
-                        <div class="book-cover">Modul Sejarah</div>
-                        <div class="book-title">Modul Sejarah Fase F</div>
-                        <div class="book-author">Kurikulum Merdeka</div>
-                    </a>
-                </div>
-            </div>
+    <!-- MODUL AJAR -->
+    <article class="category reveal" aria-labelledby="cat-modul">
+      <div class="section-header">
+        <div class="section-icon modul" aria-hidden="true">📝</div>
+        <h2 class="section-title" id="cat-modul">Modul Ajar</h2>
+        <span class="section-count">10 modul</span>
+      </div>
+      <div class="books-grid" role="list" aria-label="Koleksi modul ajar">
+        <a href="https://drive.google.com/file/d/1ZJdtbsTeZ2pmTAoJxDW07YUA9OgjVUnf/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/cover%20kka.png" role="listitem">
+          <div class="book-cover cover-v2">Modul KKA<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul KKA Kelas X</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1MLkbzMFe_KwQUK-GryTVNQ5nWZg4EH0O/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Informatika-KLS-X-Sem-1-Cover.png" role="listitem">
+          <div class="book-cover cover-v1">Informatika S1<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Informatika Semester 1</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1uw6cxEZHAOXwySiE622lJ2fhjyMUeBhV/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Smk-Informatika-BS-KLS-X2-Cover.png" role="listitem">
+          <div class="book-cover cover-v4">Informatika S2<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Informatika Semester 2</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1lqKpZxNm1ssIAI6c34LvAuWjvSYX-hhk/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Pendidikan-Pancasila-BS-KLS-X-Cover.png" role="listitem">
+          <div class="book-cover cover-v5">Pancasila<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Pendidikan Pancasila</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/15LNqm-BGkFQoNlwdunp6wwTMXsYVMy6j/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Projek-IPAS-BS-KLS-X-Cover.png" role="listitem">
+          <div class="book-cover cover-v3">Projek IPAS<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Projek IPAS</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/10jND82iAyykMl0RnoxnCzfksakv67QAe/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/PJOK_BS_KLS_X_Cover.png" role="listitem">
+          <div class="book-cover cover-v2">PJOK<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul PJOK</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1mqQwkWlFYCBHwIgJnqWGdrUYmd1GNapw/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Islam-BS-KLS-X-Cover.png" role="listitem">
+          <div class="book-cover cover-v1">Agama Islam<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Pendidikan Agama Islam</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1nxDq9vC1AZQZ0CUJv4lKuKPGskROBEoY/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Bahasa_Indonesia_BS_KLS_X_Rev_Cover.png" role="listitem">
+          <div class="book-cover cover-v5">Bahasa Indonesia<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Bahasa Indonesia</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1yBNwgfjj_kU82E1W9NWqEjfUtTsG0LIF/view?usp=drive_link" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/pangkldata.png" role="listitem">
+          <div class="book-cover cover-v4">Basis Data<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Praktikum PostgreSQL</div><div class="book-author">Kurikulum K-13</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1RJHo8AmJ-tdmvGiiWjwX6vwaIF-89pPT/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/Sejarah-BS-KLS-XI-cover.png" role="listitem">
+          <div class="book-cover cover-v3">Sejarah<div class="overlay"></div><span class="cover-badge">Unduh</span></div>
+          <div class="book-info"><div class="book-title">Modul Sejarah Fase F</div><div class="book-author">Kurikulum Merdeka</div></div>
+        </a>
+      </div>
+    </article>
 
-            <!-- Kategori Buku Umum -->
-            <div class="category">
-                <div class="category-header">
-                    <h2 class="category-title">📕 Buku Umum</h2>
-                </div>
-                <div class="books-grid">
-                    <a href="https://drive.google.com/file/d/1VkwOp2FQXwtBWRmlmRWiQHgLm63acXJJ/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/madilog.jfif">
-                        <div class="book-cover">Filosofi Teras</div>
-                        <div class="book-title">Madilog 1943</div>
-                        <div class="book-author">Tan Malaka</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1oANOgBJeE8LOLbKTL4yVJHWDUhaFy3DG/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/islamhilang.jfif">
-                        <div class="book-cover">Atomic Habits</div>
-                        <div class="book-title">Sejarah Islam Yang Hilang</div>
-                        <div class="book-author">Firas Alkhateeb</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1rQ-s8zCKo2MqGi0rGwc7nwJ1ZsXiW1UF/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/habits.jpg">
-                        <div class="book-cover">Rich Dad Poor Dad</div>
-                        <div class="book-title">Atomic Habits</div>
-                        <div class="book-author">James Clear</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1_cAzLNx8mCp6TmSElPSdONgeNpJU4tuw/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/homodeus.jfif">
-                        <div class="book-cover">Sapiens</div>
-                        <div class="book-title">Home Deus</div>
-                        <div class="book-author">Yuval Noah Harari</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1eRFrU04sgKZiZ0GDgMjqxXrWvgdV9Q-G/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/psikismoney.jfif">
-                        <div class="book-cover">Think and Grow Rich</div>
-                        <div class="book-title">Psychology of Money</div>
-                        <div class="book-author">Morgan Housel</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1fwIzD-wYdDxGHh15dP0XF3tTIewESlUm/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/bj%20habibie.jpg">
-                        <div class="book-cover">The Power of Habit</div>
-                        <div class="book-title">Detik Detik Yang Menentukan</div>
-                        <div class="book-author">Bacharudin Jusuf Habibie</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1xA0yhHaqp9DY_rAuXbfczkYP97nWfpNd/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/samkok.jpg">
-                        <div class="book-cover">Sebuah Seni untuk Bersikap Bodo Amat</div>
-                        <div class="book-title">SAM KOK</div>
-                        <div class="book-author">Luo Guan Zhong</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1fIR1Jk-6JVZYNDgE52CJyanr5KDs5QEn/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/ikigai.jpg">
-                        <div class="book-cover">Deep Work</div>
-                        <div class="book-title">Ikigai</div>
-                        <div class="book-author">Ken Mogi</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1c0Tu9HyC7bYqp6KSZ5KlWTFGzO8bitIb/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/download.jpg">
-                        <div class="book-cover">Rich Dad Poor Dad</div>
-                        <div class="book-title">48 Power Law</div>
-                        <div class="book-author">Robert Greene</div>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1i2kQb5XmsxILjtR97UpcCzgdKS_rGzQB/view?usp=sharing" target="_blank" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/investor.jfif">
-                        <div class="book-cover">The Lean Startup</div>
-                        <div class="book-title">The Intelligent Investor</div>
-                        <div class="book-author">Benjamnin Graham</div>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <!-- BUKU UMUM -->
+    <article class="category reveal" aria-labelledby="cat-umum">
+      <div class="section-header">
+        <div class="section-icon umum" aria-hidden="true">📕</div>
+        <h2 class="section-title" id="cat-umum">Buku Umum</h2>
+        <span class="section-count">10 buku</span>
+      </div>
+      <div class="books-grid" role="list" aria-label="Koleksi buku umum">
+        <a href="https://drive.google.com/file/d/1VkwOp2FQXwtBWRmlmRWiQHgLm63acXJJ/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/madilog.jfif" role="listitem">
+          <div class="book-cover cover-v3">Madilog 1943<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Madilog 1943</div><div class="book-author">Tan Malaka</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1oANOgBJeE8LOLbKTL4yVJHWDUhaFy3DG/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/islamhilang.jfif" role="listitem">
+          <div class="book-cover cover-v1">Sejarah Islam<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Sejarah Islam Yang Hilang</div><div class="book-author">Firas Alkhateeb</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1rQ-s8zCKo2MqGi0rGwc7nwJ1ZsXiW1UF/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/habits.jpg" role="listitem">
+          <div class="book-cover cover-v2">Atomic Habits<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Atomic Habits</div><div class="book-author">James Clear</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1_cAzLNx8mCp6TmSElPSdONgeNpJU4tuw/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/homodeus.jfif" role="listitem">
+          <div class="book-cover cover-v5">Homo Deus<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Homo Deus</div><div class="book-author">Yuval Noah Harari</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1eRFrU04sgKZiZ0GDgMjqxXrWvgdV9Q-G/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/psikismoney.jfif" role="listitem">
+          <div class="book-cover cover-v4">Psychology of Money<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Psychology of Money</div><div class="book-author">Morgan Housel</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1fwIzD-wYdDxGHh15dP0XF3tTIewESlUm/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/bj%20habibie.jpg" role="listitem">
+          <div class="book-cover cover-v1">Detik Detik<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Detik Detik Yang Menentukan</div><div class="book-author">B.J. Habibie</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1xA0yhHaqp9DY_rAuXbfczkYP97nWfpNd/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/samkok.jpg" role="listitem">
+          <div class="book-cover cover-v3">SAM KOK<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">SAM KOK</div><div class="book-author">Luo Guan Zhong</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1fIR1Jk-6JVZYNDgE52CJyanr5KDs5QEn/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/ikigai.jpg" role="listitem">
+          <div class="book-cover cover-v2">Ikigai<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">Ikigai</div><div class="book-author">Ken Mogi</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1c0Tu9HyC7bYqp6KSZ5KlWTFGzO8bitIb/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/download.jpg" role="listitem">
+          <div class="book-cover cover-v5">48 Laws<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">48 Laws of Power</div><div class="book-author">Robert Greene</div></div>
+        </a>
+        <a href="https://drive.google.com/file/d/1i2kQb5XmsxILjtR97UpcCzgdKS_rGzQB/view?usp=sharing" target="_blank" rel="noopener" class="book-card" data-cover="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/investor.jfif" role="listitem">
+          <div class="book-cover cover-v4">Intelligent Investor<div class="overlay"></div><span class="cover-badge">Baca</span></div>
+          <div class="book-info"><div class="book-title">The Intelligent Investor</div><div class="book-author">Benjamin Graham</div></div>
+        </a>
+      </div>
+    </article>
+  </div>
 
-        <!-- Halaman Tentang Kami -->
-        <div id="about" class="page-content">
-            <div class="about-content">
-                <h2>📚 Tentang Kami</h2>
-                <p>Selamat datang di Perpustakaan Digital kami! Kami adalah platform katalog e-book yang menyediakan akses mudah ke berbagai koleksi buku digital berkualitas tinggi untuk mendukung pendidikan dan literasi masyarakat Indonesia.</p>
-                
-                <h2>🎯 Visi Kami</h2>
-                <p>Menjadi perpustakaan digital terdepan yang memberikan akses pendidikan dan literasi kepada seluruh masyarakat Indonesia tanpa batasan geografis dan ekonomi, sehingga setiap orang dapat terus belajar dan berkembang.</p>
-                
-                <h2>🚀 Misi Kami</h2>
-                <p>Menyediakan koleksi e-book yang lengkap, berkualitas, dan mudah diakses untuk mendukung kegiatan belajar mengajar, meningkatkan minat baca masyarakat, serta mengembangkan pengetahuan dan keterampilan yang relevan dengan kebutuhan zaman.</p>
-                
-                <h2>📖 Koleksi Kami</h2>
-                <p>Kami menyediakan berbagai kategori buku yang mencakup Novel untuk hiburan dan pengembangan imajinasi, Modul Ajar untuk mendukung proses pembelajaran, serta Buku Umum yang membantu pengembangan diri dan pengetahuan profesional. Semua buku dapat diakses secara digital melalui Google Drive untuk kemudahan akses dan penyimpanan.</p>
-                
-                <h2>💡 Komitmen Kami</h2>
-                <p>Kami berkomitmen untuk terus mengupdate dan memperluas koleksi e-book kami agar tetap relevan dan bermanfaat bagi semua kalangan. Kepuasan dan kemudahan akses pengguna adalah prioritas utama kami.</p>
-            </div>
-        </div>
-
-        <!-- Halaman Hubungi Kami -->
-        <div id="contact" class="page-content">
-            <div class="contact-content">
-                <h2>📞 Hubungi Kami</h2>
-                <p>Kami siap membantu Anda! Jika ada pertanyaan, saran, kritik, atau ingin berkontribusi dalam pengembangan perpustakaan digital kami, jangan ragu untuk menghubungi kami melalui informasi kontak di bawah ini.</p>
-                
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <strong>📧 Nomor Pokok Perpustakaan:</strong>
-                        <span>3578271H2000003</span>
-                    </div>
-                    <div class="contact-item">
-                        <strong>📱 Telepon:</strong>
-                        <span>+62 812-3456-7890</span>
-                    </div>
-                    <div class="contact-item">
-                        <strong>💬 E-mail:</strong>
-                        <span>wiyatapustaka46@gmail.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <strong>📍 Alamat:</strong>
-                        <span>JJl. Tangkis Turi No.4-6, Surabaya, Jawa Timur, Indonesia</span>
-                    </div>
-                    <div class="contact-item">
-                        <strong>🕐 Jam Operasional:</strong>
-                        <span>Senin - Jumat: 08.00 - 15.00 WIB<br>Sabtu, Minggu & Libur: Tutup</span>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 2rem;">Kami akan merespons pesan Anda dalam 1-2 hari kerja. Terima kasih atas dukungan dan kepercayaan Anda untuk menggunakan layanan perpustakaan digital kami!</p>
-            </div>
-        </div>
+  <!-- ===== TENTANG ===== -->
+  <div id="about" class="page-content" aria-label="Tentang Wiyata Pustaka">
+    <div class="page-hero">
+      <h2>Tentang Wiyata Pustaka</h2>
+      <p>Menghubungkan pelajar dengan ilmu pengetahuan tanpa batas</p>
     </div>
+    <div class="about-grid reveal">
+      <div class="about-card">
+        <div class="card-icon">🎯</div>
+        <h3>Visi Kami</h3>
+        <p>Menjadi perpustakaan digital terdepan yang memberikan akses pendidikan dan literasi kepada seluruh masyarakat Indonesia tanpa batasan geografis dan ekonomi.</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">🚀</div>
+        <h3>Misi Kami</h3>
+        <p>Menyediakan koleksi e-book yang lengkap, berkualitas, dan mudah diakses untuk mendukung kegiatan belajar mengajar serta meningkatkan minat baca generasi muda.</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">📖</div>
+        <h3>Koleksi Kami</h3>
+        <p>Novel untuk pengembangan imajinasi, Modul Ajar untuk mendukung proses pembelajaran Kurikulum Merdeka, serta Buku Umum untuk pengembangan diri dan pengetahuan profesional.</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">💡</div>
+        <h3>Komitmen Kami</h3>
+        <p>Kami berkomitmen untuk terus memperbarui dan memperluas koleksi e-book agar tetap relevan dan bermanfaat bagi semua kalangan sivitas akademika SMK Pawiyatan.</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">🏫</div>
+        <h3>Tentang SMK Pawiyatan</h3>
+        <p>SMK Pawiyatan Surabaya adalah sekolah kejuruan terkemuka di Surabaya yang berkomitmen mencetak lulusan berkarakter, kompeten, dan siap menghadapi tantangan industri 4.0.</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">🌐</div>
+        <h3>Akses Digital</h3>
+        <p>Seluruh koleksi dapat diakses melalui Google Drive, tersedia 24 jam sehari, 7 hari seminggu — di mana saja menggunakan smartphone, tablet, atau komputer Anda.</p>
+      </div>
+    </div>
+  </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>📚 Wiyata Pustaka Pawiyatan</h3>
-                <p>Perpustakaan digital yang menyediakan akses mudah ke berbagai koleksi buku digital berkualitas untuk mendukung pendidikan dan literasi. Akses buku digital berkualitas kapan saja, di mana saja.</p>
-            </div>
-            
-            <div class="footer-section">
-                <h3>📞 Kontak</h3>
-                <p><strong>Email:</strong> wiyatapustaka46@gmail.com</p>
-                <p><strong>Telepon:</strong> +62 31-5342-508</p>
-                <p><strong>Jam Kerja:</strong> Senin - Jumat: 08.00 - 15.00 WIB</p>
-            </div>
-            
-            <div class="footer-section">
-                <h3>📍 Alamat Perpustakaan</h3>
-                <address>
-                    <strong>SMK Pawiyatan Surabaya</strong><br>
-                    Jl. Tangkis Turi No.4-6<br>
-                    Kecamatan Sukomanunggal<br>
-                    Surabaya, Jawa Timur 60275<br>
-                    Indonesia
-                </address>
-                
-            </div>
+  <!-- ===== KONTAK ===== -->
+  <div id="contact" class="page-content" aria-label="Hubungi kami">
+    <div class="page-hero">
+      <h2>Hubungi Kami</h2>
+      <p>Kami siap membantu pertanyaan dan kebutuhan literasi Anda</p>
+    </div>
+    <div class="contact-wrapper reveal">
+      <div class="contact-info-panel">
+        <h3>Informasi Kontak</h3>
+        <div class="contact-item">
+          <div class="ci-icon">🏛️</div>
+          <div class="ci-body">
+            <strong>Nomor Pokok Perpustakaan</strong>
+            <span>3578271H2000003</span>
+          </div>
         </div>
-        
-        <div class="footer-content">
-            <div class="footer-bottom">
-                <p>&copy; 2025 Perpustakaan Digital. All Rights Reserved.</p>
-                <p style="font-size: 0.95rem;">Melayani dengan sepenuh hati untuk kemajuan literasi bangsa 🇮🇩</p>
-            </div>
+        <div class="contact-item">
+          <div class="ci-icon">📧</div>
+          <div class="ci-body">
+            <strong>E-mail</strong>
+            <span>wiyatapustaka46@gmail.com</span>
+          </div>
         </div>
-    </footer>
+        <div class="contact-item">
+          <div class="ci-icon">📞</div>
+          <div class="ci-body">
+            <strong>Telepon</strong>
+            <span>+62 31-5342-508</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <div class="ci-body">
+            <strong>Alamat</strong>
+            <span>Jl. Tangkis Turi No.4-6, Kecamatan Sukomanunggal, Surabaya, Jawa Timur 60275</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">🕐</div>
+          <div class="ci-body">
+            <strong>Jam Operasional</strong>
+            <span>Senin – Jumat: 08.00 – 15.00 WIB<br>Sabtu, Minggu & Hari Libur: Tutup</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-map-panel">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.4506745576994!2d112.7085!3d-7.2671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMTYnMDEuNiJTIDExMsKwNDInMzAuNiJF!5e0!3m2!1sid!2sid!4v1600000000000"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Lokasi SMK Pawiyatan Surabaya" aria-label="Peta lokasi SMK Pawiyatan Surabaya">
+        </iframe>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        function showPage(pageId) {
-            const pages = document.querySelectorAll('.page-content');
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
+</main>
 
-        // Fungsi untuk load cover dari URL gambar
-        function loadBookCovers() {
-            const bookCards = document.querySelectorAll('.book-card');
-            
-            bookCards.forEach(card => {
-                const coverUrl = card.getAttribute('data-cover');
-                if (coverUrl && coverUrl.trim() !== '') {
-                    const bookCover = card.querySelector('.book-cover');
-                    const bookTitle = card.querySelector('.book-title').textContent;
-                    
-                    // Bersihkan isi cover
-                    bookCover.innerHTML = '';
-                    bookCover.classList.add('has-image');
-                    
-                    // Buat element img
-                    const img = document.createElement('img');
-                    img.src = coverUrl;
-                    img.alt = bookTitle;
-                    img.onerror = function() {
-                        // Jika gagal load, kembalikan ke tampilan text
-                        bookCover.classList.remove('has-image');
-                        bookCover.textContent = bookTitle;
-                    };
-                    
-                    bookCover.appendChild(img);
-                }
-            });
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="logo" href="#" onclick="showPage('home'); return false;" aria-label="Wiyata Pustaka">
+        <span class="logo-icon">📚</span>
+        <span>Wiyata Pustaka</span>
+      </a>
+      <p>Perpustakaan digital SMK Pawiyatan Surabaya — menghubungkan pelajar dengan ilmu pengetahuan berkualitas tanpa batas ruang dan waktu.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigasi</h4>
+      <p><a href="#" onclick="showPage('home'); return false;" style="color:var(--muted);text-decoration:none;">Beranda</a></p>
+      <p><a href="https://wiyatapustaka.vercel.app/caribuku.html" style="color:var(--muted);text-decoration:none;">Cari Buku</a></p>
+      <p><a href="#" onclick="showPage('about'); return false;" style="color:var(--muted);text-decoration:none;">Tentang Kami</a></p>
+      <p><a href="#" onclick="showPage('contact'); return false;" style="color:var(--muted);text-decoration:none;">Kontak</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Kontak</h4>
+      <address>
+        <strong>SMK Pawiyatan Surabaya</strong><br>
+        Jl. Tangkis Turi No.4-6<br>
+        Sukomanunggal, Surabaya 60275<br>
+        wiyatapustaka46@gmail.com<br>
+        +62 31-5342-508
+      </address>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Wiyata Pustaka Digital — SMK Pawiyatan Surabaya. All Rights Reserved.</p>
+    <p>Melayani dengan sepenuh hati untuk kemajuan literasi bangsa <span class="flag">🇮🇩</span></p>
+  </div>
+</footer>
+
+<!-- Toast Notification -->
+<div id="toast" role="alert" aria-live="polite"></div>
+
+<!-- Back to Top -->
+<button id="btt" aria-label="Kembali ke atas" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  /* ---- CURSOR ---- */
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top  = mouseY + 'px';
+  });
+
+  (function animateCursor() {
+    ringX += (mouseX - ringX) * 0.14;
+    ringY += (mouseY - ringY) * 0.14;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top  = ringY + 'px';
+    requestAnimationFrame(animateCursor);
+  })();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursorRing.style.transform = 'translate(-50%,-50%) scale(1.7)'; });
+    el.addEventListener('mouseleave', () => { cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; });
+  });
+
+  /* ---- PARTICLES ---- */
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function Particle() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 1.5 + 0.3;
+    this.dx = (Math.random() - .5) * .35;
+    this.dy = (Math.random() - .5) * .35;
+    this.alpha = Math.random() * .5 + .1;
+  }
+  Particle.prototype.update = function() {
+    this.x += this.dx; this.y += this.dy;
+    if (this.x < 0) this.x = W; if (this.x > W) this.x = 0;
+    if (this.y < 0) this.y = H; if (this.y > H) this.y = 0;
+  };
+
+  for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.update();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(245,200,66,${p.alpha})`;
+      ctx.fill();
+    });
+    // Connect nearby
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 90) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(245,200,66,${.06 * (1 - dist/90)})`;
+          ctx.lineWidth = .6;
+          ctx.stroke();
         }
-        
-        // Load covers saat halaman dimuat
-        window.addEventListener('DOMContentLoaded', loadBookCovers);
-    </script>
+      }
+    }
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  /* ---- FLOATING BOOK EMOJIS ---- */
+  const bookEmojis = ['📚','📖','📝','📕','📗','📘','📙','✏️','🎓','💡'];
+  const fbContainer = document.getElementById('floating-books');
+  for (let i = 0; i < 14; i++) {
+    const el = document.createElement('span');
+    el.className = 'fb';
+    el.textContent = bookEmojis[i % bookEmojis.length];
+    el.style.left   = (Math.random() * 100) + '%';
+    el.style.animationDuration = (12 + Math.random() * 20) + 's';
+    el.style.animationDelay   = -(Math.random() * 30) + 's';
+    el.style.fontSize = (1.2 + Math.random() * 2) + 'rem';
+    fbContainer.appendChild(el);
+  }
+
+  /* ---- COUNTER ANIMATION ---- */
+  function countUp(el, target, duration) {
+    let start = 0, step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start = Math.min(start + step, target);
+      el.textContent = Math.floor(start) + '+';
+      if (start >= target) clearInterval(timer);
+    }, 16);
+  }
+  const statBooks = document.getElementById('stat-books');
+  let counted = false;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !counted) {
+      counted = true;
+      countUp(statBooks, 30, 1800);
+    }
+  });
+  obs.observe(statBooks);
+
+  /* ---- SCROLL REVEAL ---- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  /* ---- STICKY HEADER ---- */
+  const header = document.getElementById('main-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+    document.getElementById('btt').classList.toggle('show', window.scrollY > 400);
+  });
+
+  /* ---- PAGE NAVIGATION ---- */
+  function showPage(id) {
+    document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+
+    document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+      a.classList.toggle('active', a.dataset.page === id);
+    });
+
+    const heroEl = document.getElementById('hero');
+    if (id === 'home') {
+      heroEl.style.display = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      heroEl.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    // Re-trigger reveals
+    document.querySelectorAll(`#${id} .reveal`).forEach(el => {
+      el.classList.remove('visible');
+      setTimeout(() => el.classList.add('visible'), 80);
+    });
+  }
+
+  /* ---- MOBILE MENU ---- */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileClose = document.getElementById('mobile-close');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+  });
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+  mobileClose.addEventListener('click', closeMobileMenu);
+  mobileMenu.addEventListener('click', e => { if (e.target === mobileMenu) closeMobileMenu(); });
+
+  /* ---- SEARCH ---- */
+  document.getElementById('book-search').addEventListener('input', function() {
+    const q = this.value.toLowerCase().trim();
+    document.querySelectorAll('.book-card').forEach(card => {
+      const title  = card.querySelector('.book-title')?.textContent.toLowerCase() || '';
+      const author = card.querySelector('.book-author')?.textContent.toLowerCase() || '';
+      card.style.display = (title.includes(q) || author.includes(q)) ? '' : 'none';
+    });
+  });
+
+  /* ---- BOOK COVER LOADER ---- */
+  document.querySelectorAll('.book-card').forEach(card => {
+    const url = card.getAttribute('data-cover');
+    if (!url) return;
+    const cover = card.querySelector('.book-cover');
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = card.querySelector('.book-title')?.textContent || '';
+    img.loading = 'lazy';
+    img.onerror = function() { this.remove(); };
+    img.onload = function() {
+      // Insert before overlay
+      cover.insertBefore(img, cover.querySelector('.overlay'));
+    };
+  });
+
+  /* ---- TOAST on book click ---- */
+  let toastTimer;
+  document.querySelectorAll('.book-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const title = card.querySelector('.book-title')?.textContent || 'Buku';
+      showToast('📖 Membuka: ' + title);
+    });
+  });
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  /* ---- KEYBOARD ESCAPE closes mobile menu ---- */
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenu(); });
+</script>
 </body>
 </html>

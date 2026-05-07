@@ -1,365 +1,830 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Perpustakaan WIYATA PUSTAKA SMK PAWIYATAN</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #FFC1CC; /* Pink background */
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -38px;
-            top: 0;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: #9d10b9;
-            border: 3px solid #D1FAE5;
-        }
-        .fade-in {
-            animation: fadeIn 1s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .value-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
-        }
-    </style>
+  <!-- ═══ SEO ═══ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tentang Wiyata Pustaka SMK Pawiyatan Surabaya — Visi, misi, sejarah, tim, dan pencapaian perpustakaan digital terdepan untuk pelajar Indonesia.">
+  <meta name="keywords" content="tentang wiyata pustaka, sejarah perpustakaan SMK Pawiyatan, tim perpustakaan, visi misi perpustakaan, Surabaya, literasi digital">
+  <meta name="author" content="Wiyata Pustaka SMK Pawiyatan Surabaya">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#080614">
+  <link rel="canonical" href="https://wiyatapustaka.vercel.app/about.html">
+  <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/gif">
+
+  <!-- OG -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wiyatapustaka.vercel.app/about.html">
+  <meta property="og:title" content="Tentang Kami — Wiyata Pustaka SMK Pawiyatan Surabaya">
+  <meta property="og:description" content="Kenali visi, misi, sejarah perjalanan, tim, dan pencapaian Wiyata Pustaka SMK Pawiyatan Surabaya.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/latar2.jpg">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="Wiyata Pustaka Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tentang Kami — Wiyata Pustaka SMK Pawiyatan">
+  <meta name="twitter:description" content="Visi, misi, sejarah, dan tim Wiyata Pustaka SMK Pawiyatan Surabaya.">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"AboutPage","name":"Tentang Wiyata Pustaka SMK Pawiyatan Surabaya","description":"Halaman tentang visi, misi, sejarah, dan tim perpustakaan Wiyata Pustaka SMK Pawiyatan Surabaya","url":"https://wiyatapustaka.vercel.app/about.html","mainEntity":{"@type":"Library","name":"Wiyata Pustaka SMK Pawiyatan Surabaya","foundingDate":"1990","address":{"@type":"PostalAddress","streetAddress":"Jl. Tangkis Turi No.4-6","addressLocality":"Surabaya","addressRegion":"Jawa Timur","postalCode":"60275","addressCountry":"ID"},"telephone":"+62-31-5342-508","email":"wiyatapustaka46@gmail.com"}}
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <title>Tentang Kami — Wiyata Pustaka SMK Pawiyatan Surabaya</title>
+
+  <style>
+    /* ═══ RESET & ROOT ═══ */
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:    #080614;
+      --bg2:   #0f0b22;
+      --bg3:   #16112e;
+      --panel: #1c1638;
+      --p2:    #231d42;
+      --gold:  #e8b84b;
+      --gold2: #f5d47a;
+      --gold3: #c49020;
+      --teal:  #1fd4b0;
+      --rose:  #e8607a;
+      --text:  #ede9ff;
+      --muted: #8b86b0;
+      --br:    rgba(232,184,75,.12);
+      --ease:  cubic-bezier(.16,1,.3,1);
+      --serif: 'Cormorant Garamond',Georgia,serif;
+      --sans:  'DM Sans',system-ui,sans-serif;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+
+    /* ═══ CURSOR ═══ */
+    #cur,#cur2{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
+    #cur{width:8px;height:8px;background:var(--gold);mix-blend-mode:difference}
+    #cur2{width:28px;height:28px;border:1.5px solid rgba(232,184,75,.5);transition:all .14s ease;mix-blend-mode:difference}
+
+    /* ═══ STAR CANVAS ═══ */
+    #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    /* ═══ NOISE ═══ */
+    body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity:.025;mix-blend-mode:overlay}
+
+    /* ═══ HEADER ═══ */
+    header{position:fixed;top:0;left:0;right:0;z-index:900;transition:background .5s,border-color .5s;border-bottom:1px solid transparent}
+    header.sc{background:rgba(8,6,20,.93);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-color:var(--br)}
+    nav{max-width:1280px;margin:0 auto;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:.65rem;text-decoration:none}
+    .logo img{height:36px;border-radius:8px;animation:bob 3.5s ease-in-out infinite}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .logo-n{font-family:var(--serif);font-size:1.28rem;font-weight:700;color:var(--gold);line-height:1.2}
+    .logo-s{font-size:.58rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;display:block}
+    .nav-ul{list-style:none;display:flex;gap:2rem;align-items:center}
+    .nav-ul a{text-decoration:none;color:var(--muted);font-weight:500;font-size:.88rem;position:relative;padding:.3rem 0;transition:color .3s}
+    .nav-ul a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold);transition:width .35s var(--ease)}
+    .nav-ul a:hover,.nav-ul a.on{color:var(--gold)}
+    .nav-ul a:hover::after,.nav-ul a.on::after{width:100%}
+    .npill{background:var(--gold)!important;color:var(--bg)!important;font-weight:700!important;padding:.5rem 1.3rem!important;border-radius:50px!important}
+    .npill::after{display:none!important}
+    .npill:hover{background:var(--gold2)!important;transform:translateY(-2px);box-shadow:0 6px 22px rgba(232,184,75,.35)!important}
+    .ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+    .ham span{width:22px;height:1.5px;background:var(--text);border-radius:2px;transition:all .3s}
+    .ham.on span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .ham.on span:nth-child(2){opacity:0}
+    .ham.on span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+    /* ═══ MOB MENU ═══ */
+    .mob{position:fixed;inset:0;z-index:850;background:rgba(8,6,20,.97);backdrop-filter:blur(24px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.2rem;opacity:0;pointer-events:none;transition:opacity .35s}
+    .mob.on{opacity:1;pointer-events:all}
+    .mob a{font-family:var(--serif);font-size:2.1rem;font-weight:700;color:var(--text);text-decoration:none;transition:color .25s}
+    .mob a:hover{color:var(--gold)}
+    .mob-x{position:absolute;top:1.7rem;right:1.7rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:var(--text);font-size:1.2rem;cursor:pointer}
+
+    /* ═══ PAGE HERO ═══ */
+    .page-hero{
+      position:relative;z-index:2;
+      min-height:70svh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;
+      padding:9rem 2rem 5rem;overflow:hidden;
+    }
+    .page-hero::before{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,75,.07),transparent 70%);pointer-events:none;animation:gpulse 8s ease-in-out infinite}
+    @keyframes gpulse{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.06)}}
+
+    /* rings */
+    .rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+    .ring{position:absolute;border-radius:50%;border:1px solid rgba(232,184,75,.06);animation:rpulse 7s ease-in-out infinite}
+    .ring:nth-child(1){width:320px;height:320px}
+    .ring:nth-child(2){width:560px;height:560px;animation-delay:2.5s}
+    .ring:nth-child(3){width:800px;height:800px;animation-delay:5s}
+    @keyframes rpulse{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:.5;transform:scale(1.04)}}
+
+    /* floating emojis hero */
+    .hfb{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .hfp{position:absolute;opacity:.04;animation:rise linear infinite}
+    @keyframes rise{0%{transform:translateY(110vh) rotate(0deg)}100%{transform:translateY(-15vh) rotate(360deg)}}
+
+    .badge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(232,184,75,.09);border:1px solid rgba(232,184,75,.22);color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.32rem 1rem;border-radius:50px;margin-bottom:1.8rem;animation:fu .8s var(--ease) .1s both}
+    .badge .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:blink 1.4s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
+
+    .page-hero h1{font-family:var(--serif);font-size:clamp(2.8rem,6vw,5rem);font-weight:700;color:#fff;line-height:1.1;animation:fu .9s var(--ease) .2s both}
+    .page-hero h1 em{color:var(--gold);font-style:italic;text-shadow:0 0 50px rgba(232,184,75,.4)}
+    .page-hero p{font-size:1.05rem;color:var(--muted);max-width:560px;line-height:1.78;margin-top:1.2rem;animation:fu .9s var(--ease) .36s both}
+
+    /* breadcrumb */
+    .breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted);margin-top:2rem;animation:fu .9s var(--ease) .5s both}
+    .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .25s}
+    .breadcrumb a:hover{color:var(--gold)}
+    .breadcrumb span{color:var(--gold)}
+
+    @keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ═══ SECTION BASE ═══ */
+    section{position:relative;z-index:2}
+    .si{max-width:1280px;margin:0 auto;padding:0 2.5rem}
+    .sh{text-align:center;margin-bottom:3.5rem}
+    .stag{display:inline-flex;align-items:center;gap:.4rem;background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.2);color:var(--gold);font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.28rem .9rem;border-radius:50px;margin-bottom:.9rem}
+    .sh h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:#fff;line-height:1.15}
+    .sh h2 em{color:var(--gold);font-style:italic}
+    .sh p{color:var(--muted);font-size:.97rem;margin-top:.8rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.75}
+
+    /* ═══ VISI MISI ═══ */
+    .vm-sec{padding:6rem 0;background:var(--bg2)}
+    .vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    .vm-img{border-radius:22px;overflow:hidden;position:relative;box-shadow:0 36px 80px rgba(0,0,0,.65)}
+    .vm-img img{width:100%;height:460px;object-fit:cover;display:block;transition:transform .7s var(--ease)}
+    .vm-img:hover img{transform:scale(1.04)}
+    .vm-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,6,20,.5),transparent 55%)}
+    /* corner accent */
+    .vm-img::before{content:'';position:absolute;top:-1px;left:-1px;width:70px;height:70px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);border-radius:22px 0 0 0;z-index:2;pointer-events:none}
+
+    .vm-r .stag{margin-bottom:1rem}
+    .vm-r h2{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:#fff;margin-bottom:1.3rem;line-height:1.15}
+    .vm-r h2 em{color:var(--gold);font-style:italic}
+    .vm-r p{color:var(--muted);font-size:.95rem;line-height:1.8;margin-bottom:.9rem}
+
+    .misi-box{
+      display:flex;gap:1rem;align-items:flex-start;
+      background:rgba(31,212,176,.06);border:1px solid rgba(31,212,176,.18);
+      border-radius:16px;padding:1.3rem;margin-top:1.5rem;
+    }
+    .misi-box .mi{font-size:1.6rem;flex-shrink:0;margin-top:.1rem}
+    .misi-box strong{display:block;color:var(--teal);font-size:.85rem;font-weight:700;margin-bottom:.4rem;letter-spacing:.04em;text-transform:uppercase}
+    .misi-box p{color:var(--muted);font-size:.88rem;line-height:1.7;margin:0}
+
+    /* ═══ TIMELINE ═══ */
+    .tl-sec{padding:6rem 0}
+    .tl-wrap{position:relative;max-width:800px;margin:0 auto}
+    /* garis tengah */
+    .tl-line{position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--br) 10%,var(--br) 90%,transparent)}
+
+    .tl-item{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;margin-bottom:3rem;align-items:start}
+    .tl-item:last-child{margin-bottom:0}
+
+    /* dot */
+    .tl-dot{display:flex;align-items:center;justify-content:center;position:relative;z-index:3}
+    .tl-dot .dot{width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--bg2);box-shadow:0 0 0 4px rgba(232,184,75,.2),0 0 20px rgba(232,184,75,.3);margin-top:1.5rem;transition:all .3s}
+    .tl-item:hover .tl-dot .dot{box-shadow:0 0 0 8px rgba(232,184,75,.15),0 0 30px rgba(232,184,75,.5);transform:scale(1.2)}
+
+    /* content card */
+    .tl-card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:1.5rem 1.6rem;position:relative;transition:all .4s var(--ease)}
+    .tl-card:hover{border-color:rgba(232,184,75,.22);transform:translateY(-4px);box-shadow:0 18px 50px rgba(0,0,0,.5)}
+    .tl-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:0 0 18px 18px;transform:scaleX(0);transition:transform .4s var(--ease)}
+    .tl-card:hover::before{transform:scaleX(1)}
+    .tl-year{display:inline-block;font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--gold);line-height:1;margin-bottom:.5rem}
+    .tl-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:.5rem}
+    .tl-card p{color:var(--muted);font-size:.87rem;line-height:1.7}
+
+    /* left items: card left, empty right */
+    .tl-item.left .tl-left{order:1}
+    .tl-item.left .tl-dot{order:2}
+    .tl-item.left .tl-right{order:3;visibility:hidden}
+    /* right items: empty left, card right */
+    .tl-item.right .tl-left{order:1;visibility:hidden}
+    .tl-item.right .tl-dot{order:2}
+    .tl-item.right .tl-right{order:3}
+
+    /* connector lines */
+    .tl-item.left .tl-left .tl-card::after{content:'';position:absolute;right:-22px;top:1.8rem;width:22px;height:1px;background:rgba(232,184,75,.25)}
+    .tl-item.right .tl-right .tl-card::after{content:'';position:absolute;left:-22px;top:1.8rem;width:22px;height:1px;background:rgba(232,184,75,.25)}
+
+    /* ═══ NILAI ═══ */
+    .nilai-sec{padding:6rem 0;background:var(--bg2)}
+    .nilai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .nilai-card{
+      background:var(--panel);border:1px solid rgba(255,255,255,.06);
+      border-radius:22px;padding:2rem 1.8rem;position:relative;overflow:hidden;
+      transition:all .4s var(--ease);text-align:center;
+    }
+    .nilai-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));transform:scaleX(0);transition:transform .4s var(--ease)}
+    .nilai-card:hover{transform:translateY(-8px);border-color:rgba(232,184,75,.22);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+    .nilai-card:hover::before{transform:scaleX(1)}
+    .nilai-ico{width:60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 1.3rem}
+    .ni1{background:rgba(31,212,176,.1)}
+    .ni2{background:rgba(232,184,75,.1)}
+    .ni3{background:rgba(232,96,122,.1)}
+    .nilai-card h3{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--gold);margin-bottom:.75rem}
+    .nilai-card p{color:var(--muted);font-size:.9rem;line-height:1.72}
+
+    /* ═══ TIM ═══ */
+    .tim-sec{padding:6rem 0}
+    .tim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+    .tim-card{
+      background:var(--panel);border:1px solid rgba(255,255,255,.06);
+      border-radius:20px;overflow:hidden;
+      transition:all .4s var(--ease);position:relative;
+    }
+    .tim-card:hover{transform:translateY(-8px);border-color:rgba(232,184,75,.22);box-shadow:0 24px 60px rgba(0,0,0,.55)}
+    .tim-photo{height:200px;position:relative;overflow:hidden}
+    .tim-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .5s var(--ease)}
+    .tim-card:hover .tim-photo img{transform:scale(1.07)}
+    .tim-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,6,20,.85) 0%,transparent 50%)}
+    .tim-role{position:absolute;bottom:.75rem;left:.75rem;z-index:2;background:rgba(232,184,75,.2);border:1px solid rgba(232,184,75,.4);color:var(--gold2);font-size:.62rem;font-weight:700;padding:.2rem .7rem;border-radius:50px;letter-spacing:.06em;text-transform:uppercase}
+    .tim-body{padding:1.1rem 1.2rem}
+    .tim-body h3{font-family:var(--serif);font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:.25rem;line-height:1.3}
+    .tim-body p{color:var(--muted);font-size:.78rem;line-height:1.65}
+
+    /* ═══ STATS ═══ */
+    .stats-sec{padding:5rem 0;background:linear-gradient(135deg,var(--p2) 0%,#0e1a38 100%);border-top:1px solid var(--br);border-bottom:1px solid var(--br)}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+    .stat-card{text-align:center;padding:2rem 1rem;background:rgba(255,255,255,.03);border:1px solid rgba(232,184,75,.08);border-radius:20px;transition:all .35s}
+    .stat-card:hover{border-color:rgba(232,184,75,.25);background:rgba(232,184,75,.04);transform:translateY(-5px)}
+    .stat-card .sn{font-family:var(--serif);font-size:2.8rem;font-weight:700;color:var(--gold);line-height:1;margin-bottom:.4rem}
+    .stat-card .sl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.09em}
+
+    /* ═══ KONTAK ═══ */
+    .contact-sec{padding:6rem 0;background:var(--bg2)}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+    .contact-info{background:var(--panel);border:1px solid var(--br);border-radius:24px;padding:2.5rem}
+    .contact-info h3{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:2rem}
+    .ci-item{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.5rem}
+    .ci-ico{width:40px;height:40px;border-radius:11px;background:rgba(232,184,75,.1);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .ci-body strong{display:block;font-size:.85rem;color:var(--text);margin-bottom:.25rem}
+    .ci-body span,.ci-body a{color:var(--muted);font-size:.83rem;line-height:1.6;text-decoration:none;transition:color .25s}
+    .ci-body a:hover{color:var(--gold)}
+    .map-box{border-radius:20px;overflow:hidden;border:1px solid var(--br);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+    .map-box iframe{width:100%;height:100%;min-height:380px;border:none;display:block}
+
+    /* ═══ FOOTER ═══ */
+    footer{background:var(--bg);border-top:1px solid rgba(255,255,255,.05);padding:4.5rem 0 0;z-index:2;position:relative}
+    .foot-g{max-width:1280px;margin:0 auto;padding:0 2.5rem;display:grid;grid-template-columns:2.2fr 1fr 1fr 1.4fr;gap:3.5rem}
+    .foot-brand .fl{display:flex;align-items:center;gap:.6rem;margin-bottom:1.1rem;text-decoration:none}
+    .foot-brand .fl img{height:32px;border-radius:7px}
+    .foot-brand .fl span{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--gold)}
+    .foot-brand p{color:var(--muted);font-size:.86rem;line-height:1.75;max-width:280px;margin-bottom:1.4rem}
+    .soc{display:flex;gap:.7rem}
+    .soc a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.82rem;text-decoration:none;transition:all .3s}
+    .soc a:hover{background:rgba(232,184,75,.12);color:var(--gold);border-color:rgba(232,184,75,.25);transform:translateY(-2px)}
+    .foot-col h4{color:var(--text);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem}
+    .foot-col ul{list-style:none}
+    .foot-col li{margin-bottom:.6rem}
+    .foot-col a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .3s}
+    .foot-col a:hover{color:var(--gold)}
+    .fci{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.7rem}
+    .fci .ico{font-size:.9rem;flex-shrink:0;margin-top:.1rem}
+    .fci span,.fci a{color:var(--muted);font-size:.83rem;line-height:1.55;text-decoration:none;transition:color .3s}
+    .fci a:hover{color:var(--gold)}
+    .foot-bottom{max-width:1280px;margin:3rem auto 0;padding:1.3rem 2.5rem;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.7rem;font-size:.76rem;color:var(--muted)}
+
+    /* ═══ REVEAL ═══ */
+    .rv{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+    .rv.vi{opacity:1;transform:none}
+    .rvl{opacity:0;transform:translateX(-26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+    .rvl.vi{opacity:1;transform:none}
+    .rvr{opacity:0;transform:translateX(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+    .rvr.vi{opacity:1;transform:none}
+    .d1{transition-delay:.08s}.d2{transition-delay:.17s}.d3{transition-delay:.26s}.d4{transition-delay:.35s}
+
+    /* ═══ BTT ═══ */
+    #btt{position:fixed;bottom:1.8rem;right:1.8rem;z-index:800;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 22px rgba(232,184,75,.4);opacity:0;pointer-events:none;transition:all .3s}
+    #btt.on{opacity:1;pointer-events:all}
+    #btt:hover{transform:translateY(-3px)}
+
+    /* ═══ BOTTOM NAV MOBILE ═══ */
+    #bnav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:950;background:rgba(8,6,20,.97);backdrop-filter:blur(22px);border-top:1px solid rgba(232,184,75,.1);padding:.42rem 0 max(env(safe-area-inset-bottom,.35rem),.35rem);justify-content:space-around;align-items:center}
+    .bn{display:flex;flex-direction:column;align-items:center;gap:.15rem;flex:1;padding:.3rem .1rem;background:none;border:none;cursor:pointer;color:var(--muted);font-family:var(--sans);font-size:.54rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:color .2s;min-height:48px;justify-content:center}
+    .bn .bi{font-size:1.2rem;line-height:1}
+    .bn.on{color:var(--gold)}
+    .bn.on .bi{filter:drop-shadow(0 0 5px rgba(232,184,75,.55))}
+    .bn:active{transform:scale(.9)}
+
+    /* ═══ RESPONSIVE ═══ */
+    @media(max-width:900px){
+      .ham{display:flex}
+      .nav-ul{display:none}
+      .vm-grid,.contact-grid{grid-template-columns:1fr;gap:2.5rem}
+      .vm-img{height:280px}
+      .vm-img img{height:280px}
+      .tim-grid{grid-template-columns:repeat(2,1fr)}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .foot-g{grid-template-columns:1fr 1fr;gap:2.5rem}
+      /* mobile timeline — stack */
+      .tl-line{left:20px;transform:none}
+      .tl-item{grid-template-columns:40px 1fr;grid-template-rows:auto}
+      .tl-item.left .tl-left,.tl-item.right .tl-right{grid-column:2;visibility:visible}
+      .tl-item.left .tl-right,.tl-item.right .tl-left{display:none}
+      .tl-item.left .tl-dot,.tl-item.right .tl-dot{grid-column:1;grid-row:1}
+      .tl-item.left .tl-left,.tl-item.right .tl-right{grid-row:1;padding-left:.5rem}
+      .tl-item.left .tl-left .tl-card::after,.tl-item.right .tl-right .tl-card::after{display:none}
+      .nilai-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:600px){
+      body{cursor:default}
+      #cur,#cur2{display:none!important}
+      #stars{opacity:.35}
+      nav{padding:.82rem 1.2rem}
+      .logo-n{font-size:1.05rem}
+      .logo img{height:30px}
+      .page-hero{padding:6rem 1.2rem 3rem;min-height:auto}
+      .page-hero h1{font-size:clamp(2rem,8vw,2.8rem)}
+      .page-hero p{font-size:.92rem}
+      .si{padding:0 1.1rem}
+      .vm-sec,.tl-sec,.nilai-sec,.tim-sec,.stats-sec,.contact-sec{padding:3.5rem 0}
+      .sh{margin-bottom:2.3rem}
+      .vm-img,.vm-img img{height:230px}
+      .vm-r h2{font-size:1.6rem}
+      .tim-grid{grid-template-columns:repeat(2,1fr);gap:1rem}
+      .tim-photo{height:160px}
+      .stats-grid{grid-template-columns:repeat(2,1fr);gap:1rem}
+      .stat-card .sn{font-size:2.2rem}
+      .nilai-grid{gap:1rem}
+      .contact-grid{grid-template-columns:1fr}
+      .contact-info{padding:1.5rem}
+      .map-box iframe{min-height:240px}
+      .foot-g{grid-template-columns:1fr;gap:2rem;padding:0 1.2rem}
+      .foot-brand p{max-width:100%}
+      .foot-bottom{flex-direction:column;text-align:center;padding:1.1rem 1.2rem}
+      footer{padding:3rem 0 0}
+      #btt{bottom:5.2rem;right:.9rem}
+      #bnav{display:flex}
+    }
+  </style>
 </head>
-<body class="font-poppins bg-gray-50">
-    <!-- Header -->
-    <header class="bg-gray-800 text-white shadow-lg">
-        <nav class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-4">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/logo1.png" class="h-12">
-                    <span class="text-xl font-bold">WIYATA PUSTAKA SMK PAWIYATAN</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="https://wiyatapustaka.vercel.app" class="hover:text-emerald-200 transition">Beranda</a>
-                    <a href="https://wiyatapustaka.vercel.app/ebook.html" class="hover:text-emerald-200 transition">e-book</a>
-                    <a href="http://182.253.40.155/Perpustakaan" class="hover:text-emerald-200 transition">Layanan</a>
-                    <button class="bg-white text-emerald-800 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition"><a href="https://wiyatapustaka.vercel.app"></a>Masuk</button>
-                </div>
-                <button class="md:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-        </nav>
-    </header>
+<body>
 
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-pink-700 to-teal-600 text-white py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 fade-in">Tentang Kami</h1>
-            <p class="text-xl max-w-2xl mx-auto fade-in">Menjadikan perpustakaan sebagai pusat pengetahuan dan literasi di sekolah dengan berbasis ICT (Information and Communication Technology)</p>
+<div id="cur" aria-hidden="true"></div>
+<div id="cur2" aria-hidden="true"></div>
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<!-- ═══ HEADER ═══ -->
+<header id="hdr">
+  <nav>
+    <a class="logo" href="https://wiyatapustaka.vercel.app/" aria-label="Wiyata Pustaka Beranda">
+      <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/logo1.png"
+           alt="Logo SMK Pawiyatan" onerror="this.style.display='none'">
+      <div><span class="logo-n">Wiyata Pustaka</span><span class="logo-s">SMK Pawiyatan Surabaya</span></div>
+    </a>
+    <ul class="nav-ul" role="navigation" aria-label="Navigasi utama">
+      <li><a href="https://wiyatapustaka.vercel.app/">Beranda</a></li>
+      <li><a href="https://wiyatapustaka.vercel.app/ebook.html">E-Book</a></li>
+      <li><a href="http://182.253.40.155/Perpustakaan">Layanan</a></li>
+      <li><a href="https://wiyatapustaka.vercel.app/about.html" class="on">Tentang</a></li>
+      <li><a href="https://wiyatapustaka.vercel.app/caribuku.html" class="npill">Cari Buku</a></li>
+    </ul>
+    <button class="ham" id="ham" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mob" id="mob" role="dialog" aria-modal="true">
+  <button class="mob-x" id="mobx" aria-label="Tutup menu">✕</button>
+  <a href="https://wiyatapustaka.vercel.app/">Beranda</a>
+  <a href="https://wiyatapustaka.vercel.app/ebook.html">E-Book</a>
+  <a href="http://182.253.40.155/Perpustakaan">Layanan</a>
+  <a href="https://wiyatapustaka.vercel.app/about.html">Tentang</a>
+  <a href="https://wiyatapustaka.vercel.app/caribuku.html">Cari Buku</a>
+</div>
+
+<!-- ═══ PAGE HERO ═══ -->
+<section class="page-hero" aria-label="Halaman tentang kami">
+  <div class="rings" aria-hidden="true">
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+  </div>
+  <div class="hfb" id="hfb" aria-hidden="true"></div>
+
+  <span class="badge"><span class="dot"></span>Perpustakaan SMK Pawiyatan Surabaya</span>
+  <h1>Tentang <em>Wiyata</em><br>Pustaka</h1>
+  <p>Menjadikan perpustakaan sebagai pusat pengetahuan dan literasi sekolah berbasis ICT — melayani generasi cerdas Indonesia sejak 1990.</p>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="https://wiyatapustaka.vercel.app/">Beranda</a>
+    <span aria-hidden="true">›</span>
+    <span aria-current="page">Tentang Kami</span>
+  </nav>
+</section>
+
+<!-- ═══ VISI MISI ═══ -->
+<section class="vm-sec" aria-labelledby="vm-h">
+  <div class="si">
+    <div class="vm-grid">
+      <div class="vm-img rvl">
+        <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/latar2.jpg"
+             alt="Interior perpustakaan Wiyata Pustaka SMK Pawiyatan Surabaya" loading="lazy">
+      </div>
+      <div class="vm-r rvr">
+        <span class="stag">🎯 Visi & Misi</span>
+        <h2 id="vm-h">Fondasi <em>Kami</em></h2>
+        <p>Sebagai sumber belajar warga sekolah guna mendukung kegiatan belajar mengajar yang terdepan — sebagai investasi sumber daya pengetahuan yang cukup lengkap.</p>
+        <p>Memberikan layanan kepada seluruh siswa dan pengguna perpustakaan secara luas, serta ikut merealisasikan visi misi suksesnya program perpustakaan sekolah sebagai jantung pembelajaran ilmu pengetahuan seluruh warga sekolah.</p>
+        <div class="misi-box">
+          <span class="mi">🚀</span>
+          <div>
+            <strong>Misi Kami</strong>
+            <p>Mengembangkan SDM, Layanan Prima dan Pengelolaan informasi Perpustakaan dengan mewujudkan kualitas serta kuantitas buku bacaan dan referensi yang terus bertumbuh.</p>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Sejarah Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10 fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/latar2.jpg" alt="Gedung perpustakaan pertama yang sederhana di tahun 2010" class="rounded-lg shadow-xl">
-                </div>
-                <div class="md:w-1/2 fade-in">
-                    <h2 class="text-3xl font-bold mb-6 text-gray-800">Visi Kami</h2>
-                    <p class="text-gray-600 mb-4">Sebagai sumber belajar warga sekolah guna mendukung kegiatan belajar mengajar yang terdepan sebagai investasi sumber daya pengetahuan yang cukup lengkap.</p>
-                    <p class="text-gray-600 mb-6">Memberikan layanan kepada seluruh siswa dan pengguna perpustakaan secara luas, dan ikut merealisasikan visi misi serta suksesnya program utama perpustakaan sekolah yaitu sebagai jantung pembelajaran ilmu pegetahuan seluruh warga sekolah.</p>
-                    
-                    <div class="bg-emerald-50 p-6 rounded-lg border border-emerald-100">
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-emerald-600 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                            </svg>
-                            <div>
-                                <h4 class="font-bold text-emerald-800">Misi Kami</h4>
-                                <p class="text-gray-700">Mengembangkan SDM, Layanan Prima dan Pengelolaan informasi Perpustakaan dengan mewujudkan kualitas serta kuantitas buku bacaan dan referensi.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- ═══ TIMELINE ═══ -->
+<section class="tl-sec" aria-labelledby="tl-h">
+  <div class="si">
+    <div class="sh rv">
+      <span class="stag">📅 Perjalanan Kami</span>
+      <h2 id="tl-h">35 Tahun <em>Melayani</em></h2>
+      <p>Dari koleksi 100 buku fisik hingga ratusan e-book digital — inilah jejak perjalanan Wiyata Pustaka.</p>
+    </div>
+    <div class="tl-wrap">
+      <div class="tl-line" aria-hidden="true"></div>
+
+      <!-- 1990 -->
+      <div class="tl-item left rv d1">
+        <div class="tl-left"><div class="tl-card"><span class="tl-year">1990</span><h3>Pendirian Perpustakaan</h3><p>Perpustakaan mulai beroperasi dengan koleksi 100 buku fisik dan 1 staff — fondasi awal literasi sekolah.</p></div></div>
+        <div class="tl-dot"><div class="dot"></div></div>
+        <div class="tl-right"></div>
+      </div>
+
+      <!-- 2013 -->
+      <div class="tl-item right rv d2">
+        <div class="tl-left"></div>
+        <div class="tl-dot"><div class="dot"></div></div>
+        <div class="tl-right"><div class="tl-card"><span class="tl-year">2013</span><h3>Ekspansi Fisik</h3><p>Pembuatan ruangan baru dengan kapasitas lebih baik dan penambahan buku bacaan yang signifikan.</p></div></div>
+      </div>
+
+      <!-- 2015 -->
+      <div class="tl-item left rv d1">
+        <div class="tl-left"><div class="tl-card"><span class="tl-year">2015</span><h3>Transformasi Manajemen</h3><p>Pergantian manajemen dan penambahan staff khusus untuk pengembangan layanan yang lebih profesional.</p></div></div>
+        <div class="tl-dot"><div class="dot"></div></div>
+        <div class="tl-right"></div>
+      </div>
+
+      <!-- 2018 -->
+      <div class="tl-item right rv d2">
+        <div class="tl-left"></div>
+        <div class="tl-dot"><div class="dot"></div></div>
+        <div class="tl-right"><div class="tl-card"><span class="tl-year">2018</span><h3>Kolaborasi Nasional</h3><p>Kerjasama resmi dengan Perpustakaan Nasional RI untuk mendapatkan Nomor Pokok Perpustakaan (NPP).</p></div></div>
+      </div>
+
+      <!-- 2025 -->
+      <div class="tl-item left rv d1">
+        <div class="tl-left"><div class="tl-card"><span class="tl-year">2025</span><h3>Era Digital & Ekspansi</h3><p>Pemindahan ke ruangan baru 2× lebih besar, penambahan ruang baca, dan peluncuran platform digital Wiyata Pustaka.</p></div></div>
+        <div class="tl-dot"><div class="dot"></div></div>
+        <div class="tl-right"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NILAI ═══ -->
+<section class="nilai-sec" aria-labelledby="ni-h">
+  <div class="si">
+    <div class="sh rv">
+      <span class="stag">💎 Nilai-nilai</span>
+      <h2 id="ni-h">Yang Kami <em>Pegang</em></h2>
+      <p>Tiga pilar utama yang menjadi landasan setiap layanan dan keputusan kami.</p>
+    </div>
+    <div class="nilai-grid">
+      <div class="nilai-card rv d1">
+        <div class="nilai-ico ni1">✅</div>
+        <h3>Integritas</h3>
+        <p>Menjunjung tinggi kejujuran dan transparansi dalam setiap layanan dan pengelolaan koleksi perpustakaan.</p>
+      </div>
+      <div class="nilai-card rv d2">
+        <div class="nilai-ico ni2">💡</div>
+        <h3>Inovasi</h3>
+        <p>Terus mengembangkan layanan berbasis teknologi informasi untuk kemudahan akses pengetahuan tanpa batas.</p>
+      </div>
+      <div class="nilai-card rv d3">
+        <div class="nilai-ico ni3">🤝</div>
+        <h3>Komunitas</h3>
+        <p>Membangun ekosistem pembelajaran yang saling mendukung dan berbagi pengetahuan antar warga sekolah.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TIM ═══ -->
+<section class="tim-sec" aria-labelledby="tim-h">
+  <div class="si">
+    <div class="sh rv">
+      <span class="stag">👥 Tim Kami</span>
+      <h2 id="tim-h">Orang-orang <em>Berdedikasi</em></h2>
+      <p>Para profesional yang bekerja keras setiap hari untuk memberikan layanan perpustakaan terbaik.</p>
+    </div>
+    <div class="tim-grid">
+
+      <div class="tim-card rv d1">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team0.jpg"
+               alt="Andi Susanto, Kepala Sekolah SMK Pawiyatan Surabaya" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Kepala Sekolah</span>
         </div>
-    </section>
-
-    <!-- Timeline Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 fade-in">Perjalanan Kami</h2>
-            
-            <div class="relative max-w-3xl mx-auto">
-                <!-- Garis tengah -->
-                <div class="absolute left-4 md:left-1/2 h-full w-0.5 bg-emerald-200 transform -translate-x-1/2"></div>
-                
-                <!-- Item 1 -->
-                <div class="relative mb-12 pl-10 md:pl-0 md:flex md:odd:flex-row-reverse fade-in">
-                    <div class="md:w-1/2 md:px-8">
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                            <h3 class="font-bold text-xl text-emerald-700 mb-2">1990 - Pendirian</h3>
-                            <p class="text-gray-600">Perpustakaan mulai beroperasi dengan koleksi 100 buku fisik dan 1 staff</p>
-                        </div>
-                    </div>
-                    <div class="hidden md:block md:w-1/2"></div>
-                </div>
-                
-                <!-- Item 2 -->
-                <div class="relative mb-12 pl-10 md:pl-0 md:flex fade-in">
-                    <div class="hidden md:block md:w-1/2"></div>
-                    <div class="md:w-1/2 md:px-8">
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                            <h3 class="font-bold text-xl text-emerald-700 mb-2">2013 - Ekspansi Fisik</h3>
-                            <p class="text-gray-600">Pembuatan ruangan baru dengan kapasitas lebih baik dan penambahan buku bacaan</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Item 3 -->
-                <div class="relative mb-12 pl-10 md:pl-0 md:flex md:odd:flex-row-reverse fade-in">
-                    <div class="md:w-1/2 md:px-8">
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                            <h3 class="font-bold text-xl text-emerald-700 mb-2">2015 - Transformasi </h3>
-                            <p class="text-gray-600">Pengantian manajemen dan penambahan staff khusus untuk pengembangan lebih baik</p>
-                        </div>
-                    </div>
-                    <div class="hidden md:block md:w-1/2"></div>
-                </div>
-                
-                <!-- Item 4 -->
-                <div class="relative mb-12 pl-10 md:pl-0 md:flex fade-in">
-                    <div class="hidden md:block md:w-1/2"></div>
-                    <div class="md:w-1/2 md:px-8">
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                            <h3 class="font-bold text-xl text-emerald-700 mb-2">2018 - Kolaborasi Nasional</h3>
-                            <p class="text-gray-600">Kerjasama dengan perpustakaan nasional untuk mendapatkan NPP</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Item 5 -->
-                <div class="relative pl-10 md:pl-0 md:flex md:odd:flex-row-reverse fade-in">
-                    <div class="md:w-1/2 md:px-8">
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                            <h3 class="font-bold text-xl text-emerald-700 mb-2">2025 - Ekspansi Fisik</h3>
-                            <p class="text-gray-600">Pemindahan ruangan baru dengan kapasitas 2x lebih besar dan penambahan ruang baca</p>
-                        </div>
-                    </div>
-                    <div class="hidden md:block md:w-1/2"></div>
-                </div>
-            </div>
+        <div class="tim-body">
+          <h3>Andi Susanto, S.E, M.M.</h3>
+          <p>Sekolah sebagai lembaga pendidikan memiliki tugas dan tanggung jawab untuk mendidik anak bangsa yang berkualitas.</p>
         </div>
-    </section>
+      </div>
 
-    <!-- Nilai-nilai Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 fade-in">Nilai-nilai Kami</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Nilai 1 -->
-                <div class="value-card bg-white rounded-xl shadow-md p-6 border border-gray-100 transition duration-300 fade-in">
-                    <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-xl mb-3">Integritas</h3>
-                    <p class="text-gray-600">Kami menjunjung tinggi kejujuran dan transparansi dalam setiap layanan dan pengelolaan koleksi</p>
-                </div>
-                
-                <!-- Nilai 2 -->
-                <div class="value-card bg-white rounded-xl shadow-md p-6 border border-gray-100 transition duration-300 fade-in">
-                    <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-xl mb-3">Inovasi</h3>
-                    <p class="text-gray-600">Terus mengembangkan layanan berbasis teknologi untuk kemudahan akses pengetahuan</p>
-                </div>
-                
-                <!-- Nilai 3 -->
-                <div class="value-card bg-white rounded-xl shadow-md p-6 border border-gray-100 transition duration-300 fade-in">
-                    <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-xl mb-3">Komunitas</h3>
-                    <p class="text-gray-600">Membangun ekosistem pembelajar yang saling mendukung dan berbagi pengetahuan</p>
-                </div>
-            </div>
+      <div class="tim-card rv d2">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team1.jpg"
+               alt="Nuri Wida Gusharnanto, Kepala Perpustakaan Wiyata Pustaka" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Kepala Perpustakaan</span>
         </div>
-    </section>
-
-    <!-- Tim Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 fade-in">Tim Kami</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                <!-- Anggota 1 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team0.jpg" alt="Direktur perpustakaan - Pak Bambang, pria berusia 50an dengan kacamata dan senyum ramah" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">Andi Susanto, S.E, M.M.</h3>
-                        <p class="text-emerald-600 mb-3">Kepala Sekolah SMK Pawiyatan</p>
-                        <p class="text-gray-600 text-sm">Sekolah sebagai lembaga pendidikan memiliki tugas dan tanggung jawab kepada bangsa untuk mendidik anak bangsa yang berkualitas.</p>
-                    </div>
-                     <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team1.jpg" alt="Kepala koleksi - Ibu Dian, wanita berusia 40an dengan gaya profesional" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">Nuri Wida Gusharnanto, S.E</h3>
-                        <p class="text-emerald-600 mb-3">Kepala Perpustakaan</p>
-                        <p class="text-gray-600 text-sm">Menjadi kepala perpustakaan sejak 2025 dan bertanggung jawab atas pengembangan perpustakaan secara umum.</p>
-                    </div>
-                </div>
-                </div>
-                
-                <!-- Anggota 2 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team2.jpg" alt="Kepala koleksi - Ibu Dian, wanita berusia 40an dengan gaya profesional" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">Dra. Anisah, M.M.</h3>
-                        <p class="text-emerald-600 mb-3">Koordinator Perpustakaan</p>
-                        <p class="text-gray-600 text-sm">Mengelola operasional perpustakaan dan bertanggung jawab atas pengembangan koleksi dan adminstrasi perpustakaan.</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team3.jpg" alt="Kepala koleksi - Ibu Dian, wanita berusia 40an dengan gaya profesional" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">Bambang Kustriadi, M.Pd</h3>
-                        <p class="text-emerald-600 mb-3">Staff Perpustakaan I</p>
-                        <p class="text-gray-600 text-sm">Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka SMK Pawiyatan Surabaya.</p>
-                    </div>
-                </div>
-                 </div>
-                <!-- Anggota 3 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team6.jpg" alt="Pengembangan digital - Andi, pria muda dengan laptop dan headphone" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">Lukman Hidayat, S.E</h3>
-                        <p class="text-emerald-600 mb-3">Staff Perpustakaan II</p>
-                        <p class="text-gray-600 text-sm">Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka SMK Pawiyatan Surabaya.</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team5.jpg" alt="Pengembangan digital - Andi, pria muda dengan laptop dan headphone" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">Bambang Hendra Purnama</h3>
-                        <p class="text-emerald-600 mb-3">Staff Perpustakaan III</p>
-                        <p class="text-gray-600 text-sm">Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka SMK Pawiyatan Surabaya.</p>
-                    </div>
-                 </div>
-                </div>
-                    
-                <!-- Anggota 4 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team7.png" alt="Layanan anggota - Sari, wanita muda ramah dengan tumpukan buku" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">hamsyah</h3>
-                        <p class="text-emerald-600 mb-3">Staff Perpustakaan IV</p>
-                        <p class="text-gray-600 text-sm">Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka SMK Pawiyatan Surabaya.</p>
-                   </div>
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg fade-in">
-                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team8.png" alt="Pengembangan digital - Andi, pria muda dengan laptop dan headphone" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-1">Putri Dewayanti</h3>
-                        <p class="text-emerald-600 mb-3">Siswa Magang</p>
-                        <p class="text-gray-600 text-sm">Siswa SMK Pawiyatan Surabaya yang melakukan tugas Praktik Kerja Lapangan di Perpustakaan Sekolah.</p>
-                    </div>
-                   </div>
-                   </div>
-    </section>
-
-    <!-- Pencapaian Section -->
-    <section class="py-16 bg-emerald-800 text-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12 fade-in">Layanan Kami</h2>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="text-center fade-in">
-                    <p class="text-4xl font-bold mb-2">500+</p>
-                    <p class="text-pink-200">Judul Buku</p>
-                </div>
-                <div class="text-center fade-in">
-                    <p class="text-4xl font-bold mb-2">1.3K+</p>
-                    <p class="text-pink-200">Jumlah Buku</p>
-                </div>
-                <div class="text-center fade-in">
-                    <p class="text-4xl font-bold mb-2">400+</p>
-                    <p class="text-pink-200">Anggota Siswa Baru</p>
-                </div>
-                <div class="text-center fade-in">
-                    <p class="text-4xl font-bold mb-2">12+</p>
-                    <p class="text-pink-200">Kegiatan Tahunan</p>
-                </div>
-            </div>
+        <div class="tim-body">
+          <h3>Nuri Wida Gusharnanto, S.E</h3>
+          <p>Menjadi kepala perpustakaan sejak 2025 dan bertanggung jawab atas pengembangan perpustakaan secara umum.</p>
         </div>
-    </section>
+      </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white pt-12 pb-6">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="font-bold text-xl mb-4">Wiyata Pustaka</h3>
-                    <p class="text-gray-400">Menjadikan perpustakaan sebagai jantung pembelajaran, pusat layanan informasi dan ilmu pengetahuan dengan standar pengelolaan yang berlaku.</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="https://www.youtube.com/@senjaverseID/shorts" class="text-gray-400 hover:text-white transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
-                            </svg>
-                        </a>
-                        <a href="https://www.youtube.com/@skismektan27" class="text-gray-400 hover:text-white transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                            </svg>
-                        </a>
-                        <a href="https://smkpawiyatan.sch.id/" class="text-gray-400 hover:text-white transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-lg mb-4">Layanan</h4>
-                    <ul class="space-y-2">
-                        <li><a href="https://wiyatapustaka.vercel.app" class="text-gray-400 hover:text-white transition">Beranda</a></li>
-                        <li><a href="https://wiyatapustaka.vercel.app/caribuku.html" class="text-gray-400 hover:text-white transition">Cari Buku</a></li>
-                        <li><a href="https://wiyatapustaka.vercel.app/ebook.html" class="text-gray-400 hover:text-white transition">E-Book</a></li>
-                        <li><a href="http://182.253.40.155/Perpustakaan/bacaditempat/site/login" class="text-gray-400 hover:text-white transition">Back Office</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-lg mb-4">Kontak</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            Jl. Tangkis Turi No.4-6, Kota Surabaya, Jawa Timur
-                           Email:wiyatapustaka46@gmail.com
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
-                           (031) 5342 508 <a href="https://wa.me/6285730935399" class="hover:text-emerald-200 transition"> / 0857 3093 5399</a>
-                        </li>
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-
+      <div class="tim-card rv d3">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team2.jpg"
+               alt="Dra. Anisah, Koordinator Perpustakaan Wiyata Pustaka" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Koordinator</span>
+        </div>
+        <div class="tim-body">
+          <h3>Dra. Anisah, M.M.</h3>
+          <p>Mengelola operasional perpustakaan dan bertanggung jawab atas pengembangan koleksi dan administrasi.</p>
+        </div>
+      </div>
+
+      <div class="tim-card rv d4">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team3.jpg"
+               alt="Bambang Kustriadi, Staff Perpustakaan I" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Staff I</span>
+        </div>
+        <div class="tim-body">
+          <h3>Bambang Kustriadi, M.Pd</h3>
+          <p>Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka.</p>
+        </div>
+      </div>
+
+      <div class="tim-card rv d1">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team6.jpg"
+               alt="Lukman Hidayat, Staff Perpustakaan II" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Staff II</span>
+        </div>
+        <div class="tim-body">
+          <h3>Lukman Hidayat, S.E</h3>
+          <p>Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka.</p>
+        </div>
+      </div>
+
+      <div class="tim-card rv d2">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team5.jpg"
+               alt="Bambang Hendra Purnama, Staff Perpustakaan III" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Staff III</span>
+        </div>
+        <div class="tim-body">
+          <h3>Bambang Hendra Purnama</h3>
+          <p>Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka.</p>
+        </div>
+      </div>
+
+      <div class="tim-card rv d3">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team7.png"
+               alt="Hamsyah, Staff Perpustakaan IV" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Staff IV</span>
+        </div>
+        <div class="tim-body">
+          <h3>Hamsyah</h3>
+          <p>Staff perpustakaan yang siap memberikan pelayanan terbaik untuk anggota Wiyata Pustaka.</p>
+        </div>
+      </div>
+
+      <div class="tim-card rv d4">
+        <div class="tim-photo">
+          <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/team8.png"
+               alt="Putri Dewayanti, Siswa Magang Perpustakaan" loading="lazy" onerror="this.style.background='var(--panel2)'">
+          <span class="tim-role">Siswa Magang</span>
+        </div>
+        <div class="tim-body">
+          <h3>Putri Dewayanti</h3>
+          <p>Siswa SMK Pawiyatan yang melaksanakan Praktik Kerja Lapangan di Perpustakaan Sekolah.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATISTIK ═══ -->
+<section class="stats-sec" aria-labelledby="st-h">
+  <div class="si">
+    <div class="sh rv">
+      <span class="stag">📊 Pencapaian Kami</span>
+      <h2 id="st-h">Angka yang <em>Berbicara</em></h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card rv d1"><div class="sn" id="s1">0</div><div class="sl">Judul Buku</div></div>
+      <div class="stat-card rv d2"><div class="sn" id="s2">0</div><div class="sl">Jumlah Buku</div></div>
+      <div class="stat-card rv d3"><div class="sn" id="s3">0</div><div class="sl">Anggota Siswa Baru</div></div>
+      <div class="stat-card rv d4"><div class="sn" id="s4">0</div><div class="sl">Kegiatan Tahunan</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KONTAK ═══ -->
+<section class="contact-sec" aria-labelledby="co-h">
+  <div class="si">
+    <div class="sh rv">
+      <span class="stag">📞 Hubungi Kami</span>
+      <h2 id="co-h">Kami Siap <em>Membantu</em></h2>
+      <p>Kunjungi kami langsung atau hubungi melalui salah satu saluran berikut.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info rv">
+        <h3>Informasi Kontak</h3>
+        <div class="ci-item">
+          <div class="ci-ico">🏛️</div>
+          <div class="ci-body"><strong>Nomor Pokok Perpustakaan</strong><span>3578271H2000003</span></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-ico">📍</div>
+          <div class="ci-body"><strong>Alamat</strong><span>Jl. Tangkis Turi No.4-6, Sukomanunggal, Surabaya 60275</span></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-ico">📞</div>
+          <div class="ci-body"><strong>Telepon / WhatsApp</strong><a href="https://wa.me/6285730935399">(031) 5342-508 / 0857-3093-5399</a></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-ico">📧</div>
+          <div class="ci-body"><strong>Email</strong><a href="mailto:wiyatapustaka46@gmail.com">wiyatapustaka46@gmail.com</a></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-ico">🕐</div>
+          <div class="ci-body"><strong>Jam Operasional</strong><span>Senin – Jumat: 07.00 – 14.00 WIB<br>Sabtu, Minggu & Libur: Tutup</span></div>
+        </div>
+      </div>
+      <div class="map-box rv">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.4506745576994!2d112.7085!3d-7.2671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMTYnMDEuNiJTIDExMsKwNDInMzAuNiJF!5e0!3m2!1sid!2sid!4v1600000000000"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Lokasi SMK Pawiyatan Surabaya" aria-label="Peta lokasi SMK Pawiyatan Surabaya">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="foot-g">
+    <div class="foot-brand">
+      <a class="fl" href="https://wiyatapustaka.vercel.app/" aria-label="Wiyata Pustaka">
+        <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/logo1.png" alt="Logo" onerror="this.style.display='none'">
+        <span>Wiyata Pustaka</span>
+      </a>
+      <p>Menjadikan perpustakaan sebagai jantung pembelajaran dan pusat layanan informasi untuk generasi cerdas Indonesia.</p>
+      <div class="soc">
+        <a href="https://www.youtube.com/@senjaverseID/shorts" target="_blank" rel="noopener" aria-label="YouTube">▶</a>
+        <a href="https://www.instagram.com/smkpawiyatan" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="https://smkpawiyatan.sch.id/" target="_blank" rel="noopener" aria-label="Website Sekolah">🌐</a>
+        <a href="https://wa.me/6285730935399" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Layanan</h4>
+      <ul>
+        <li><a href="https://wiyatapustaka.vercel.app/">Beranda</a></li>
+        <li><a href="https://wiyatapustaka.vercel.app/caribuku.html">Cari Buku</a></li>
+        <li><a href="https://wiyatapustaka.vercel.app/ebook.html">E-Book</a></li>
+        <li><a href="http://182.253.40.155/Perpustakaan/bacaditempat/site/login" target="_blank" rel="noopener">Back Office</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Tautan</h4>
+      <ul>
+        <li><a href="https://smkpawiyatan.sch.id/" target="_blank" rel="noopener">SMK Pawiyatan</a></li>
+        <li><a href="https://data.perpusnas.go.id/home/qrcode/3578271H2000003" target="_blank" rel="noopener">Perpusnas RI</a></li>
+        <li><a href="https://www.instagram.com/smkpawiyatan" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://wa.me/6285730935399" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Kontak</h4>
+      <ul style="list-style:none">
+        <li class="fci"><span class="ico">📍</span><span>Jl. Tangkis Turi No.4-6, Surabaya 60275</span></li>
+        <li class="fci"><span class="ico">📞</span><a href="https://wa.me/6285730935399">(031) 5342-508 / 0857-3093-5399</a></li>
+        <li class="fci"><span class="ico">📧</span><a href="mailto:wiyatapustaka46@gmail.com">wiyatapustaka46@gmail.com</a></li>
+        <li class="fci"><span class="ico">🕐</span><span>Senin–Jumat, 07.00–14.00 WIB</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <p>© 2025 Wiyata Pustaka — SMK Pawiyatan Surabaya. All Rights Reserved.</p>
+    <p>Melayani literasi bangsa dengan sepenuh hati 🇮🇩</p>
+  </div>
+</footer>
+
+<button id="btt" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Kembali ke atas">↑</button>
+
+<nav id="bnav" aria-label="Navigasi bawah">
+  <a class="bn" href="https://wiyatapustaka.vercel.app/" aria-label="Beranda"><span class="bi">🏠</span><span>Beranda</span></a>
+  <a class="bn" href="https://wiyatapustaka.vercel.app/ebook.html" aria-label="E-Book"><span class="bi">📚</span><span>E-Book</span></a>
+  <a class="bn" href="https://wiyatapustaka.vercel.app/caribuku.html" aria-label="Cari Buku"><span class="bi">🔍</span><span>Cari Buku</span></a>
+  <a class="bn on" href="https://wiyatapustaka.vercel.app/about.html" aria-label="Tentang"><span class="bi">ℹ️</span><span>Tentang</span></a>
+</nav>
+
+<!-- ═══ SCRIPT ═══ -->
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+if(window.matchMedia('(pointer:fine)').matches){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+  (function lp(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cur2.style.left=rx+'px';cur2.style.top=ry+'px';requestAnimationFrame(lp)})();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cur2.style.transform='translate(-50%,-50%) scale(1.7)');
+    el.addEventListener('mouseleave',()=>cur2.style.transform='translate(-50%,-50%) scale(1)');
+  });
+}
+
+/* ── STAR FIELD ── */
+const cv=document.getElementById('stars'),cx=cv.getContext('2d');
+const isMob=window.matchMedia('(pointer:coarse)').matches;
+let W,H,stars=[];
+function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight}rsz();addEventListener('resize',rsz);
+class Star{
+  constructor(){this.reset()}
+  reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*.8+.1;this.a=Math.random()*.5+.1;this.da=(Math.random()-.5)*.003;this.dx=(Math.random()-.5)*.12;this.dy=(Math.random()-.5)*.12}
+  draw(){this.x+=this.dx;this.y+=this.dy;this.a+=this.da;if(this.a<=0||this.a>1)this.da*=-1;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fillStyle=`rgba(232,184,75,${this.a})`;cx.fill()}
+}
+for(let i=0;i<(isMob?55:160);i++)stars.push(new Star());
+(function draw(){
+  cx.clearRect(0,0,W,H);stars.forEach(s=>s.draw());
+  if(!isMob)for(let i=0;i<stars.length;i++)for(let j=i+1;j<stars.length;j++){
+    const dx=stars[i].x-stars[j].x,dy=stars[i].y-stars[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<80){cx.beginPath();cx.moveTo(stars[i].x,stars[i].y);cx.lineTo(stars[j].x,stars[j].y);cx.strokeStyle=`rgba(232,184,75,${.04*(1-d/80)})`;cx.lineWidth=.4;cx.stroke()}
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ── HERO PARTICLES ── */
+'📚📖📝📕📗📘✏️🎓💡🔖'.split('').forEach(e=>{
+  const el=document.createElement('span');el.className='hfp';el.textContent=e;
+  el.style.cssText=`left:${Math.random()*100}%;font-size:${.9+Math.random()*1.4}rem;animation-duration:${13+Math.random()*20}s;animation-delay:-${Math.random()*30}s`;
+  document.getElementById('hfb').appendChild(el);
+});
+
+/* ── HEADER SCROLL ── */
+const hdr=document.getElementById('hdr'),btt=document.getElementById('btt');
+addEventListener('scroll',()=>{hdr.classList.toggle('sc',scrollY>50);btt.classList.toggle('on',scrollY>400)});
+
+/* ── HAMBURGER ── */
+const ham=document.getElementById('ham'),mob=document.getElementById('mob'),mobx=document.getElementById('mobx');
+ham.addEventListener('click',()=>{ham.classList.toggle('on');mob.classList.toggle('on');ham.setAttribute('aria-expanded',mob.classList.contains('on'))});
+mobx.addEventListener('click',closeMob);
+mob.addEventListener('click',e=>{if(e.target===mob)closeMob()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMob()});
+function closeMob(){ham.classList.remove('on');mob.classList.remove('on');ham.setAttribute('aria-expanded','false')}
+
+/* ── COUNTER ── */
+function cntUp(el,target,suffix,dur){
+  let s=0,step=target/(dur/16);
+  const t=setInterval(()=>{s=Math.min(s+step,target);el.textContent=Math.floor(s)+suffix;if(s>=target)clearInterval(t)},16);
+}
+let done=false;
+new IntersectionObserver(en=>{
+  if(en[0].isIntersecting&&!done){done=true;
+    cntUp(document.getElementById('s1'),500,'+',1600);
+    cntUp(document.getElementById('s2'),1300,'+',1800);
+    cntUp(document.getElementById('s3'),400,'+',1400);
+    cntUp(document.getElementById('s4'),12,'+',900);
+  }
+},{threshold:.3}).observe(document.getElementById('s1'));
+
+/* ── SCROLL REVEAL ── */
+(()=>{
+  const o=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vi')}),{threshold:.1});
+  document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>o.observe(el));
+})();
+
+/* ── TIMELINE STAGGER ── */
+document.querySelectorAll('.tl-item').forEach((item,i)=>{
+  item.style.transitionDelay=(i*0.1)+'s';
+});
+</script>
+</body>
+</html>

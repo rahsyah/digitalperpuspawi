@@ -837,6 +837,105 @@
       transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
     }
     .reveal.visible { opacity: 1; transform: none; }
+
+    /* ========= BUKU TERPOPULER ========= */
+    .popular-section {
+      position: relative; z-index: 1;
+      padding: 4rem 0 3rem;
+      background: linear-gradient(180deg, var(--ink) 0%, var(--deep) 50%, var(--ink) 100%);
+      border-top: 1px solid rgba(245,200,66,.1);
+    }
+    .popular-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 2.5rem;
+    }
+    .popular-head {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .popular-head .ph-tag {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: rgba(245,200,66,.1); border: 1px solid rgba(245,200,66,.25);
+      color: var(--accent); font-size: .7rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: .28rem .9rem; border-radius: 50px;
+    }
+    .popular-head h2 {
+      font-family: var(--font-head); font-size: 1.7rem; font-weight: 900;
+      color: #fff; line-height: 1.1;
+    }
+    .popular-head h2 em {
+      font-style: italic; color: var(--accent);
+      text-shadow: 0 0 30px rgba(245,200,66,.35);
+    }
+    .popular-head .ph-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, rgba(245,200,66,.2), transparent);
+    }
+    .pop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.4rem;
+    }
+    .pop-card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 18px; overflow: hidden;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      transition: all .4s cubic-bezier(.16,1,.3,1);
+      position: relative;
+    }
+    .pop-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: rgba(245,200,66,.25);
+      box-shadow: 0 28px 60px rgba(0,0,0,.55);
+    }
+    .pop-cover {
+      position: relative; height: 200px; overflow: hidden;
+    }
+    .pop-cover img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+    }
+    .pop-card:hover .pop-cover img { transform: scale(1.08); }
+    .pop-cover::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,11,30,.85) 0%, transparent 55%);
+    }
+    .pop-badge {
+      position: absolute; top: .65rem; right: .65rem; z-index: 2;
+      background: rgba(13,11,30,.75); backdrop-filter: blur(8px);
+      border: 1px solid rgba(245,200,66,.3); border-radius: 50px;
+      padding: .18rem .65rem; font-size: .7rem; font-weight: 700;
+      color: var(--accent); display: flex; align-items: center; gap: .2rem;
+    }
+    .pop-body { padding: 1.1rem; flex: 1; display: flex; flex-direction: column; }
+    .pop-body h3 {
+      font-family: var(--font-head); font-size: .95rem; font-weight: 700;
+      color: var(--text); margin-bottom: .25rem; line-height: 1.35;
+      transition: color .3s;
+    }
+    .pop-card:hover .pop-body h3 { color: var(--accent); }
+    .pop-body .pop-author { font-size: .76rem; color: var(--muted); margin-bottom: .9rem; }
+    .pop-btn {
+      display: block; text-align: center;
+      background: rgba(245,200,66,.08); border: 1px solid rgba(245,200,66,.2);
+      color: var(--accent); font-size: .78rem; font-weight: 700;
+      padding: .55rem; border-radius: 50px; margin-top: auto;
+      transition: all .3s;
+    }
+    .pop-card:hover .pop-btn { background: var(--accent); color: var(--ink); }
+
+    @media (max-width: 900px) { .pop-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) {
+      .popular-inner { padding: 0 1.1rem; }
+      .popular-section { padding: 3rem 0 2rem; }
+      .popular-head h2 { font-size: 1.3rem; }
+      .pop-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .pop-cover { height: 155px; }
+      .pop-body { padding: .85rem; }
+      .pop-body h3 { font-size: .85rem; }
+    }
   </style>
 </head>
 <body>
@@ -1328,6 +1427,81 @@
   </div>
 
 </main>
+
+
+<!-- ===== BUKU TERPOPULER ===== -->
+<section class="popular-section" aria-labelledby="pop-title">
+  <div class="popular-inner">
+    <div class="popular-head">
+      <span class="ph-tag">🔥 Terpopuler</span>
+      <h2>Buku <em>Pilihan</em> Siswa</h2>
+      <div class="ph-line" aria-hidden="true"></div>
+    </div>
+    <div class="pop-grid">
+
+      <a href="https://drive.google.com/file/d/1aattK1-mzRPiTUHvZgh_DI98S-8FHdWL/view?usp=sharing"
+         target="_blank" rel="noopener" class="pop-card"
+         aria-label="Negeri 5 Menara oleh Ahmad Fuadi">
+        <div class="pop-cover">
+          <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/5menara.jpg"
+               alt="Cover Negeri 5 Menara" loading="lazy" onerror="this.style.display='none'">
+          <span class="pop-badge">⭐ 4.5</span>
+        </div>
+        <div class="pop-body">
+          <h3>Negeri 5 Menara</h3>
+          <p class="pop-author">Ahmad Fuadi</p>
+          <span class="pop-btn">Baca Sekarang →</span>
+        </div>
+      </a>
+
+      <a href="https://drive.google.com/file/d/1q0BbOjJuap5hvWQZvLb9yVwDSRiWvq1-/view?usp=sharing"
+         target="_blank" rel="noopener" class="pop-card"
+         aria-label="Laskar Pelangi oleh Andrea Hirata">
+        <div class="pop-cover">
+          <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/pelangi.jfif"
+               alt="Cover Laskar Pelangi" loading="lazy" onerror="this.style.display='none'">
+          <span class="pop-badge">⭐ 4.8</span>
+        </div>
+        <div class="pop-body">
+          <h3>Laskar Pelangi</h3>
+          <p class="pop-author">Andrea Hirata</p>
+          <span class="pop-btn">Baca Sekarang →</span>
+        </div>
+      </a>
+
+      <a href="https://drive.google.com/file/d/1rQ-s8zCKo2MqGi0rGwc7nwJ1ZsXiW1UF/view?usp=sharing"
+         target="_blank" rel="noopener" class="pop-card"
+         aria-label="Atomic Habits oleh James Clear">
+        <div class="pop-cover">
+          <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/habits.jpg"
+               alt="Cover Atomic Habits" loading="lazy" onerror="this.style.display='none'">
+          <span class="pop-badge">⭐ 4.9</span>
+        </div>
+        <div class="pop-body">
+          <h3>Atomic Habits</h3>
+          <p class="pop-author">James Clear</p>
+          <span class="pop-btn">Baca Sekarang →</span>
+        </div>
+      </a>
+
+      <a href="https://drive.google.com/file/d/1_cAzLNx8mCp6TmSElPSdONgeNpJU4tuw/view?usp=sharing"
+         target="_blank" rel="noopener" class="pop-card"
+         aria-label="Homo Deus oleh Yuval Noah Harari">
+        <div class="pop-cover">
+          <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/homodeus.jfif"
+               alt="Cover Homo Deus" loading="lazy" onerror="this.style.display='none'">
+          <span class="pop-badge">⭐ 4.7</span>
+        </div>
+        <div class="pop-body">
+          <h3>Homo Deus</h3>
+          <p class="pop-author">Yuval Noah Harari</p>
+          <span class="pop-btn">Baca Sekarang →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
 
 <!-- ===== FOOTER ===== -->
 <footer>

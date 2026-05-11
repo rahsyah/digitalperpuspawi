@@ -930,27 +930,7 @@ function parseCSV(txt){
 
 /* ── Ambil daftar sheet dari halaman HTML publik spreadsheet ── */
 async function fetchSheetList(){
-  // Strategi: probe gid 0,1,2... dan gid umum lainnya secara paralel
-  // Tidak butuh API key — murni pakai URL export publik Google Sheets
-
-  // Set gid yang akan dicoba: 0 s/d 19, plus gid umum yang sering dipakai
-  const probeGids = [...Array(20).keys(), 100, 200, 300, 400, 500,
-    1234567890, 987654321, 111, 222, 333, 444, 555, 666, 777, 888, 999];
-
-  // Fetch HEAD untuk cek apakah gid valid (tidak redirect ke error)
-  async function probeGid(gid){
-    try {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
-      const res = await fetch(url, { method: 'GET', redirect: 'follow' });
-      if(!res.ok) return null;
-      const txt = await res.text();
-      const rows = parseCSV(txt);
-      if(!rows.length || !rows[0].some(c=>c)) return null;
-      return { gid: String(gid), data: txt };
-    } catch(_){ return null; }
-  }
-
-  // Coba cara terbaik dulu: parse daftar sheet dari URL publik feeds
+  // Metode 1: Google Spreadsheets Feeds API (tanpa API key, publik)
   try {
     const feedURL = `https://spreadsheets.google.com/feeds/worksheets/${SHEET_ID}/public/basic?alt=json`;
     const res = await fetch(feedURL);
@@ -958,52 +938,56 @@ async function fetchSheetList(){
       const json = await res.json();
       const entries = json.feed?.entry || [];
       if(entries.length){
-        const sheets = entries.map(e=>{
-          const link = e.link?.find(l=>l.rel==='http://schemas.google.com/spreadsheets/2006#cellsfeed');
-          const gidMatch = link?.href?.match(/\/([0-9]+)$/);
-          const gid = gidMatch ? gidMatch[1] : '0';
+        return entries.map(e=>{
+          // Ambil gid dari link cellsfeed
+          const href = e.link?.find(l=>l.rel?.includes('cellsfeed'))?.href || '';
+          const gid  = href.split('/').pop() || '0';
           return { gid, name: e.title?.$t || 'Sheet' };
         });
-        if(sheets.length) return sheets;
       }
     }
   } catch(_){}
 
-  // Fallback: probe gid 0 s/d 9 dan ambil CSV-nya langsung
-  // Google memberi nama otomatis Sheet1, Sheet2, ... jika tidak diketahui
-  const probeResults = await Promise.allSettled(
-    [0,1,2,3,4,5,6,7,8,9].map(async gid=>{
+  // Metode 2: Probe gid yang diketahui dari link + range umum
+  // Spreadsheet ini punya gid=955118510 (dari link yang diberikan)
+  const knownGids = [955118510, 0, 1, 2, 3, 4, 5,
+    1234567890, 111111111, 222222222, 333333333];
+
+  const results = await Promise.allSettled(
+    knownGids.map(async gid => {
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
       const res = await fetch(url);
       if(!res.ok) return null;
       const txt = await res.text();
       const rows = parseCSV(txt);
-      // Jika isi CSV valid (ada header dan minimal 1 baris data)
-      if(rows.length >= 2 && rows[0].some(c=>c.trim())) return { gid: String(gid), txt };
+      if(rows.length >= 1 && rows[0].some(c=>c.trim())) return { gid: String(gid), txt };
       return null;
     })
   );
 
-  const found = probeResults
-    .filter(r=>r.status==='fulfilled' && r.value)
-    .map((r,i)=>({ gid: r.value.gid, name: `Sheet ${i+1}`, _txt: r.value.txt }));
+  const found = [];
+  const seenTxt = new Set();
+  results.forEach((r,i)=>{
+    if(r.status==='fulfilled' && r.value){
+      // Dedup: skip jika isi CSV sama persis (berarti gid alias)
+      const sig = r.value.txt.slice(0,200);
+      if(!seenTxt.has(sig)){
+        seenTxt.add(sig);
+        found.push({ gid: r.value.gid, name: `Sheet ${found.length+1}`, _txt: r.value.txt });
+      }
+    }
+  });
 
-  // Simpan cache CSV agar tidak fetch ulang
   if(found.length){
     window._sheetCSVCache = {};
     found.forEach(s=>{ window._sheetCSVCache[s.gid] = s._txt; });
     return found.map(s=>({ gid: s.gid, name: s.name }));
   }
 
-  // Final fallback
-  return [{ gid:'0', name:'Sheet 1' }];
+  // Final fallback: langsung pakai gid dari link
+  return [{ gid:'955118510', name:'Sheet 1' }];
 }
 
-function decodeHTMLEntities(str){
-  const txt = document.createElement('textarea');
-  txt.innerHTML = str;
-  return txt.value;
-}
 
 /* ── Fetch 1 sheet sebagai CSV (dengan cache) ── */
 async function fetchSheet(gid){

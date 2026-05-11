@@ -567,6 +567,104 @@
       position: relative; z-index: 2;
     }
     .sheet-tabs {
+      display: flex; gap: .45rem;
+      overflow-x: auto; padding: .85rem .2rem .4rem;
+      scrollbar-width: none;
+    }
+    .sheet-tabs::-webkit-scrollbar { display: none; }
+
+    /* Warna per tab — mirip Google Sheets */
+    .sheet-tab {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .52rem 1.1rem; border-radius: 8px 8px 0 0;
+      border: 1.5px solid rgba(255,255,255,.08);
+      border-bottom: none;
+      background: rgba(255,255,255,.04);
+      color: var(--muted); font-family: var(--font-body);
+      font-size: .8rem; font-weight: 600; cursor: pointer;
+      transition: all .22s; white-space: nowrap;
+      min-height: 38px; flex-shrink: 0;
+      position: relative;
+    }
+    .sheet-tab:hover {
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border-color: rgba(255,255,255,.15);
+    }
+    /* Garis bawah aktif */
+    .sheet-tab.active {
+      background: var(--panel2);
+      color: #fff;
+      border-color: rgba(245,200,66,.4);
+      border-bottom: 2px solid var(--panel2);
+      box-shadow: 0 -3px 14px rgba(0,0,0,.3);
+      z-index: 2;
+    }
+    .sheet-tab.active::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 2px; background: var(--panel2);
+    }
+    /* Warna indikator bawah per tab */
+    .sheet-tab:nth-child(1) { border-top: 3px solid #4caf9e; }
+    .sheet-tab:nth-child(2) { border-top: 3px solid #e8b84b; }
+    .sheet-tab:nth-child(3) { border-top: 3px solid #7986cb; }
+    .sheet-tab:nth-child(4) { border-top: 3px solid #e57373; }
+    .sheet-tab:nth-child(5) { border-top: 3px solid #81c784; }
+    .sheet-tab:nth-child(6) { border-top: 3px solid #4dd0e1; }
+
+    /* Khusus tab "all" — warna teal */
+    .sheet-tab.all { border-top: 3px solid var(--teal); }
+    .sheet-tab.all.active { border-color: rgba(45,226,196,.4); }
+
+    .sheet-tab .tab-count {
+      background: rgba(255,255,255,.1);
+      border-radius: 50px; padding: .05rem .45rem;
+      font-size: .67rem; font-weight: 700; color: var(--muted);
+    }
+    .sheet-tab.active .tab-count { color: var(--accent); background: rgba(245,200,66,.15); }
+
+    /* Garis pemisah bawah tab dengan tabel */
+    .sheet-tabs-wrap::after {
+      content: ''; display: block;
+      height: 1px; background: rgba(245,200,66,.12);
+      margin: 0 0 0 0;
+    }
+
+    /* Skeleton loading */
+    .tab-skeleton {
+      display: inline-flex; gap: .5rem; align-items: center; padding: .5rem .2rem;
+    }
+    .tab-skeleton span {
+      display: inline-block; height: 32px; border-radius: 8px 8px 0 0;
+      background: rgba(255,255,255,.07); animation: shimmer 1.4s ease-in-out infinite;
+    }
+    .tab-skeleton span:nth-child(1) { width: 80px; }
+    .tab-skeleton span:nth-child(2) { width: 100px; animation-delay:.2s; }
+    .tab-skeleton span:nth-child(3) { width: 75px; animation-delay:.4s; }
+    .tab-skeleton span:nth-child(4) { width: 95px; animation-delay:.6s; }
+    .tab-skeleton span:nth-child(5) { width: 110px; animation-delay:.8s; }
+    @keyframes shimmer { 0%,100%{opacity:.35} 50%{opacity:.8} }
+
+    /* Chip aktif di header tabel */
+    .sheet-chip {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(45,226,196,.08); border: 1px solid rgba(45,226,196,.2);
+      color: var(--teal); font-size: .72rem; font-weight: 600;
+      padding: .2rem .7rem; border-radius: 50px; margin-left: .6rem;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 600px) {
+      .sheet-tabs-wrap { padding: 0 .9rem .1rem; }
+      .sheet-tab { font-size: .72rem; padding: .45rem .85rem; }
+    }
+    .sheet-tabs-wrap {
+      max-width: 1300px; margin: 0 auto;
+      padding: 0 2.5rem .1rem;
+      position: relative; z-index: 2;
+    }
+    .sheet-tabs {
       display: flex; gap: .5rem;
       flex-wrap: wrap;
       padding: .75rem .25rem .2rem;
@@ -930,62 +1028,15 @@ function parseCSV(txt){
 
 /* ── Ambil daftar sheet dari halaman HTML publik spreadsheet ── */
 async function fetchSheetList(){
-  // Metode 1: Google Spreadsheets Feeds API (tanpa API key, publik)
-  try {
-    const feedURL = `https://spreadsheets.google.com/feeds/worksheets/${SHEET_ID}/public/basic?alt=json`;
-    const res = await fetch(feedURL);
-    if(res.ok){
-      const json = await res.json();
-      const entries = json.feed?.entry || [];
-      if(entries.length){
-        return entries.map(e=>{
-          // Ambil gid dari link cellsfeed
-          const href = e.link?.find(l=>l.rel?.includes('cellsfeed'))?.href || '';
-          const gid  = href.split('/').pop() || '0';
-          return { gid, name: e.title?.$t || 'Sheet' };
-        });
-      }
-    }
-  } catch(_){}
-
-  // Metode 2: Probe gid yang diketahui dari link + range umum
-  // Spreadsheet ini punya gid=955118510 (dari link yang diberikan)
-  const knownGids = [955118510, 0, 1, 2, 3, 4, 5,
-    1234567890, 111111111, 222222222, 333333333];
-
-  const results = await Promise.allSettled(
-    knownGids.map(async gid => {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
-      const res = await fetch(url);
-      if(!res.ok) return null;
-      const txt = await res.text();
-      const rows = parseCSV(txt);
-      if(rows.length >= 1 && rows[0].some(c=>c.trim())) return { gid: String(gid), txt };
-      return null;
-    })
-  );
-
-  const found = [];
-  const seenTxt = new Set();
-  results.forEach((r,i)=>{
-    if(r.status==='fulfilled' && r.value){
-      // Dedup: skip jika isi CSV sama persis (berarti gid alias)
-      const sig = r.value.txt.slice(0,200);
-      if(!seenTxt.has(sig)){
-        seenTxt.add(sig);
-        found.push({ gid: r.value.gid, name: `Sheet ${found.length+1}`, _txt: r.value.txt });
-      }
-    }
-  });
-
-  if(found.length){
-    window._sheetCSVCache = {};
-    found.forEach(s=>{ window._sheetCSVCache[s.gid] = s._txt; });
-    return found.map(s=>({ gid: s.gid, name: s.name }));
-  }
-
-  // Final fallback: langsung pakai gid dari link
-  return [{ gid:'955118510', name:'Sheet 1' }];
+  // 5 sheet dengan gid & nama pasti dari spreadsheet
+  const SHEETS = [
+    { gid: '955118510',  name: 'all buku'       },
+    { gid: '2015478284', name: 'buku bacaan'     },
+    { gid: '2012314575', name: 'buku paket'      },
+    { gid: '1056794458', name: 'Buku Bantuan'    },
+    { gid: '1365324421', name: 'Buku Baru 2025'  },
+  ];
+  return SHEETS;
 }
 
 
@@ -1006,7 +1057,7 @@ async function loadData(){
   setStatus('Mendeteksi sheet…', true);
 
   // Tampilkan skeleton tabs
-  document.getElementById('sheetTabs').innerHTML = '<div class="tab-skeleton"><span></span><span></span><span></span></div>';
+  document.getElementById('sheetTabs').innerHTML = '<div class="tab-skeleton"><span></span><span></span><span></span><span></span><span></span></div>';
 
   try {
     const sheetList = await fetchSheetList();

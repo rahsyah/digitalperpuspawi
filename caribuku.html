@@ -559,6 +559,81 @@
 
       #bnav { display:flex; }
     }
+
+    /* ── SHEET TAB BAR ── */
+    .sheet-tabs-wrap {
+      max-width: 1300px; margin: 0 auto;
+      padding: 0 2.5rem .1rem;
+      position: relative; z-index: 2;
+    }
+    .sheet-tabs {
+      display: flex; gap: .5rem;
+      flex-wrap: wrap;
+      padding: .75rem .25rem .2rem;
+    }
+    .sheet-tab {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.1rem; border-radius: 50px;
+      border: 1.5px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.04);
+      color: var(--muted); font-family: var(--font-body);
+      font-size: .8rem; font-weight: 600; cursor: pointer;
+      transition: all .25s; white-space: nowrap;
+      min-height: 38px;
+    }
+    .sheet-tab:hover { border-color: rgba(45,226,196,.35); color: var(--teal); background: rgba(45,226,196,.06); }
+    .sheet-tab.active {
+      background: rgba(245,200,66,.12);
+      border-color: rgba(245,200,66,.45);
+      color: var(--accent);
+      box-shadow: 0 0 16px rgba(245,200,66,.15);
+    }
+    .sheet-tab.all {
+      background: rgba(45,226,196,.08);
+      border-color: rgba(45,226,196,.3);
+      color: var(--teal);
+    }
+    .sheet-tab.all.active {
+      background: rgba(45,226,196,.18);
+      border-color: rgba(45,226,196,.55);
+      box-shadow: 0 0 16px rgba(45,226,196,.18);
+    }
+    .sheet-tab .tab-count {
+      background: rgba(255,255,255,.1);
+      border-radius: 50px; padding: .08rem .45rem;
+      font-size: .68rem; font-weight: 700;
+    }
+    .sheet-tab.active .tab-count { background: rgba(245,200,66,.2); }
+    .sheet-tab.all.active .tab-count { background: rgba(45,226,196,.2); }
+    .sheet-tab.loading-tab { opacity: .5; pointer-events: none; }
+
+    /* Skeleton loading dots */
+    .tab-skeleton {
+      display: inline-flex; gap: .5rem; align-items: center;
+      padding: .5rem .8rem;
+    }
+    .tab-skeleton span {
+      display: inline-block; width: 64px; height: 10px;
+      border-radius: 50px; background: rgba(255,255,255,.08);
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+    .tab-skeleton span:nth-child(2) { width: 80px; animation-delay: .2s; }
+    .tab-skeleton span:nth-child(3) { width: 56px; animation-delay: .4s; }
+    @keyframes shimmer { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* Sheet name chip in table header */
+    .sheet-chip {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(45,226,196,.08); border: 1px solid rgba(45,226,196,.2);
+      color: var(--teal); font-size: .72rem; font-weight: 600;
+      padding: .2rem .7rem; border-radius: 50px; margin-left: .6rem;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 600px) {
+      .sheet-tabs-wrap { padding: 0 .9rem .1rem; }
+      .sheet-tab { font-size: .73rem; padding: .45rem .85rem; }
+    }
   </style>
 </head>
 <body>
@@ -618,7 +693,7 @@
     </div>
     <div class="stat">
       <div class="sn" id="statKoleksi">—</div>
-      <div class="sl">Koleksi</div>
+      <div class="sl">Sheet</div>
     </div>
     <div class="stat">
       <div class="sn">Real-time</div>
@@ -655,10 +730,20 @@
   </div>
 </section>
 
+
+<!-- ===== SHEET TABS ===== -->
+<div class="sheet-tabs-wrap" id="sheetTabsWrap">
+  <div class="sheet-tabs" id="sheetTabs">
+    <div class="tab-skeleton">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
+
 <!-- ===== TABLE SECTION ===== -->
 <section class="table-section" aria-label="Tabel hasil pencarian">
   <div class="table-header">
-    <h2>Daftar Koleksi</h2>
+    <h2>Daftar Koleksi <span class="sheet-chip" id="activeSheetChip" style="display:none">📋 Semua Sheet</span></h2>
     <div class="th-line" aria-hidden="true"></div>
   </div>
 
@@ -792,38 +877,41 @@ mob.addEventListener('click',e=>{ if(e.target===mob) closeMenu(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeMenu(); });
 function closeMenu(){ ham.classList.remove('is-open'); mob.classList.remove('open'); ham.setAttribute('aria-expanded','false'); }
 
-/* ── DATA ── */
-const SHEET_ID='1jmSfxtuCrzki4kcRyVjmqpCQwuNevEEZ';
-const CSV_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
-let allData=[], headers=[], sortCol=-1, sortDir=1;
+/* ── DATA MULTI-SHEET ── */
+const SHEET_ID = '1jmSfxtuCrzki4kcRyVjmqpCQwuNevEEZ';
 
-function setStatus(msg,loading=false){
-  document.getElementById('stxt').textContent=msg;
-  document.getElementById('spin').classList.toggle('hidden',!loading);
+// State
+let sheetsInfo   = [];   // [{gid, name, data:[], headers:[]}]
+let activeSheetIdx = -1; // -1 = semua sheet digabung
+let allData = [], headers = [], sortCol = -1, sortDir = 1;
+
+/* ── Helpers ── */
+function setStatus(msg, loading=false){
+  document.getElementById('stxt').textContent = msg;
+  document.getElementById('spin').classList.toggle('hidden', !loading);
 }
 function setCount(n, total){
-  const el=document.getElementById('rcnt');
+  const el = document.getElementById('rcnt');
   if(n===null){ el.classList.remove('show'); return; }
-  el.textContent=`${n} dari ${total} hasil`;
+  el.textContent = `${n} dari ${total} hasil`;
   el.classList.add('show');
 }
-function updateStats(total){
-  animCount(document.getElementById('statTotal'), total, 1400);
-  animCount(document.getElementById('statKoleksi'), Math.floor(total/3), 1200);
-}
-function animCount(el,target,dur){
-  let s=0,step=target/(dur/16);
+function animCount(el, target, dur){
+  let s=0, step=target/(dur/16);
   const t=setInterval(()=>{
-    s=Math.min(s+step,target);
-    el.textContent=Math.floor(s).toLocaleString('id');
+    s = Math.min(s+step, target);
+    el.textContent = Math.floor(s).toLocaleString('id');
     if(s>=target) clearInterval(t);
   },16);
 }
+function updateStats(total){
+  animCount(document.getElementById('statTotal'), total, 1400);
+  animCount(document.getElementById('statKoleksi'), sheetsInfo.length, 900);
+}
 
-/* Parse CSV dengan benar */
+/* ── CSV Parser ── */
 function parseCSV(txt){
-  const rows=[];
-  const lines=txt.split(/\r?\n/);
+  const rows=[], lines=txt.split(/\r?\n/);
   lines.forEach(line=>{
     if(!line.trim()) return;
     const cells=[];
@@ -840,39 +928,197 @@ function parseCSV(txt){
   return rows;
 }
 
-async function loadData(){
-  setStatus('Memuat data dari Google Sheets…', true);
+/* ── Ambil daftar sheet dari halaman HTML publik spreadsheet ── */
+async function fetchSheetList(){
+  // Ambil sheet pertama (Sheet1) dulu — dari situ kita bisa parse gid via redirect
+  // Cara paling andal: fetch export semua gid yang diketahui via Sheets API publik
+  // Fallback: pakai URL sheets.googleapis.com (tidak butuh auth untuk spreadsheet publik)
+  const apiURL = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY`;
   try {
-    const res = await fetch(CSV_URL);
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    const res = await fetch(apiURL);
+    if(res.ok){
+      const json = await res.json();
+      if(json.sheets && json.sheets.length){
+        return json.sheets.map(s=>({ gid: s.properties.sheetId, name: s.properties.title }));
+      }
+    }
+  } catch(_){}
+
+  // Fallback: coba parse dari halaman embed publik
+  try {
+    const htmlURL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/htmlview`;
+    const res = await fetch(htmlURL);
     const txt = await res.text();
-    const rows = parseCSV(txt);
-    if(!rows.length){ setStatus('Tidak ada data di spreadsheet.'); return; }
-    headers = rows[0];
-    allData = rows.slice(1).filter(r=>r.some(c=>c));
-    renderTable(allData);
-    updateStats(allData.length);
-    setStatus(`✅ ${allData.length.toLocaleString('id')} data berhasil dimuat dari perpustakaan.`);
-    setCount(null);
-    updateTblInfo(allData.length, allData.length);
-    buildHeaders();
+    const matches = [...txt.matchAll(/"gid":"?(\d+)"?[^}]*?"name":"([^"]+)"/g)];
+    if(matches.length){
+      const seen = new Set();
+      return matches
+        .map(m=>({ gid:m[1], name:decodeHTMLEntities(m[2]) }))
+        .filter(s=>{ if(seen.has(s.gid))return false; seen.add(s.gid); return true; });
+    }
+  } catch(_){}
+
+  // Fallback akhir: anggap hanya ada 1 sheet
+  return [{ gid:'0', name:'Sheet1' }];
+}
+
+function decodeHTMLEntities(str){
+  const txt = document.createElement('textarea');
+  txt.innerHTML = str;
+  return txt.value;
+}
+
+/* ── Fetch 1 sheet sebagai CSV ── */
+async function fetchSheet(gid){
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('HTTP '+res.status+' gid='+gid);
+  return await res.text();
+}
+
+/* ── LOAD SEMUA SHEET ── */
+async function loadData(){
+  setStatus('Mendeteksi sheet…', true);
+
+  // Tampilkan skeleton tabs
+  document.getElementById('sheetTabs').innerHTML = '<div class="tab-skeleton"><span></span><span></span><span></span></div>';
+
+  try {
+    const sheetList = await fetchSheetList();
+    setStatus(`Memuat ${sheetList.length} sheet…`, true);
+
+    // Fetch semua sheet secara paralel
+    const results = await Promise.allSettled(
+      sheetList.map(s => fetchSheet(s.gid))
+    );
+
+    sheetsInfo = [];
+    results.forEach((r, i)=>{
+      if(r.status === 'fulfilled'){
+        const rows = parseCSV(r.value);
+        if(rows.length){
+          sheetsInfo.push({
+            gid:     sheetList[i].gid,
+            name:    sheetList[i].name,
+            headers: rows[0],
+            data:    rows.slice(1).filter(row=>row.some(c=>c))
+          });
+        }
+      }
+    });
+
+    if(!sheetsInfo.length){
+      setStatus('❌ Tidak ada data ditemukan di spreadsheet.');
+      return;
+    }
+
+    // Build tab buttons
+    buildTabs();
+
+    // Default tampilkan tab pertama
+    switchSheet(0);
+
+    const totalBuku = sheetsInfo.reduce((s,sh)=>s+sh.data.length, 0);
+    updateStats(totalBuku);
+
   } catch(e){
     console.error(e);
     setStatus('❌ Gagal memuat data. Pastikan spreadsheet dibagikan secara publik.');
-    setCount(null);
   }
 }
 
-/* Build sortable headers */
+/* ── BUILD TAB BUTTONS ── */
+function buildTabs(){
+  const container = document.getElementById('sheetTabs');
+  container.innerHTML = '';
+
+  // Tab "Semua Sheet" — hanya muncul jika > 1 sheet
+  if(sheetsInfo.length > 1){
+    const allTab = document.createElement('button');
+    const totalAll = sheetsInfo.reduce((s,sh)=>s+sh.data.length,0);
+    allTab.className = 'sheet-tab all';
+    allTab.innerHTML = `🗂️ Semua Sheet <span class="tab-count">${totalAll.toLocaleString('id')}</span>`;
+    allTab.setAttribute('aria-label','Tampilkan semua sheet');
+    allTab.addEventListener('click', ()=>switchSheet(-1));
+    container.appendChild(allTab);
+  }
+
+  // Tab per sheet
+  sheetsInfo.forEach((sh, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'sheet-tab';
+    btn.innerHTML = `📋 ${escHtml(sh.name)} <span class="tab-count">${sh.data.length.toLocaleString('id')}</span>`;
+    btn.setAttribute('aria-label', `Sheet: ${sh.name}`);
+    btn.addEventListener('click', ()=>switchSheet(i));
+    container.appendChild(btn);
+  });
+}
+
+/* ── SWITCH SHEET ── */
+function switchSheet(idx){
+  activeSheetIdx = idx;
+  sortCol = -1; sortDir = 1;
+
+  // Update tab active state
+  const tabs = document.querySelectorAll('.sheet-tab');
+  tabs.forEach(t=>t.classList.remove('active'));
+
+  const chip = document.getElementById('activeSheetChip');
+
+  if(idx === -1){
+    // Gabungkan semua sheet — normalisasi kolom
+    const allHeaders = [];
+    sheetsInfo.forEach(sh=>{
+      sh.headers.forEach(h=>{ if(!allHeaders.includes(h)) allHeaders.push(h); });
+    });
+    // Tambah kolom "Sheet" di depan
+    headers = ['Sheet', ...allHeaders];
+    allData = [];
+    sheetsInfo.forEach(sh=>{
+      sh.data.forEach(row=>{
+        const mapped = allHeaders.map(h=>{
+          const ci = sh.headers.indexOf(h);
+          return ci>=0 ? (row[ci]||'') : '';
+        });
+        allData.push([sh.name, ...mapped]);
+      });
+    });
+    tabs[0]?.classList.add('active'); // tab "Semua"
+    chip.textContent = `🗂️ Semua Sheet (${sheetsInfo.length})`;
+    chip.style.display = '';
+  } else {
+    const sh = sheetsInfo[idx];
+    headers = sh.headers;
+    allData = sh.data;
+    // Klik tab yang sesuai (offset 1 jika ada tab "Semua")
+    const offset = sheetsInfo.length > 1 ? 1 : 0;
+    tabs[idx + offset]?.classList.add('active');
+    chip.textContent = `📋 ${sh.name}`;
+    chip.style.display = '';
+  }
+
+  // Reset search
+  document.getElementById('q').value = '';
+  setCount(null, allData.length);
+  buildHeaders();
+  renderTable(allData);
+  updateTblInfo(allData.length, allData.length);
+
+  const totalAll = sheetsInfo.reduce((s,sh)=>s+sh.data.length,0);
+  setStatus(`✅ ${allData.length.toLocaleString('id')} data ditampilkan dari ${
+    idx===-1 ? sheetsInfo.length+' sheet' : '"'+sheetsInfo[idx].name+'"'
+  }.`);
+}
+
+/* ── BUILD SORTABLE HEADERS ── */
 function buildHeaders(){
-  const thead=document.getElementById('tblHead');
-  thead.innerHTML='<tr><th class="sortable" data-col="-1">#<span class="sort-icon"></span></th>'+
-    headers.map((h,i)=>`<th class="sortable" data-col="${i}">${h}<span class="sort-icon"></span></th>`).join('')+'</tr>';
+  const thead = document.getElementById('tblHead');
+  thead.innerHTML = '<tr><th class="sortable" data-col="-1">#<span class="sort-icon"></span></th>'+
+    headers.map((h,i)=>`<th class="sortable" data-col="${i}">${escHtml(h)}<span class="sort-icon"></span></th>`).join('')+'</tr>';
   thead.querySelectorAll('th.sortable').forEach(th=>{
     th.addEventListener('click',()=>{
-      const col=+th.getAttribute('data-col');
-      if(sortCol===col){ sortDir*=-1; }
-      else { sortCol=col; sortDir=1; }
+      const col = +th.getAttribute('data-col');
+      if(sortCol===col){ sortDir*=-1; } else { sortCol=col; sortDir=1; }
       sortAndRender();
       thead.querySelectorAll('th').forEach(t=>t.classList.remove('asc','desc'));
       th.classList.add(sortDir===1?'asc':'desc');
@@ -881,13 +1127,13 @@ function buildHeaders(){
 }
 
 function sortAndRender(){
-  const q=document.getElementById('q').value.toLowerCase().trim();
-  let data=q ? allData.filter(r=>r.some(c=>String(c).toLowerCase().includes(q))) : [...allData];
+  const q = document.getElementById('q').value.toLowerCase().trim();
+  let data = q ? allData.filter(r=>r.some(c=>String(c).toLowerCase().includes(q))) : [...allData];
   if(sortCol>=0){
     data.sort((a,b)=>{
       const av=a[sortCol]||'', bv=b[sortCol]||'';
       return isNaN(av)||isNaN(bv)
-        ? av.toString().localeCompare(bv.toString())*sortDir
+        ? av.toString().localeCompare(bv.toString(),'id')*sortDir
         : (parseFloat(av)-parseFloat(bv))*sortDir;
     });
   }

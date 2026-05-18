@@ -936,6 +936,165 @@
       .pop-body { padding: .85rem; }
       .pop-body h3 { font-size: .85rem; }
     }
+
+    /* ════════════════════════════════════
+       BUKU FAVORIT
+    ════════════════════════════════════ */
+    .fav-sec { margin-bottom: 4rem; }
+
+    .fav-head {
+      display: flex; align-items: center; gap: .9rem;
+      margin-bottom: 1.5rem;
+    }
+    .fav-tag {
+      display: inline-flex; align-items: center; gap: .38rem;
+      background: rgba(255,107,138,.12);
+      border: 1px solid rgba(255,107,138,.3);
+      color: var(--rose); font-size: .68rem; font-weight: 700;
+      letter-spacing: .13em; text-transform: uppercase;
+      padding: .26rem .85rem; border-radius: 50px; flex-shrink: 0;
+    }
+    .fav-tag .ftdot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--rose); animation: blink 1.4s infinite;
+    }
+    .fav-head h2 {
+      font-family: var(--font-head);
+      font-size: 1.5rem; font-weight: 900; color: #fff;
+    }
+    .fav-head h2 em { font-style: italic; color: var(--rose); }
+    .fav-head .fhline {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, rgba(255,107,138,.2), transparent);
+    }
+
+    /* Carousel wrapper */
+    .fav-wrap { position: relative; }
+    .fav-wrap::before, .fav-wrap::after {
+      content: ''; position: absolute; top: 0;
+      width: 60px; height: calc(100% - 38px);
+      z-index: 5; pointer-events: none;
+    }
+    .fav-wrap::before { left:0; background: linear-gradient(to right, var(--ink), transparent); }
+    .fav-wrap::after  { right:0; background: linear-gradient(to left,  var(--ink), transparent); }
+
+    /* Arrow buttons */
+    .fav-arrow {
+      position: absolute; top: 38%; transform: translateY(-50%);
+      z-index: 20; width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(15,12,30,.88); backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255,107,138,.4);
+      color: var(--rose); font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all .25s;
+      box-shadow: 0 4px 18px rgba(0,0,0,.5);
+    }
+    .fav-arrow:hover {
+      background: var(--rose); color: #fff;
+      transform: translateY(-50%) scale(1.12);
+      box-shadow: 0 6px 26px rgba(255,107,138,.4);
+    }
+    .fav-arrow:disabled { opacity: .18; pointer-events: none; }
+    .fav-arrow.prev { left: -20px; }
+    .fav-arrow.next { right: -20px; }
+
+    /* Track */
+    .fav-track {
+      display: flex; gap: 1.2rem;
+      overflow-x: auto; scroll-behavior: smooth;
+      padding: .5rem .3rem 1.2rem;
+      scrollbar-width: none; -ms-overflow-style: none;
+      scroll-snap-type: x mandatory; cursor: grab;
+      -webkit-overflow-scrolling: touch;
+    }
+    .fav-track::-webkit-scrollbar { display: none; }
+    .fav-track.grabbing { cursor: grabbing; scroll-behavior: auto; }
+
+    /* Card */
+    .fav-card {
+      flex: 0 0 178px; scroll-snap-align: start;
+      border-radius: 16px; overflow: hidden;
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.07);
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      transition: all .4s cubic-bezier(.16,1,.3,1);
+    }
+    .fav-card:hover {
+      transform: translateY(-11px) scale(1.03);
+      border-color: rgba(255,107,138,.3);
+      box-shadow: 0 26px 55px rgba(0,0,0,.6),
+                  0 0 0 1px rgba(255,107,138,.1);
+    }
+
+    /* Cover */
+    .fav-cov {
+      position: relative; height: 210px; overflow: hidden; flex-shrink: 0;
+    }
+    .fav-cov img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+    }
+    .fav-card:hover .fav-cov img { transform: scale(1.08); }
+    .fav-cov::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,11,30,.88) 0%, transparent 55%);
+    }
+    .fav-heart {
+      position: absolute; top: .6rem; left: .6rem; z-index: 3;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,107,138,.22); border: 1px solid rgba(255,107,138,.4);
+      display: flex; align-items: center; justify-content: center; font-size: .85rem;
+    }
+    .fav-star {
+      position: absolute; top: .6rem; right: .6rem; z-index: 3;
+      background: rgba(13,11,30,.75); backdrop-filter: blur(8px);
+      border: 1px solid rgba(245,200,66,.3); border-radius: 50px;
+      padding: .15rem .6rem; font-size: .68rem; font-weight: 700; color: var(--accent);
+    }
+
+    /* Body */
+    .fav-body { padding: .9rem 1rem; flex: 1; display: flex; flex-direction: column; }
+    .fav-cat {
+      font-size: .62rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--teal);
+      background: rgba(45,226,196,.09); border: 1px solid rgba(45,226,196,.18);
+      padding: .15rem .55rem; border-radius: 50px;
+      display: inline-block; margin-bottom: .6rem; width: fit-content;
+    }
+    .fav-body h3 {
+      font-family: var(--font-head); font-size: .88rem; font-weight: 700;
+      color: var(--text); line-height: 1.35; margin-bottom: .28rem;
+      transition: color .3s;
+    }
+    .fav-card:hover .fav-body h3 { color: var(--rose); }
+    .fav-author { font-size: .72rem; color: var(--muted); margin-bottom: .8rem; }
+    .fav-btn {
+      display: block; text-align: center; margin-top: auto;
+      background: rgba(255,107,138,.1); border: 1px solid rgba(255,107,138,.22);
+      color: var(--rose); font-size: .75rem; font-weight: 700;
+      padding: .52rem; border-radius: 50px; transition: all .3s;
+    }
+    .fav-card:hover .fav-btn { background: var(--rose); color: #fff; }
+
+    /* Progress + dots */
+    .fav-bar { margin-top: .45rem; height: 2px; background: rgba(255,255,255,.07); border-radius: 4px; overflow: hidden; }
+    .fav-bar-fill { height: 100%; background: linear-gradient(90deg, var(--rose), var(--accent)); border-radius: 4px; transition: width .2s; }
+    .fav-dots { display: flex; justify-content: center; gap: .38rem; margin-top: .7rem; }
+    .fav-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.14); border: none; padding: 0;
+      cursor: pointer; transition: all .25s;
+    }
+    .fav-dot.active { background: var(--rose); transform: scale(1.35); width: 15px; border-radius: 4px; }
+
+    @media (max-width: 600px) {
+      .fav-card  { flex: 0 0 148px; }
+      .fav-cov   { height: 175px; }
+      .fav-arrow { display: none; }
+      .fav-head h2 { font-size: 1.2rem; }
+      .fav-wrap::before, .fav-wrap::after { width: 24px; }
+    }
   </style>
 </head>
 <body>
@@ -1034,6 +1193,137 @@
       <input type="search" id="book-search" placeholder="Cari judul atau pengarang..." aria-label="Cari buku dalam koleksi">
       <span class="search-icon" aria-hidden="true">🔍</span>
     </div>
+
+
+    <!-- ===== BUKU FAVORIT ===== -->
+    <section class="fav-sec reveal" aria-labelledby="fav-h">
+      <div class="fav-head">
+        <span class="fav-tag"><span class="ftdot"></span>❤️ Favorit</span>
+        <h2 id="fav-h">Buku <em>Favorit</em> Pilihan</h2>
+        <div class="fhline" aria-hidden="true"></div>
+      </div>
+      <div class="fav-wrap">
+        <button class="fav-arrow prev" aria-label="Sebelumnya">&#8592;</button>
+        <button class="fav-arrow next" aria-label="Berikutnya">&#8594;</button>
+        <div class="fav-track" id="favTrack" role="list" aria-label="Buku favorit">
+          <a href="https://drive.google.com/file/d/1aattK1-mzRPiTUHvZgh_DI98S-8FHdWL/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Negeri 5 Menara oleh Ahmad Fuadi">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/5menara.jpg" alt="Cover Negeri 5 Menara" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.5</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Novel</span>
+              <h3>Negeri 5 Menara</h3>
+              <p class="fav-author">Ahmad Fuadi</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+          <a href="https://drive.google.com/file/d/1q0BbOjJuap5hvWQZvLb9yVwDSRiWvq1-/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Laskar Pelangi oleh Andrea Hirata">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/pelangi.jfif" alt="Cover Laskar Pelangi" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.8</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Novel</span>
+              <h3>Laskar Pelangi</h3>
+              <p class="fav-author">Andrea Hirata</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+          <a href="https://drive.google.com/file/d/1rQ-s8zCKo2MqGi0rGwc7nwJ1ZsXiW1UF/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Atomic Habits oleh James Clear">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/habits.jpg" alt="Cover Atomic Habits" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.9</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Buku Umum</span>
+              <h3>Atomic Habits</h3>
+              <p class="fav-author">James Clear</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+          <a href="https://drive.google.com/file/d/1_cAzLNx8mCp6TmSElPSdONgeNpJU4tuw/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Homo Deus oleh Yuval Noah Harari">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/homodeus.jfif" alt="Cover Homo Deus" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.7</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Buku Umum</span>
+              <h3>Homo Deus</h3>
+              <p class="fav-author">Yuval Noah Harari</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+          <a href="https://drive.google.com/file/d/1XaKB7KURtHzEXSSq7sUjbrmm_3JUqkk2/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Tentang Kamu oleh Tere Liye">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/tentang%20kamu.jfif" alt="Cover Tentang Kamu" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.6</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Novel</span>
+              <h3>Tentang Kamu</h3>
+              <p class="fav-author">Tere Liye</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+          <a href="https://drive.google.com/file/d/1pBJS1gGVPN5jv0Cnvn-L1DhcHMlfAoYR/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Harry Potter oleh J.K. Rowling">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/download.jfif" alt="Cover Harry Potter" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.9</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Novel</span>
+              <h3>Harry Potter</h3>
+              <p class="fav-author">J.K. Rowling</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+          <a href="https://drive.google.com/file/d/1eRFrU04sgKZiZ0GDgMjqxXrWvgdV9Q-G/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Psychology of Money oleh Morgan Housel">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/psikismoney.jfif" alt="Cover Psychology of Money" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.8</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Buku Umum</span>
+              <h3>Psychology of Money</h3>
+              <p class="fav-author">Morgan Housel</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+          <a href="https://drive.google.com/file/d/1fIR1Jk-6JVZYNDgE52CJyanr5KDs5QEn/view?usp=sharing" target="_blank" rel="noopener" class="fav-card"
+             aria-label="Ikigai oleh Ken Mogi">
+            <div class="fav-cov">
+              <img src="https://raw.githubusercontent.com/rahsyah/digitalperpuspawi/refs/heads/main/img/slides/sampul/ikigai.jpg" alt="Cover Ikigai" loading="lazy" onerror="this.style.display='none'">
+              <span class="fav-heart">❤️</span>
+              <span class="fav-star">⭐ 4.7</span>
+            </div>
+            <div class="fav-body">
+              <span class="fav-cat">Buku Umum</span>
+              <h3>Ikigai</h3>
+              <p class="fav-author">Ken Mogi</p>
+              <span class="fav-btn">Baca Sekarang →</span>
+            </div>
+          </a>
+        </div>
+        <div class="fav-bar"><div class="fav-bar-fill" id="favFill"></div></div>
+        <div class="fav-dots" id="favDots"></div>
+      </div>
+    </section>
+    <!-- ===== END BUKU FAVORIT ===== -->
 
     <!-- NOVEL -->
     <article class="category reveal" aria-labelledby="cat-novel">
@@ -1843,6 +2133,62 @@
   /* ---- HAMBURGER ANIMASI ---- */
   hamburger.addEventListener('click', () => hamburger.classList.toggle('is-open'));
   mobileClose.addEventListener('click', () => hamburger.classList.remove('is-open'));
+
+
+  /* ---- BUKU FAVORIT CAROUSEL ---- */
+  (function(){
+    const track = document.getElementById('favTrack');
+    const fill  = document.getElementById('favFill');
+    const dotsC = document.getElementById('favDots');
+    if(!track) return;
+    const wrap  = track.closest('.fav-wrap');
+    const btnP  = wrap.querySelector('.fav-arrow.prev');
+    const btnN  = wrap.querySelector('.fav-arrow.next');
+    const cards = track.querySelectorAll('.fav-card');
+    const STEP  = 192;
+    const numDots = Math.max(1, Math.ceil(cards.length / 3));
+
+    for(let i=0;i<numDots;i++){
+      const d=document.createElement('button');
+      d.className='fav-dot'+(i===0?' active':'');
+      d.setAttribute('aria-label','Halaman '+(i+1));
+      d.addEventListener('click',()=>{
+        const r=numDots>1?i/(numDots-1):0;
+        track.scrollTo({left:r*(track.scrollWidth-track.clientWidth),behavior:'smooth'});
+      });
+      dotsC.appendChild(d);
+    }
+
+    function upd(){
+      const max=track.scrollWidth-track.clientWidth;
+      const r=max>0?track.scrollLeft/max:0;
+      fill.style.width=(r*100).toFixed(1)+'%';
+      if(btnP)btnP.disabled=track.scrollLeft<=1;
+      if(btnN)btnN.disabled=track.scrollLeft>=max-1;
+      const ai=Math.round(r*(numDots-1));
+      dotsC.querySelectorAll('.fav-dot').forEach((d,i)=>d.classList.toggle('active',i===ai));
+    }
+    track.addEventListener('scroll',upd,{passive:true});
+    window.addEventListener('resize',upd);
+    upd();
+
+    if(btnP) btnP.addEventListener('click',()=>track.scrollBy({left:-STEP*3,behavior:'smooth'}));
+    if(btnN) btnN.addEventListener('click',()=>track.scrollBy({left: STEP*3,behavior:'smooth'}));
+
+    // Drag
+    let dn=false,sx=0,sl=0;
+    track.addEventListener('mousedown',e=>{dn=true;sx=e.pageX;sl=track.scrollLeft;track.classList.add('grabbing');e.preventDefault()});
+    document.addEventListener('mousemove',e=>{if(!dn)return;track.scrollLeft=sl-(e.pageX-sx)});
+    document.addEventListener('mouseup',()=>{dn=false;track.classList.remove('grabbing')});
+
+    // Swipe
+    let tx=0;
+    track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+    track.addEventListener('touchend',e=>{
+      const diff=tx-e.changedTouches[0].clientX;
+      if(Math.abs(diff)>25)track.scrollBy({left:diff*2,behavior:'smooth'});
+    },{passive:true});
+  })();
 
   /* ---- KEYBOARD ESCAPE closes mobile menu ---- */
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenu(); });

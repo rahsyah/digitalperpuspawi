@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layanan Perpustakaan SMK Pawiyatan Surabaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+        }
+        .form-input:focus {
+            border-color: #10B981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+        .tab-active {
+            border-bottom: 3px solid #10B981;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="font-poppins bg-gray-50">
+    <!-- Header -->
+    <header class="bg-emerald-800 text-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <img src="https://raw.githubusercontent.com/rahsyah/librarypawiyatan/refs/heads/main/img/logo1.png" class="h-12">
+                    <span class="text-xl font-bold">SMK Pawiyatan Surabaya</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="https://perpustakaansmektan.vercel.app/index.html" class="hover:text-emerald-200 transition">Beranda</a>
+                    <a href="https://docs.google.com/spreadsheets/d/1jmSfxtuCrzki4kcRyVjmqpCQwuNevEEZ/edit?usp=drive_link&ouid=101594918831475731309&rtpof=true&sd=true" class="hover:text-emerald-200 transition">Koleksi</a>
+                    <a href="http://182.253.40.155:8123/perpus/" class="text-emerald-200 font-medium">Layanan</a>
+                    <a href="https://perpustakaansmektan.vercel.app/about.html" class="hover:text-emerald-200 transition">Tentang</a>
+                    <button class="bg-white text-emerald-800 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">Masuk</button>
+                </div>
+                <button class="md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Layanan -->
+    <section class="bg-gradient-to-r from-emerald-700 to-teal-600 text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Layanan Perpustakaan Kami</h1>
+            <p class="text-xl max-w-2xl mx-auto">Temukan berbagai layanan unggulan kami yang dirancang untuk mendukung kebutuhan literasi dan pembelajaran Anda.</p>
+        </div>
+    </section>
+
+    <!-- Tabs Navigasi -->
+    <div class="container mx-auto px-6 mt-8">
+        <div class="flex overflow-x-auto pb-2">
+            <button onclick="showTab('semua')" class="tab-button px-6 py-3 mr-2 tab-active">Semua Layanan</button>
+            <button onclick="showTab('http://182.253.40.155:8123/perpus')" class="tab-button px-6 py-3 mr-2">InLis Lite 3.2</button>
+            <button onclick="showTab('digital')" class="tab-button px-6 py-3 mr-2">Digital</button>
+            <button onclick="showTab('edukasi')" class="tab-button px-6 py-3">Edukasi</button>
+        </div>
+    </div>
+
+    <!-- Layanan Utama -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <!-- Semua Layanan (default) -->
+            <div id="semua-tab" class="tab-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Layanan 1 -->
+                    <div class="service-card bg-white rounded-xl shadow-md p-6 transition duration-300 border border-gray-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Peminjaman Buku Fisik</h3>
+                        <p class="text-gray-600 mb-4">Pinjam buku fisik dari koleksi kami dengan proses cepat dan mudah. Masa pinjam 14 hari dengan opsi perpanjangan.</p>
+                        <a href="http://182.253.40.155:8123/perpus/peminjamanmandiri/site/login" class="text-emerald-600 font-medium hover:text-emerald-800 transition">Selengkapnya →</a>
+                    </div>
+                    
+                    <!-- Layanan 2 -->
+                    <div class="service-card bg-white rounded-xl shadow-md p-6 transition duration-300 border border-gray-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Buku Digital</h3>
+                        <p class="text-gray-600 mb-4">Akses ribuan buku digital kapan saja dari perangkat Anda. Format EPUB, PDF, dan Kindle yang kompatibel.</p>
+                        <a href="#digital" class="text-emerald-600 font-medium hover:text-emerald-800 transition">Selengkapnya →</a>
+                    </div>
+                    
+                    <!-- Layanan 3 -->
+                    <div class="service-card bg-white rounded-xl shadow-md p-6 transition duration-300 border border-gray-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">E-Journal & Database</h3>
+                        <p class="text-gray-600 mb-4">Akses jurnal ilmiah terkemuka dan database penelitian dari berbagai disiplin ilmu.</p>
+                        <a href="#digital" class="text-emerald-600 font-medium hover:text-emerald-800 transition">Selengkapnya →</a>
+                    </div>
+                    
+                    <!-- Layanan 4 -->
+                    <div class="service-card bg-white rounded-xl shadow-md p-6 transition duration-300 border border-gray-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Workshop Literasi</h3>
+                        <p class="text-gray-600 mb-4">Kegiatan bulanan untuk meningkatkan minat baca dan keterampilan literasi untuk semua usia.</p>
+                        <a href="#edukasi" class="text-emerald-600 font-medium hover:text-emerald-800 transition">Selengkapnya →</a>
+                    </div>
+                    
+                    <!-- Layanan 5 -->
+                    <div class="service-card bg-white rounded-xl shadow-md p-6 transition duration-300 border border-gray-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Konsultasi Penelitian</h3>
+                        <p class="text-gray-600 mb-4">Bantuan dari pustakawan ahli untuk menemukan referensi penelitian dan literatur terkait.</p>
+                        <a href="#edukasi" class="text-emerald-600 font-medium hover:text-emerald-800 transition">Selengkapnya →</a>
+                    </div>
+                    
+                    <!-- Layanan 6 -->
+                    <div class="service-card bg-white rounded-xl shadow-md p-6 transition duration-300 border border-gray-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Layanan Referensi</h3>
+                        <p class="text-gray-600 mb-4">Bantuan langsung dari pustakawan untuk menjawab pertanyaan dan kebutuhan informasi spesifik.</p>
+                        <a href="#peminjaman" class="text-emerald-600 font-medium hover:text-emerald-800 transition">Selengkapnya →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Peminjaman -->
+            <div id="peminjaman-tab" class="tab-content hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    <!-- Konten khusus peminjaman -->
+                    <div class="col-span-2 bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="md:flex">
+                            <div class="md:w-1/2">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2ce2b6c6-5ae8-4626-af11-c29c48b7b7a5.png" alt="Rak buku perpustakaan dengan berbagai judul dan kategori yang tertata rapi" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-8 md:w-1/2">
+                                <h2 class="text-2xl font-bold mb-4">Layanan Peminjaman Buku</h2>
+                                <p class="text-gray-600 mb-6">Kami menyediakan berbagai layanan peminjaman buku fisik untuk memenuhi kebutuhan literasi Anda:</p>
+                                <ul class="space-y-3 mb-6">
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Peminjaman reguler (14 hari) dengan opsi perpanjangan</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Peminjaman express untuk kebutuhan mendesak</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Pemesanan buku online sebelum pengambilan</span>
+                                    </li>
+                                </ul>
+                                <div class="bg-emerald-50 p-4 rounded-lg">
+                                    <h4 class="font-bold text-emerald-800 mb-2">Jam Pelayanan:</h4>
+                                    <p class="text-gray-700">Senin-Jumat: 08:00-20:00<br>
+                                    Sabtu-Minggu: 09:00-17:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                        <h3 class="font-bold text-lg mb-3">Panduan Peminjaman</h3>
+                        <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                            <li>Pilih buku yang tersedia di katalog</li>
+                            <li>Lakukan reservasi online atau datang langsung</li>
+                            <li>Ambil buku di loket peminjaman dengan menunjukkan kartu anggota</li>
+                            <li>Kembalikan buku tepat waktu untuk menghindari denda</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                        <h3 class="font-bold text-lg mb-3">Syarat Peminjaman</h3>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                            <li>Memiliki kartu anggota yang masih aktif</li>
+                            <li>Membawa identitas yang masih berlaku</li>
+                            <li>Peminjaman maksimal 5 buku sekaligus</li>
+                            <li>Denda keterlambatan Rp2.000/buku/hari</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Digital -->
+            <div id="digital-tab" class="tab-content hidden">
+                <div class="grid grid-cols-1 gap-8">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="md:flex">
+                            <div class="p-8 md:w-2/3">
+                                <h2 class="text-2xl font-bold mb-4">Layanan Digital</h2>
+                                <p class="text-gray-600 mb-6">Nikmati kemudahan akses koleksi digital kami kapan saja dan di mana saja:</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div class="bg-emerald-50 p-4 rounded-lg">
+                                        <h4 class="font-bold text-emerald-800 mb-2">E-Books</h4>
+                                        <p class="text-gray-700">Lebih dari 20.000 judul buku digital dalam berbagai format (EPUB, PDF, Kindle).</p>
+                                    </div>
+                                    <div class="bg-emerald-50 p-4 rounded-lg">
+                                        <h4 class="font-bold text-emerald-800 mb-2">E-Journals</h4>
+                                        <p class="text-gray-700">Akses ke ribuan jurnal ilmiah dari berbagai disiplin ilmu.</p>
+                                    </div>
+                                    <div class="bg-emerald-50 p-4 rounded-lg">
+                                        <h4 class="font-bold text-emerald-800 mb-2">Audiobooks</h4>
+                                        <p class="text-gray-700">Koleksi buku audio untuk mendengarkan saat bepergian.</p>
+                                    </div>
+                                    <div class="bg-emerald-50 p-4 rounded-lg">
+                                        <h4 class="font-bold text-emerald-800 mb-2">Database</h4>
+                                        <p class="text-gray-700">Akses ke berbagai database penelitian dan referensi.</p>
+                                    </div>
+                                </div>
+                                
+                                <button class="bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 transition">Akses Koleksi Digital</button>
+                            </div>
+                            <div class="md:w-1/3 hidden md:block bg-emerald-100 flex items-center justify-center">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6e5b4ef6-1e6e-4899-b0fa-9c1c0d8ac6e4.png" alt="Ilustrasi perangkat digital yang menampilkan buku elektronik" class="max-w-xs p-6">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <h3 class="font-bold text-lg mb-4">Panduan Akses Digital</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <div class="bg-emerald-100 rounded-lg p-2 mr-4">
+                                        <span class="text-emerald-800 font-bold">1</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Login ke Akun Anda</h4>
+                                        <p class="text-gray-600 text-sm">Gunakan username dan password yang telah terdaftar</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="bg-emerald-100 rounded-lg p-2 mr-4">
+                                        <span class="text-emerald-800 font-bold">2</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Cari Koleksi Digital</h4>
+                                        <p class="text-gray-600 text-sm">Gunakan fitur pencarian atau jelajahi berdasarkan kategori</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="bg-emerald-100 rounded-lg p-2 mr-4">
+                                        <span class="text-emerald-800 font-bold">3</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Unduh atau Baca Online</h4>
+                                        <p class="text-gray-600 text-sm">Pilih format yang sesuai dan mulai baca</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <h3 class="font-bold text-lg mb-4">FAQ Layanan Digital</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium mb-1 text-emerald-700">Apakah semua koleksi digital gratis?</h4>
+                                    <p class="text-gray-600 text-sm">Ya, semua koleksi digital dapat diakses gratis oleh anggota perpustakaan yang aktif.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1 text-emerald-700">Berapa lama masa aktif ebook yang dipinjam?</h4>
+                                    <p class="text-gray-600 text-sm">Masa pinjam ebook adalah 14 hari, setelah itu akan otomatis dinonaktifkan dari perangkat Anda.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1 text-emerald-700">Aplikasi apa yang dibutuhkan?</h4>
+                                    <p class="text-gray-600 text-sm">Untuk EPUB dan PDF, Anda bisa menggunakan aplikasi pembaca buku standar di perangkat Anda.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Edukasi -->
+            <div id="edukasi-tab" class="tab-content hidden">
+                <div class="grid grid-cols-1 gap-8">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="md:flex">
+                            <div class="p-8 md:w-1/2">
+                                <h2 class="text-2xl font-bold mb-4">Program Edukasi & Literasi</h2>
+                                <p class="text-gray-600 mb-6">Kami menyelenggarakan berbagai program edukasi untuk meningkatkan literasi masyarakat:</p>
+                                
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-start">
+                                        <div class="bg-emerald-100 rounded-full p-2 mr-4 flex-shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium mb-1">Workshop Literasi Digital</h4>
+                                            <p class="text-gray-600 text-sm">Setiap Sabtu minggu kedua bulan</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="bg-emerald-100 rounded-full p-2 mr-4 flex-shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium mb-1">Diskusi Buku Bulanan</h4>
+                                            <p class="text-gray-600 text-sm">Setiap Jumat minggu terakhir bulan</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="bg-emerald-100 rounded-full p-2 mr-4 flex-shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium mb-1">Pelatihan Penelitian</h4>
+                                            <p class="text-gray-600 text-sm">Setiap bulan dengan topik berbeda</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 transition">Daftar Program</button>
+                            </div>
+                            <div class="md:w-1/2">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0e12e27d-3e34-4a4e-83c4-f7af4f1e8f6c.png" alt="Sesi diskusi buku di perpustakaan dengan peserta yang antusias" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class

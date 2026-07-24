@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Wiyata Pustaka — Perpustakaan SMK Pawiyatan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F1E3;
+    --paper-2:#FFFDF7;
+    --ink:#2A2018;
+    --ink-soft:#5C5245;
+    --maroon:#7A2334;
+    --maroon-deep:#5C1A27;
+    --gold:#C69A3D;
+    --gold-soft:#E7CE94;
+    --green:#3B5D42;
+    --line:#E2D6BC;
+    --danger:#B23A2E;
+    --radius:14px;
+    --shadow:0 10px 30px -12px rgba(42,32,24,0.28);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at top left, #FBF6E8 0%, var(--paper) 55%) fixed;
+    color:var(--ink);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:84px;
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0; letter-spacing:.2px;}
+  .kawung-bg{
+    background-image:
+      radial-gradient(circle at 12px 12px, rgba(230,205,140,0.55) 0 5px, transparent 5.5px),
+      radial-gradient(circle at 32px 32px, rgba(230,205,140,0.55) 0 5px, transparent 5.5px);
+    background-size:44px 44px;
+  }
+
+  /* ===== Topbar ===== */
+  .topbar{
+    background:linear-gradient(160deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    color:#FBF2E4;
+    padding:22px 18px 26px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:4px solid var(--gold);
+  }
+  .topbar::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:radial-gradient(circle at 10px 10px, rgba(255,255,255,0.06) 0 4px, transparent 4.4px);
+    background-size:34px 34px;
+    pointer-events:none;
+  }
+  .topbar-inner{
+    max-width:920px; margin:0 auto;
+    display:flex; align-items:center; gap:14px; position:relative; z-index:1;
+  }
+  .logo-mark{
+    flex:none;
+    width:52px; height:52px; border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, #E9CE8C, var(--gold) 70%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:19px; color:var(--maroon-deep);
+    box-shadow:0 4px 10px rgba(0,0,0,.25), inset 0 0 0 2px rgba(255,255,255,.35);
+  }
+  .topbar h1{font-size:20px; font-weight:600; line-height:1.25;}
+  .topbar p{margin:2px 0 0; font-size:12.5px; color:#E8D3B0; letter-spacing:.3px;}
+
+  /* ===== Tabs ===== */
+  .tabs{
+    max-width:920px; margin:0 auto;
+    display:flex; gap:8px; padding:14px 16px 0;
+  }
+  .tab-btn{
+    flex:1;
+    border:1px solid var(--line);
+    background:var(--paper-2);
+    color:var(--ink-soft);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:600; font-size:12.5px;
+    padding:11px 6px;
+    border-radius:12px 12px 0 0;
+    cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    transition:.18s;
+  }
+  .tab-btn svg{width:18px; height:18px; stroke:currentColor;}
+  .tab-btn.active{
+    background:var(--paper-2);
+    color:var(--maroon);
+    border-color:var(--gold);
+    border-bottom:2px solid var(--paper-2);
+    box-shadow:0 -4px 12px -6px rgba(122,35,52,0.25);
+  }
+
+  /* ===== Layout ===== */
+  main{max-width:920px; margin:0 auto; padding:0 16px;}
+  .panel{display:none; animation:fade .25s ease;}
+  .panel.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .card{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-top:none;
+    border-radius:0 0 var(--radius) var(--radius);
+    box-shadow:var(--shadow);
+    padding:22px 18px 24px;
+    margin-bottom:22px;
+  }
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:4px;}
+  .section-head h2{font-size:19px; color:var(--maroon-deep);}
+  .eyebrow{
+    font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:var(--gold); font-weight:700;
+  }
+  .sub{color:var(--ink-soft); font-size:13px; margin:6px 0 20px; line-height:1.5;}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px 16px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field.full{grid-column:1 / -1;}
+  label{font-size:12.5px; font-weight:600; color:var(--ink-soft);}
+  label .req{color:var(--danger);}
+  input[type=text], input[type=tel], input[type=email], input[type=date], select, textarea{
+    font-family:inherit; font-size:14.5px; color:var(--ink);
+    background:#FFFEFB;
+    border:1.4px solid var(--line);
+    border-radius:9px;
+    padding:10px 12px;
+    outline:none;
+    transition:.15s;
+  }
+  input:focus, select:focus, textarea:focus{
+    border-color:var(--gold); box-shadow:0 0 0 3px rgba(198,154,61,0.18);
+  }
+  textarea{resize:vertical; min-height:70px;}
+
+  .photo-drop{
+    display:flex; align-items:center; gap:12px;
+    border:1.4px dashed var(--line); border-radius:9px; padding:10px 12px;
+    background:#FFFEFB;
+  }
+  .photo-drop .thumb{
+    width:46px; height:46px; border-radius:50%; background:var(--gold-soft);
+    display:flex; align-items:center; justify-content:center; overflow:hidden; flex:none;
+    color:var(--maroon-deep); font-weight:700; font-family:'Fraunces',serif;
+  }
+  .photo-drop .thumb img{width:100%; height:100%; object-fit:cover;}
+  .photo-drop input[type=file]{font-size:12.5px; max-width:100%;}
+
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:13.5px;
+    padding:12px 18px; border-radius:10px;
+    display:inline-flex; align-items:center; gap:8px; justify-content:center;
+    transition:.15s; letter-spacing:.2px;
+  }
+  .btn-primary{background:var(--maroon); color:#FBF2E4;}
+  .btn-primary:hover{background:var(--maroon-deep);}
+  .btn-gold{background:var(--gold); color:#3A2A0E;}
+  .btn-gold:hover{background:#B98B2E;}
+  .btn-ghost{background:transparent; color:var(--maroon); border:1.4px solid var(--maroon);}
+  .btn-ghost:hover{background:rgba(122,35,52,0.06);}
+  .btn-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
+  .btn[disabled]{opacity:.45; cursor:not-allowed;}
+
+  .notice{
+    margin-top:14px; padding:10px 13px; border-radius:9px; font-size:13px; display:none;
+    border:1.2px solid; align-items:center; gap:8px;
+  }
+  .notice.show{display:flex;}
+  .notice.ok{background:#EEF4EC; border-color:#BFDCC3; color:var(--green);}
+  .notice.err{background:#FBEBE9; border-color:#EFC4BE; color:var(--danger);}
+
+  /* Card preview */
+  .card-preview-wrap{margin-top:20px; display:none;}
+  .card-preview-wrap.show{display:block;}
+  .card-preview-wrap h3{font-size:14px; color:var(--maroon-deep); margin-bottom:10px;}
+  #cardCanvas{
+    width:100%; max-width:420px; height:auto; display:block; border-radius:14px;
+    box-shadow:var(--shadow); border:1px solid var(--line);
+  }
+
+  /* Tables */
+  .table-wrap{overflow-x:auto; margin-top:8px; border:1px solid var(--line); border-radius:10px;}
+  table{width:100%; border-collapse:collapse; font-size:12.8px; min-width:560px;}
+  th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); white-space:nowrap;}
+  th{background:#F1E8D2; color:var(--maroon-deep); font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.4px;}
+  tbody tr:nth-child(even){background:#FCF8ED;}
+  tbody tr:hover{background:#F6EBD3;}
+  .empty-row td{text-align:center; color:var(--ink-soft); padding:16px; font-style:italic;}
+  .del-btn{background:none; border:none; color:var(--danger); cursor:pointer; font-size:12px; font-weight:700;}
+  td.wrap{white-space:normal; max-width:220px;}
+
+  /* Stars */
+  .star-field{display:flex; flex-direction:column; gap:6px; padding:10px 12px; background:#FFFEFB; border:1.4px solid var(--line); border-radius:9px;}
+  .star-field .stars{display:flex; flex-direction:row-reverse; gap:4px; justify-content:flex-end;}
+  .star-field input{position:absolute; opacity:0; width:0; height:0;}
+  .star-field .stars label{
+    font-size:22px; color:#DED2B4; cursor:pointer; padding:0; line-height:1;
+  }
+  .star-field .stars input:checked ~ label,
+  .star-field .stars label:hover,
+  .star-field .stars label:hover ~ label{color:var(--gold);}
+  .star-legend{font-size:11px; color:var(--ink-soft);}
+
+  .summary-list{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
+  .summary-row{display:flex; align-items:center; gap:10px; font-size:12.5px;}
+  .summary-row .lbl{width:150px; flex:none; color:var(--ink-soft); font-weight:600;}
+  .bar-track{flex:1; height:9px; background:#EFE5CB; border-radius:6px; overflow:hidden;}
+  .bar-fill{height:100%; background:linear-gradient(90deg, var(--gold), var(--maroon)); border-radius:6px; transition:width .4s ease;}
+  .summary-row .val{width:38px; flex:none; text-align:right; font-weight:700; color:var(--maroon-deep);}
+
+  .stat-strip{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;}
+  .stat-chip{
+    flex:1; min-width:110px; background:#F1E8D2; border:1px solid var(--gold-soft);
+    border-radius:10px; padding:10px 12px;
+  }
+  .stat-chip .n{font-family:'Fraunces',serif; font-size:22px; color:var(--maroon-deep); font-weight:700;}
+  .stat-chip .l{font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.5px;}
+
+  footer{max-width:920px; margin:26px auto 0; padding:0 16px; text-align:center; color:var(--ink-soft); font-size:11.5px;}
+
+  /* Bottom nav for mobile */
+  .bottom-nav{
+    display:none;
+    position:fixed; bottom:0; left:0; right:0;
+    background:var(--paper-2); border-top:1.4px solid var(--line);
+    box-shadow:0 -6px 18px -10px rgba(42,32,24,.3);
+    z-index:20;
+  }
+  .bottom-nav .row{display:flex; max-width:920px; margin:0 auto;}
+  .bottom-nav button{
+    flex:1; background:none; border:none; padding:10px 4px 8px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    color:var(--ink-soft); font-size:10.5px; font-weight:700; cursor:pointer;
+  }
+  .bottom-nav button svg{width:20px; height:20px; stroke:currentColor;}
+  .bottom-nav button.active{color:var(--maroon);}
+  .bottom-nav button.active svg{stroke:var(--maroon);}
+
+  @media (max-width:640px){
+    .grid{grid-template-columns:1fr;}
+    .tabs{display:none;}
+    .bottom-nav{display:block;}
+    .card{border-radius:var(--radius); border-top:1px solid var(--line);}
+    body{padding-bottom:78px;}
+    .topbar h1{font-size:17.5px;}
+    th,td{padding:8px 8px;}
+  }
+  @media (min-width:641px){
+    .bottom-nav{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-mark">WP</div>
+    <div>
+      <h1>Wiyata Pustaka</h1>
+      <p>Perpustakaan SMK Pawiyatan · Sistem Anggota &amp; Layanan</p>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" id="tabsDesktop">
+  <button class="tab-btn active" data-tab="anggota">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Anggota Baru
+  </button>
+  <button class="tab-btn" data-tab="permintaan">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Permintaan Buku
+  </button>
+  <button class="tab-btn" data-tab="survei">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 20l-1.4-1.3C5.4 14.4 2 11.3 2 7.6 2 4.6 4.4 2.3 7.3 2.3c1.7 0 3.3.8 4.7 2.2 1.4-1.4 3-2.2 4.7-2.2 2.9 0 5.3 2.3 5.3 5.3 0 3.7-3.4 6.8-8.6 11.1L12 20z"/></svg>
+    Survei Kepuasan
+  </button>
+</nav>
+
+<main>
+
+  <!-- ================= PANEL: ANGGOTA ================= -->
+  <section class="panel active" id="panel-anggota">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Formulir 01</div>
+          <h2>Pendaftaran Anggota Baru</h2>
+        </div>
+      </div>
+      <p class="sub">Isi data lengkap untuk mendaftar sebagai anggota Perpustakaan Wiyata Pustaka. Kartu anggota akan dibuat otomatis dan dapat langsung diunduh setelah data disimpan.</p>
+
+      <form id="formAnggota" novalidate>
+        <div class="grid">
+          <div class="field full">
+            <label>Nama Lengkap <span class="req">*</span></label>
+            <input type="text" id="a-nama" required placeholder="Contoh: Siti Rahmawati">
+          </div>
+          <div class="field">
+            <label>Jenis Anggota <span class="req">*</span></label>
+            <select id="a-jenis" required>
+              <option value="">Pilih jenis anggota</option>
+              <option value="Siswa">Siswa</option>
+              <option value="Guru">Guru</option>
+              <option value="Staf">Staf / Karyawan</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>NIS / NIP <span class="req">*</span></label>
+            <input type="text" id="a-nis" required placeholder="Nomor induk">
+          </div>
+          <div class="field">
+            <label>Kelas / Jurusan atau Jabatan <span class="req">*</span></label>
+            <input type="text" id="a-kelas" required placeholder="Contoh: XI TKJ 2 / Guru Matematika">
+          </div>
+          <div class="field">
+            <label>Nomor Telepon</label>
+            <input type="tel" id="a-telp" placeholder="08xxxxxxxxxx">
+          </div>
+          <div class="field full">
+            <label>Alamat</label>
+            <input type="text" id="a-alamat" placeholder="Alamat tempat tinggal">
+          </div>
+          <div class="field full">
+            <label>Foto (opsional)</label>
+            <div class="photo-drop">
+              <div class="thumb" id="photoThumb">WP</div>
+              <input type="file" id="a-foto" accept="image/*">
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary">Simpan &amp; Buat Kartu Anggota</button>
+          <button type="reset" class="btn btn-ghost">Bersihkan Formulir</button>
+        </div>
+        <div class="notice" id="notice-anggota"></div>
+      </form>
+
+      <div class="card-preview-wrap" id="cardPreviewWrap">
+        <h3>Pratinjau Kartu Anggota</h3>
+        <canvas id="cardCanvas" width="1000" height="630"></canvas>
+        <div class="btn-row">
+          <button class="btn btn-gold" id="btnDownloadCard">⬇ Unduh Kartu Anggota (PNG)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Data Tersimpan</div>
+          <h2 style="font-size:16px;">Daftar Anggota Terdaftar</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>No. Anggota</th><th>Nama</th><th>Jenis</th><th>Kelas / Jabatan</th><th>Terdaftar</th><th>Kartu</th></tr></thead>
+          <tbody id="tblAnggota"><tr class="empty-row"><td colspan="6">Belum ada anggota terdaftar pada sesi ini.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PANEL: PERMINTAAN BUKU ================= -->
+  <section class="panel" id="panel-permintaan">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Formulir 02</div>
+          <h2>Permintaan Pengadaan Buku</h2>
+        </div>
+      </div>
+      <p class="sub">Ajukan usulan buku yang ingin ditambahkan ke koleksi perpustakaan. Petugas akan meninjau setiap permintaan yang masuk.</p>
+
+      <form id="formPermintaan" novalidate>
+        <div class="grid">
+          <div class="field">
+            <label>Nama Pemohon <span class="req">*</span></label>
+            <input type="text" id="p-nama" required>
+          </div>
+          <div class="field">
+            <label>Nomor Anggota</label>
+            <input type="text" id="p-noanggota" placeholder="Jika sudah menjadi anggota">
+          </div>
+          <div class="field">
+            <label>Kelas / Jurusan</label>
+            <input type="text" id="p-kelas" placeholder="Contoh: XII AKL 1">
+          </div>
+          <div class="field">
+            <label>Tanggal Pengajuan</label>
+            <input type="date" id="p-tanggal">
+          </div>
+          <div class="field full">
+            <label>Judul Buku yang Diusulkan <span class="req">*</span></label>
+            <input type="text" id="p-judul" required>
+          </div>
+          <div class="field">
+            <label>Pengarang</label>
+            <input type="text" id="p-pengarang">
+          </div>
+          <div class="field">
+            <label>Kategori</label>
+            <select id="p-kategori">
+              <option value="">Pilih kategori</option>
+              <option>Pelajaran / Akademik</option>
+              <option>Kejuruan / Praktik</option>
+              <option>Fiksi</option>
+              <option>Referensi Umum</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label>Alasan / Keterangan</label>
+            <textarea id="p-alasan" placeholder="Jelaskan alasan pengajuan buku ini"></textarea>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary">Kirim Permintaan</button>
+          <button type="reset" class="btn btn-ghost">Bersihkan</button>
+        </div>
+        <div class="notice" id="notice-permintaan"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Data Tersimpan</div>
+          <h2 style="font-size:16px;">Daftar Permintaan Buku</h2>
+        </div>
+        <button class="btn btn-ghost" id="btnExportPermintaan" style="font-size:11.5px; padding:8px 12px;">⬇ Ekspor CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tanggal</th><th>Pemohon</th><th>Judul Buku</th><th>Pengarang</th><th>Kategori</th><th>Hapus</th></tr></thead>
+          <tbody id="tblPermintaan"><tr class="empty-row"><td colspan="6">Belum ada permintaan buku pada sesi ini.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PANEL: SURVEI ================= -->
+  <section class="panel" id="panel-survei">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Formulir 03</div>
+          <h2>Survei Kepuasan Pelayanan</h2>
+        </div>
+      </div>
+      <p class="sub">Bantu kami meningkatkan mutu layanan perpustakaan dengan memberikan penilaian jujur pada aspek-aspek berikut.</p>
+
+      <form id="formSurvei" novalidate>
+        <div class="grid">
+          <div class="field">
+            <label>Nama (opsional)</label>
+            <input type="text" id="s-nama" placeholder="Boleh dikosongkan / anonim">
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="s-status">
+              <option value="">Pilih status</option>
+              <option>Siswa</option>
+              <option>Guru</option>
+              <option>Staf</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:14px;">
+          <div class="field full" id="ratingWrap"></div>
+        </div>
+
+        <div class="field full" style="margin-top:14px;">
+          <label>Kritik dan Saran</label>
+          <textarea id="s-saran" placeholder="Tuliskan masukan Anda untuk perpustakaan"></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary">Kirim Survei</button>
+          <button type="reset" class="btn btn-ghost">Bersihkan</button>
+        </div>
+        <div class="notice" id="notice-survei"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Ringkasan</div>
+          <h2 style="font-size:16px;">Rata-rata Kepuasan</h2>
+        </div>
+      </div>
+      <div class="stat-strip">
+        <div class="stat-chip"><div class="n" id="statCount">0</div><div class="l">Responden</div></div>
+        <div class="stat-chip"><div class="n" id="statAvg">0.0</div><div class="l">Rata-rata Skor</div></div>
+      </div>
+      <div class="summary-list" id="summaryList"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Data Tersimpan</div>
+          <h2 style="font-size:16px;">Kritik &amp; Saran Masuk</h2>
+        </div>
+        <button class="btn btn-ghost" id="btnExportSurvei" style="font-size:11.5px; padding:8px 12px;">⬇ Ekspor CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tanggal</th><th>Nama</th><th>Status</th><th>Skor</th><th>Saran</th></tr></thead>
+          <tbody id="tblSurvei"><tr class="empty-row"><td colspan="5">Belum ada survei masuk pada sesi ini.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Wiyata Pustaka · SMK Pawiyatan — data tersimpan sementara selama sesi peramban ini terbuka.</footer>
+
+<nav class="bottom-nav">
+  <div class="row">
+    <button class="active" data-tab="anggota">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Anggota
+    </button>
+    <button data-tab="permintaan">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Permintaan
+    </button>
+    <button data-tab="survei">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 20l-1.4-1.3C5.4 14.4 2 11.3 2 7.6 2 4.6 4.4 2.3 7.3 2.3c1.7 0 3.3.8 4.7 2.2 1.4-1.4 3-2.2 4.7-2.2 2.9 0 5.3 2.3 5.3 5.3 0 3.7-3.4 6.8-8.6 11.1L12 20z"/></svg>
+      Survei
+    </button>
+  </div>
+</nav>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ==========================================================
+     KONFIGURASI DATABASE (Google Sheets via Apps Script)
+     ----------------------------------------------------------
+     Tempel "Web app URL" hasil deploy Apps Script (diakhiri /exec)
+     di antara tanda kutip di bawah ini. Lihat file
+     apps-script-backend.gs untuk kode & langkah deploy-nya.
+     Selama kosong, aplikasi tetap berjalan tapi data hanya
+     tersimpan sementara di memori peramban (tidak permanen).
+     ========================================================== */
+  const CONFIG = {
+    API_URL: "" // <-- contoh: "https://script.google.com/macros/s/xxxxx/exec"
+  };
+
+  const dbEnabled = () => CONFIG.API_URL && CONFIG.API_URL.trim().length > 0;
+
+  async function apiListAll(){
+    if(!dbEnabled()) return null;
+    const res = await fetch(`${CONFIG.API_URL}?action=listAll`);
+    const json = await res.json();
+    if(json.status !== "ok") throw new Error(json.message || "Gagal memuat data");
+    return json.data;
+  }
+
+  async function apiAppend(sheet, row){
+    if(!dbEnabled()) return null;
+    const res = await fetch(CONFIG.API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" }, // hindari CORS preflight
+      body: JSON.stringify({ sheet, row })
+    });
+    const json = await res.json();
+    if(json.status !== "ok") throw new Error(json.message || "Gagal menyimpan data");
+    return json;
+  }
+
+  function dbBadge(){
+    const el = document.createElement("div");
+    el.id = "dbBadge";
+    el.style.cssText = "max-width:920px;margin:10px auto 0;padding:0 16px;";
+    document.querySelector(".topbar").after(el);
+    updateDbBadge();
+  }
+  function updateDbBadge(){
+    const el = document.getElementById("dbBadge");
+    if(!el) return;
+    el.innerHTML = dbEnabled()
+      ? `<div style="font-size:11.5px;color:var(--green);background:#EEF4EC;border:1px solid #BFDCC3;border-radius:8px;padding:6px 10px;display:inline-block;">🟢 Tersambung ke Google Sheets — data tersimpan permanen.</div>`
+      : `<div style="font-size:11.5px;color:#8A6D2A;background:#FCF3D9;border:1px solid #E7CE94;border-radius:8px;padding:6px 10px;display:inline-block;">🟡 Mode lokal — isi CONFIG.API_URL di kode HTML agar data tersimpan permanen ke Google Sheets.</div>`;
+  }
+
+  /* ---------- State ---------- */
+  const state = {
+    members: [],
+    requests: [],
+    surveys: [],
+    memberSeq: 0,
+    reqSeq: 0,
+    surveySeq: 0,
+    lastCardDataUrl: null,
+    lastCardMember: null,
+    photoDataUrl: null
+  };
+
+  const ASPECTS = [
+    { key:"koleksi", label:"Kelengkapan koleksi buku" },
+    { key:"petugas", label:"Keramahan & kesigapan petugas" },
+    { key:"ruangan", label:"Kenyamanan ruang baca" },
+    { key:"kecepatan", label:"Kecepatan proses layanan" },
+    { key:"fasilitas", label:"Kelengkapan fasilitas pendukung" }
+  ];
+
+  /* ---------- Tabs ---------- */
+  function switchTab(name){
+    document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active", p.id === "panel-"+name));
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+    document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  document.querySelectorAll("[data-tab]").forEach(el=>{
+    el.addEventListener("click", ()=>switchTab(el.dataset.tab));
+  });
+
+  function todayISO(){
+    const d = new Date();
+    return d.toISOString().slice(0,10);
+  }
+  function todayID(){
+    return new Date().toLocaleDateString("id-ID", {day:"2-digit", month:"long", year:"numeric"});
+  }
+  function esc(str){
+    return String(str ?? "").replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
+  }
+  function showNotice(id, msg, type){
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = "notice show " + type;
+    setTimeout(()=>{ el.classList.remove("show"); }, 4200);
+  }
+
+  /* ================= ANGGOTA ================= */
+  const photoInput = document.getElementById("a-foto");
+  const photoThumb = document.getElementById("photoThumb");
+  photoInput.addEventListener("change", e=>{
+    const file = e.target.files[0];
+    if(!file){ state.photoDataUrl = null; photoThumb.innerHTML = "WP"; return; }
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      state.photoDataUrl = ev.target.result;
+      photoThumb.innerHTML = `<img src="${ev.target.result}" alt="Foto">`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function memberIdFor(jenis){
+    state.memberSeq++;
+    const year = new Date().getFullYear();
+    const prefix = jenis === "Siswa" ? "S" : jenis === "Guru" ? "G" : "T";
+    return `WP-${year}-${prefix}-${String(state.memberSeq).padStart(4,"0")}`;
+  }
+
+  document.getElementById("formAnggota").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const nama = document.getElementById("a-nama").value.trim();
+    const jenis = document.getElementById("a-jenis").value;
+    const nis = document.getElementById("a-nis").value.trim();
+    const kelas = document.getElementById("a-kelas").value.trim();
+    const telp = document.getElementById("a-telp").value.trim();
+    const alamat = document.getElementById("a-alamat").value.trim();
+
+    if(!nama || !jenis || !nis || !kelas){
+      showNotice("notice-anggota", "Mohon lengkapi seluruh kolom bertanda (*).", "err");
+      return;
+    }
+
+    const id = memberIdFor(jenis);
+    const tglDaftar = todayISO();
+    const validUntil = new Date();
+    validUntil.setFullYear(validUntil.getFullYear()+1);
+
+    const member = {
+      id, nama, jenis, nis, kelas, telp, alamat,
+      tglDaftar,
+      validUntil: validUntil.toISOString().slice(0,10),
+      photo: state.photoDataUrl
+    };
+
+    const submitBtn = this.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Menyimpan…";
+    try{
+      if(dbEnabled()){
+        await apiAppend("Anggota", [id, nama, jenis, nis, kelas, telp, alamat, tglDaftar, member.validUntil]);
+      }
+      state.members.push(member);
+      renderAnggotaTable();
+      drawMemberCard(member);
+      showNotice("notice-anggota", `Anggota "${nama}" berhasil disimpan dengan nomor ${id}. Kartu siap diunduh.`, "ok");
+    } catch(err){
+      state.memberSeq--; // batalkan nomor urut karena gagal simpan
+      showNotice("notice-anggota", "Gagal menyimpan ke Google Sheets: " + err.message, "err");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Simpan & Buat Kartu Anggota";
+    }
+  });
+
+  function renderAnggotaTable(){
+    const tbody = document.getElementById("tblAnggota");
+    if(state.members.length===0){
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="6">Belum ada anggota terdaftar pada sesi ini.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = state.members.map(m=>`
+      <tr>
+        <td>${esc(m.id)}</td>
+        <td>${esc(m.nama)}</td>
+        <td>${esc(m.jenis)}</td>
+        <td>${esc(m.kelas)}</td>
+        <td>${esc(m.tglDaftar)}</td>
+        <td><button class="del-btn" data-reprint="${esc(m.id)}" style="color:var(--maroon);">Cetak ulang</button></td>
+      </tr>
+    `).join("");
+    tbody.querySelectorAll("[data-reprint]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const m = state.members.find(x=>x.id===btn.dataset.reprint);
+        if(m){ drawMemberCard(m); switchTab("anggota"); document.getElementById("cardPreviewWrap").scrollIntoView({behavior:"smooth"}); }
+      });
+    });
+  }
+
+  /* ----- Kartu Anggota via Canvas ----- */
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+
+  function drawKawung(ctx,x,y,size,color,alpha){
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    const r = size*0.16;
+    [[0,-r],[r,0],[0,r],[-r,0]].forEach(([dx,dy])=>{
+      ctx.beginPath();
+      ctx.ellipse(x+dx, y+dy, size*0.17, size*0.11, Math.atan2(dy,dx), 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.restore();
+  }
+
+  function drawBarcode(ctx, text, x, y, w, h){
+    let seed = 0;
+    for(let i=0;i<text.length;i++){ seed = (seed*31 + text.charCodeAt(i)) >>> 0; }
+    function rand(){ seed = (seed*1103515245 + 12345) >>> 0; return (seed / 4294967295); }
+    let cx = x;
+    ctx.fillStyle = "#241914";
+    while(cx < x+w){
+      const bw = 2 + Math.floor(rand()*4);
+      if(rand() > 0.42){ ctx.fillRect(cx, y, bw, h); }
+      cx += bw + 2;
+    }
+  }
+
+  function drawMemberCard(member){
+    const canvas = document.getElementById("cardCanvas");
+    const ctx = canvas.getContext("2d");
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    // base card
+    roundRect(ctx,0,0,W,H,26);
+    ctx.save(); ctx.clip();
+    const bg = ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,"#FFFDF6"); bg.addColorStop(1,"#FBF3DE");
+    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+    // header band
+    const headerH = 148;
+    const hg = ctx.createLinearGradient(0,0,W,0);
+    hg.addColorStop(0,"#7A2334"); hg.addColorStop(1,"#5C1A27");
+    ctx.fillStyle = hg;
+    ctx.fillRect(0,0,W,headerH);
+    for(let gx=30; gx<W; gx+=54){
+      for(let gy=24; gy<headerH; gy+=48){
+        drawKawung(ctx, gx, gy, 34, "#E7CE94", 0.16);
+      }
+    }
+    // gold divider
+    ctx.fillStyle = "#C69A3D";
+    ctx.fillRect(0, headerH, W, 6);
+
+    // header text
+    ctx.fillStyle = "#F6E9CE";
+    ctx.font = "700 34px 'Fraunces', serif";
+    ctx.fillText("SMK PAWIYATAN", 40, 62);
+    ctx.font = "600 18px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillStyle = "#E4CBA0";
+    ctx.fillText("PERPUSTAKAAN WIYATA PUSTAKA", 40, 90);
+    ctx.font = "500 14px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillStyle = "#D9BD91";
+    ctx.fillText("KARTU TANDA ANGGOTA", 40, 118);
+
+    // monogram
+    ctx.beginPath();
+    ctx.arc(W-90, 74, 44, 0, Math.PI*2);
+    const mg = ctx.createRadialGradient(W-104,58,4,W-90,74,50);
+    mg.addColorStop(0,"#F1DBA4"); mg.addColorStop(1,"#C69A3D");
+    ctx.fillStyle = mg; ctx.fill();
+    ctx.fillStyle = "#5C1A27";
+    ctx.font = "700 30px 'Fraunces', serif";
+    ctx.textAlign="center";
+    ctx.fillText("WP", W-90, 84);
+    ctx.textAlign="left";
+
+    // photo / avatar
+    const px = 44, py = headerH + 34, psz = 152;
+    roundRect(ctx, px, py, psz, psz, 16);
+    ctx.save(); ctx.clip();
+    if(member.photo){
+      const img = new Image();
+      img.onload = ()=>{
+        ctx.drawImage(img, px, py, psz, psz);
+        ctx.restore();
+        drawCardRest();
+        refreshDownload();
+      };
+      img.src = member.photo;
+    } else {
+      const ag = ctx.createLinearGradient(px,py,px+psz,py+psz);
+      ag.addColorStop(0,"#E7CE94"); ag.addColorStop(1,"#C69A3D");
+      ctx.fillStyle = ag; ctx.fillRect(px,py,psz,psz);
+      ctx.fillStyle = "#5C1A27";
+      ctx.font = "700 56px 'Fraunces', serif";
+      ctx.textAlign="center";
+      const initials = member.nama.split(/\s+/).slice(0,2).map(w=>w[0]||"").join("").toUpperCase();
+      ctx.fillText(initials || "WP", px+psz/2, py+psz/2+20);
+      ctx.textAlign="left";
+      ctx.restore();
+      drawCardRest();
+      refreshDownload();
+    }
+
+    function drawCardRest(){
+      const tx = px + psz + 30;
+      let ty = py + 14;
+      ctx.fillStyle = "#7A2334";
+      ctx.font = "700 30px 'Fraunces', serif";
+      wrapFillText(ctx, member.nama, tx, ty+22, W-tx-40, 32);
+
+      ty += 66;
+      ctx.font = "600 12.5px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillStyle = "#9C8564";
+
+      const rows = [
+        ["NO. ANGGOTA", member.id],
+        ["JENIS ANGGOTA", member.jenis],
+        ["KELAS / JABATAN", member.kelas],
+        ["BERLAKU HINGGA", formatDateID(member.validUntil)]
+      ];
+      rows.forEach(([label, val])=>{
+        ctx.font = "700 11px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillStyle = "#AD9668";
+        ctx.fillText(label, tx, ty);
+        ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillStyle = "#2A2018";
+        ctx.fillText(String(val||"-"), tx, ty+21);
+        ty += 46;
+      });
+
+      // footer band
+      const footY = H-64;
+      ctx.fillStyle = "#5C1A27";
+      ctx.fillRect(0, footY, W, 64);
+      for(let gx=30; gx<W; gx+=50){
+        drawKawung(ctx, gx, footY+32, 26, "#E7CE94", 0.14);
+      }
+      drawBarcode(ctx, member.id, 40, footY+16, 300, 32);
+      ctx.font = "600 13px 'JetBrains Mono', monospace";
+      ctx.fillStyle = "#E7CE94";
+      ctx.fillText(member.id, 40, footY+58);
+
+      ctx.textAlign = "right";
+      ctx.font = "500 12px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillStyle = "#D9BD91";
+      ctx.fillText("Terbit: " + formatDateID(member.tglDaftar), W-40, footY+58);
+      ctx.textAlign = "left";
+
+      ctx.restore();
+    }
+
+    function refreshDownload(){
+      state.lastCardDataUrl = canvas.toDataURL("image/png");
+      state.lastCardMember = member;
+      document.getElementById("cardPreviewWrap").classList.add("show");
+    }
+  }
+
+  function wrapFillText(ctx, text, x, y, maxWidth, lineHeight){
+    const words = text.split(" ");
+    let line = "";
+    let ly = y;
+    let lines = 0;
+    for(let i=0;i<words.length;i++){
+      const test = line + words[i] + " ";
+      if(ctx.measureText(test).width > maxWidth && line !== "" && lines < 1){
+        ctx.fillText(line, x, ly);
+        line = words[i] + " ";
+        ly += lineHeight;
+        lines++;
+      } else {
+        line = test;
+      }
+    }
+    ctx.fillText(line, x, ly);
+  }
+
+  function formatDateID(iso){
+    if(!iso) return "-";
+    const d = new Date(iso+"T00:00:00");
+    return d.toLocaleDateString("id-ID", {day:"2-digit", month:"short", year:"numeric"});
+  }
+
+  document.getElementById("btnDownloadCard").addEventListener("click", ()=>{
+    if(!state.lastCardDataUrl){ return; }
+    const a = document.createElement("a");
+    a.href = state.lastCardDataUrl;
+    const safeName = (state.lastCardMember?.nama || "anggota").toLowerCase().replace(/[^a-z0-9]+/g,"-");
+    a.download = `kartu-anggota-${safeName}-${state.lastCardMember?.id || ""}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+
+  /* ================= PERMINTAAN BUKU ================= */
+  document.getElementById("p-tanggal").value = todayISO();
+
+  document.getElementById("formPermintaan").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const nama = document.getElementById("p-nama").value.trim();
+    const judul = document.getElementById("p-judul").value.trim();
+    if(!nama || !judul){
+      showNotice("notice-permintaan", "Nama pemohon dan judul buku wajib diisi.", "err");
+      return;
+    }
+    const req = {
+      no: state.reqSeq+1,
+      tanggal: document.getElementById("p-tanggal").value || todayISO(),
+      nama,
+      noAnggota: document.getElementById("p-noanggota").value.trim(),
+      kelas: document.getElementById("p-kelas").value.trim(),
+      judul,
+      pengarang: document.getElementById("p-pengarang").value.trim(),
+      kategori: document.getElementById("p-kategori").value,
+      alasan: document.getElementById("p-alasan").value.trim()
+    };
+
+    const submitBtn = this.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Mengirim…";
+    try{
+      if(dbEnabled()){
+        await apiAppend("Permintaan", [req.tanggal, req.nama, req.noAnggota, req.kelas, req.judul, req.pengarang, req.kategori, req.alasan]);
+      }
+      state.reqSeq++;
+      state.requests.push(req);
+      renderPermintaanTable();
+      showNotice("notice-permintaan", `Permintaan buku "${judul}" berhasil dikirim. Terima kasih atas usulan Anda.`, "ok");
+      this.reset();
+      document.getElementById("p-tanggal").value = todayISO();
+    } catch(err){
+      showNotice("notice-permintaan", "Gagal menyimpan ke Google Sheets: " + err.message, "err");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Kirim Permintaan";
+    }
+  });
+
+  function renderPermintaanTable(){
+    const tbody = document.getElementById("tblPermintaan");
+    if(state.requests.length===0){
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="6">Belum ada permintaan buku pada sesi ini.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = state.requests.map(r=>`
+      <tr>
+        <td>${esc(r.tanggal)}</td>
+        <td>${esc(r.nama)}</td>
+        <td class="wrap">${esc(r.judul)}</td>
+        <td>${esc(r.pengarang||"-")}</td>
+        <td>${esc(r.kategori||"-")}</td>
+        <td><button class="del-btn" data-del="${r.no}">Hapus</button></td>
+      </tr>
+    `).join("");
+    tbody.querySelectorAll("[data-del]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        state.requests = state.requests.filter(r=>r.no !== Number(btn.dataset.del));
+        renderPermintaanTable();
+      });
+    });
+  }
+
+  document.getElementById("btnExportPermintaan").addEventListener("click", ()=>{
+    exportCSV(
+      ["Tanggal","Nama Pemohon","No Anggota","Kelas/Jurusan","Judul Buku","Pengarang","Kategori","Alasan"],
+      state.requests.map(r=>[r.tanggal,r.nama,r.noAnggota,r.kelas,r.judul,r.pengarang,r.kategori,r.alasan]),
+      "permintaan-buku.csv"
+    );
+  });
+
+  /* ================= SURVEI ================= */
+  const ratingWrap = document.getElementById("ratingWrap");
+  ratingWrap.innerHTML = ASPECTS.map(a=>`
+    <div class="star-field" style="margin-bottom:10px;">
+      <label>${esc(a.label)}</label>
+      <div class="stars">
+        ${[5,4,3,2,1].map(n=>`
+          <input type="radio" id="r-${a.key}-${n}" name="r-${a.key}" value="${n}">
+          <label for="r-${a.key}-${n}" title="${n} bintang">★</label>
+        `).join("")}
+      </div>
+      <span class="star-legend">Sangat kurang — Sangat baik</span>
+    </div>
+  `).join("");
+
+  document.getElementById("formSurvei").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const scores = {};
+    let allFilled = true;
+    ASPECTS.forEach(a=>{
+      const checked = document.querySelector(`input[name="r-${a.key}"]:checked`);
+      if(!checked){ allFilled = false; }
+      scores[a.key] = checked ? Number(checked.value) : 0;
+    });
+    if(!allFilled){
+      showNotice("notice-survei", "Mohon berikan penilaian bintang untuk semua aspek.", "err");
+      return;
+    }
+    const avg = ASPECTS.reduce((s,a)=>s+scores[a.key],0) / ASPECTS.length;
+    const survey = {
+      no: state.surveySeq+1,
+      tanggal: todayISO(),
+      nama: document.getElementById("s-nama").value.trim() || "Anonim",
+      status: document.getElementById("s-status").value || "-",
+      scores,
+      avg,
+      saran: document.getElementById("s-saran").value.trim()
+    };
+
+    const submitBtn = this.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Mengirim…";
+    try{
+      if(dbEnabled()){
+        await apiAppend("Survei", [survey.tanggal, survey.nama, survey.status, scores.koleksi, scores.petugas, scores.ruangan, scores.kecepatan, scores.fasilitas, avg.toFixed(2), survey.saran]);
+      }
+      state.surveySeq++;
+      state.surveys.push(survey);
+      renderSurveyTable();
+      renderSurveySummary();
+      showNotice("notice-survei", "Terima kasih! Survei kepuasan Anda telah kami terima.", "ok");
+      this.reset();
+    } catch(err){
+      showNotice("notice-survei", "Gagal menyimpan ke Google Sheets: " + err.message, "err");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Kirim Survei";
+    }
+  });
+
+  function renderSurveyTable(){
+    const tbody = document.getElementById("tblSurvei");
+    if(state.surveys.length===0){
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="5">Belum ada survei masuk pada sesi ini.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = state.surveys.slice().reverse().map(s=>`
+      <tr>
+        <td>${esc(s.tanggal)}</td>
+        <td>${esc(s.nama)}</td>
+        <td>${esc(s.status)}</td>
+        <td>${s.avg.toFixed(1)} / 5</td>
+        <td class="wrap">${esc(s.saran||"-")}</td>
+      </tr>
+    `).join("");
+  }
+
+  function renderSurveySummary(){
+    const count = state.surveys.length;
+    document.getElementById("statCount").textContent = count;
+    const overallAvg = count ? (state.surveys.reduce((s,x)=>s+x.avg,0)/count) : 0;
+    document.getElementById("statAvg").textContent = overallAvg.toFixed(1);
+
+    const list = document.getElementById("summaryList");
+    if(count===0){
+      list.innerHTML = `<p style="color:var(--ink-soft); font-size:13px; font-style:italic;">Belum ada data untuk ditampilkan.</p>`;
+      return;
+    }
+    list.innerHTML = ASPECTS.map(a=>{
+      const avg = state.surveys.reduce((s,x)=>s+x.scores[a.key],0)/count;
+      const pct = (avg/5)*100;
+      return `
+        <div class="summary-row">
+          <div class="lbl">${esc(a.label)}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+          <div class="val">${avg.toFixed(1)}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  document.getElementById("btnExportSurvei").addEventListener("click", ()=>{
+    exportCSV(
+      ["Tanggal","Nama","Status", ...ASPECTS.map(a=>a.label), "Rata-rata","Saran"],
+      state.surveys.map(s=>[s.tanggal, s.nama, s.status, ...ASPECTS.map(a=>s.scores[a.key]), s.avg.toFixed(2), s.saran]),
+      "survei-kepuasan.csv"
+    );
+  });
+
+  /* ---------- CSV export helper ---------- */
+  function exportCSV(headers, rows, filename){
+    if(rows.length===0){ alert("Belum ada data untuk diekspor."); return; }
+    const escCsv = v => `"${String(v??"").replace(/"/g,'""')}"`;
+    const csv = [headers.map(escCsv).join(","), ...rows.map(r=>r.map(escCsv).join(","))].join("\r\n");
+    const blob = new Blob(["\ufeff"+csv], {type:"text/csv;charset=utf-8;"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  /* ---------- init ---------- */
+  function mapAnggotaRow(r){
+    return {
+      id: r["ID Anggota"], nama: r["Nama"], jenis: r["Jenis Anggota"], nis: r["NIS/NIP"],
+      kelas: r["Kelas/Jabatan"], telp: r["Telepon"], alamat: r["Alamat"],
+      tglDaftar: fmtIso(r["Tanggal Daftar"]), validUntil: fmtIso(r["Berlaku Hingga"]), photo: null
+    };
+  }
+  function mapPermintaanRow(r,i){
+    return {
+      no: i+1, tanggal: fmtIso(r["Tanggal"]), nama: r["Nama Pemohon"], noAnggota: r["No Anggota"],
+      kelas: r["Kelas/Jurusan"], judul: r["Judul Buku"], pengarang: r["Pengarang"],
+      kategori: r["Kategori"], alasan: r["Alasan"]
+    };
+  }
+  function mapSurveiRow(r,i){
+    const scores = { koleksi:Number(r["Koleksi"])||0, petugas:Number(r["Petugas"])||0, ruangan:Number(r["Ruangan"])||0, kecepatan:Number(r["Kecepatan"])||0, fasilitas:Number(r["Fasilitas"])||0 };
+    return { no:i+1, tanggal: fmtIso(r["Tanggal"]), nama: r["Nama"], status: r["Status"], scores, avg: Number(r["Rata-rata"])||0, saran: r["Saran"] };
+  }
+  function fmtIso(v){
+    if(!v) return "";
+    if(v instanceof Date) return v.toISOString().slice(0,10);
+    if(typeof v === "string" && v.includes("T")) return v.slice(0,10);
+    return String(v);
+  }
+
+  async function loadFromDatabase(){
+    if(!dbEnabled()) return;
+    try{
+      const data = await apiListAll();
+      if(data.Anggota){
+        state.members = data.Anggota.rows.map(mapAnggotaRow);
+        state.memberSeq = state.members.length;
+      }
+      if(data.Permintaan){
+        state.requests = data.Permintaan.rows.map(mapPermintaanRow);
+        state.reqSeq = state.requests.length;
+      }
+      if(data.Survei){
+        state.surveys = data.Survei.rows.map(mapSurveiRow);
+        state.surveySeq = state.surveys.length;
+      }
+      renderAnggotaTable();
+      renderPermintaanTable();
+      renderSurveyTable();
+      renderSurveySummary();
+    } catch(err){
+      console.error("Gagal memuat data dari Google Sheets:", err);
+      showNotice("notice-anggota", "Tidak dapat memuat data dari Google Sheets: " + err.message, "err");
+    }
+  }
+
+  dbBadge();
+  renderAnggotaTable();
+  renderPermintaanTable();
+  renderSurveyTable();
+  renderSurveySummary();
+  loadFromDatabase();
+})();
+</script>
+</body>
+</html>

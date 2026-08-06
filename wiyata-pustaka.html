@@ -817,43 +817,43 @@
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0,0,W,H);
 
-    const stripH = 150;          // panel putih untuk barcode di bagian bawah
-    const darkH = H - stripH;    // area gelap utama kartu
+    const stripH = 150;         // panel krem untuk barcode di bagian bawah
+    const topH = H - stripH;    // area putih utama kartu
 
     roundRect(ctx,0,0,W,H,26);
     ctx.save(); ctx.clip();
 
-    // ---- latar gelap utama ----
-    const bg = ctx.createLinearGradient(0,0,W,darkH);
-    bg.addColorStop(0,"#181310");
-    bg.addColorStop(0.55,"#241A16");
-    bg.addColorStop(1,"#140F0C");
+    // ---- latar putih utama ----
+    const bg = ctx.createLinearGradient(0,0,W,topH);
+    bg.addColorStop(0,"#FFFFFF");
+    bg.addColorStop(0.55,"#FDFAF2");
+    bg.addColorStop(1,"#FBF3DE");
     ctx.fillStyle = bg;
-    ctx.fillRect(0,0,W,darkH);
+    ctx.fillRect(0,0,W,topH);
 
     // ---- gelombang diagonal ala batik, sebagai aksen ----
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(W*0.5,0); ctx.lineTo(W,0); ctx.lineTo(W,darkH*0.62); ctx.closePath();
-    let wg = ctx.createLinearGradient(W*0.5,0,W,darkH*0.62);
-    wg.addColorStop(0,"rgba(122,35,52,0.55)"); wg.addColorStop(1,"rgba(198,154,61,0.10)");
+    ctx.moveTo(W*0.5,0); ctx.lineTo(W,0); ctx.lineTo(W,topH*0.62); ctx.closePath();
+    let wg = ctx.createLinearGradient(W*0.5,0,W,topH*0.62);
+    wg.addColorStop(0,"rgba(122,35,52,0.14)"); wg.addColorStop(1,"rgba(198,154,61,0.05)");
     ctx.fillStyle = wg; ctx.fill();
     ctx.beginPath();
-    ctx.moveTo(0,darkH*0.6); ctx.lineTo(W*0.28,darkH); ctx.lineTo(0,darkH); ctx.closePath();
-    wg = ctx.createLinearGradient(0,darkH*0.6,W*0.28,darkH);
-    wg.addColorStop(0,"rgba(198,154,61,0.10)"); wg.addColorStop(1,"rgba(122,35,52,0.4)");
+    ctx.moveTo(0,topH*0.6); ctx.lineTo(W*0.28,topH); ctx.lineTo(0,topH); ctx.closePath();
+    wg = ctx.createLinearGradient(0,topH*0.6,W*0.28,topH);
+    wg.addColorStop(0,"rgba(198,154,61,0.05)"); wg.addColorStop(1,"rgba(122,35,52,0.12)");
     ctx.fillStyle = wg; ctx.fill();
     ctx.restore();
 
     // tekstur kawung tipis
     for(let gx=20; gx<W; gx+=60){
-      for(let gy=20; gy<darkH; gy+=60){
-        drawKawung(ctx, gx, gy, 30, "#E7CE94", 0.045);
+      for(let gy=20; gy<topH; gy+=60){
+        drawKawung(ctx, gx, gy, 30, "#7A2334", 0.035);
       }
     }
 
     // garis emas tipis pembatas header
-    ctx.fillStyle = "rgba(198,154,61,0.55)";
+    ctx.fillStyle = "rgba(198,154,61,0.7)";
     ctx.fillRect(40, 172, W-80, 1.4);
 
     // ---- logo resmi SMK Pawiyatan ----
@@ -862,21 +862,14 @@
       const lw = logoImg.naturalWidth, lh = logoImg.naturalHeight;
       const scale = (lr*2) / Math.max(lw, lh);
       const dw = lw*scale, dh = lh*scale;
-      // halo lembut di belakang logo supaya menyatu dengan latar gelap
-      ctx.save();
-      ctx.beginPath(); ctx.arc(lcx,lcy,lr+10,0,Math.PI*2);
-      const halo = ctx.createRadialGradient(lcx,lcy,lr*0.3,lcx,lcy,lr+10);
-      halo.addColorStop(0,"rgba(247,241,227,0.22)"); halo.addColorStop(1,"rgba(247,241,227,0)");
-      ctx.fillStyle = halo; ctx.fill();
-      ctx.restore();
       ctx.drawImage(logoImg, lcx-dw/2, lcy-dh/2, dw, dh);
     } else {
       ctx.beginPath(); ctx.arc(lcx,lcy,lr,0,Math.PI*2);
       const mg = ctx.createRadialGradient(lcx-14,lcy-16,4,lcx,lcy,lr+4);
-      mg.addColorStop(0,"#F1DBA4"); mg.addColorStop(1,"#B9862F");
+      mg.addColorStop(0,"#F1DBA4"); mg.addColorStop(1,"#C69A3D");
       ctx.fillStyle = mg; ctx.fill();
-      ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,0.35)"; ctx.stroke();
-      ctx.fillStyle = "#3A2408";
+      ctx.lineWidth = 2; ctx.strokeStyle = "rgba(122,35,52,0.25)"; ctx.stroke();
+      ctx.fillStyle = "#5C1A27";
       ctx.font = "700 30px 'Fraunces', serif";
       ctx.textAlign = "center";
       ctx.fillText("WP", lcx, lcy+11);
@@ -885,22 +878,22 @@
 
     // ---- teks header ----
     const tx0 = 166;
-    ctx.fillStyle = "#CBB99A";
+    ctx.fillStyle = "#8A7458";
     ctx.font = "500 21px 'Plus Jakarta Sans', sans-serif";
     ctx.fillText("Kartu Anggota", tx0, 56);
 
-    ctx.fillStyle = "#F6E9CE";
+    ctx.fillStyle = "#5C1A27";
     ctx.font = "700 27px 'Fraunces', serif";
     wrapFillText(ctx, CONFIG.SCHOOL_NAME, tx0, 92, W-tx0-40, 30);
 
-    ctx.fillStyle = "#A99878";
+    ctx.fillStyle = "#9C8564";
     ctx.font = "500 15px 'Plus Jakarta Sans', sans-serif";
     ctx.fillText(CONFIG.SCHOOL_ADDRESS, tx0, 152);
 
     // ---- foto / avatar ----
     const px = 58, py = 210, psz1 = 190, psz2 = 216;
     roundRect(ctx, px, py, psz1, psz2, 14);
-    ctx.save(); ctx.strokeStyle = "rgba(198,154,61,0.7)"; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+    ctx.save(); ctx.strokeStyle = "rgba(198,154,61,0.9)"; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
     ctx.save(); ctx.clip();
     if(member.photo){
       const img = new Image();
@@ -913,9 +906,9 @@
       img.src = member.photo;
     } else {
       const ag = ctx.createLinearGradient(px,py,px+psz1,py+psz2);
-      ag.addColorStop(0,"#3A2E20"); ag.addColorStop(1,"#241A12");
+      ag.addColorStop(0,"#E7CE94"); ag.addColorStop(1,"#C69A3D");
       ctx.fillStyle = ag; ctx.fillRect(px,py,psz1,psz2);
-      ctx.fillStyle = "#D9BD91";
+      ctx.fillStyle = "#5C1A27";
       ctx.font = "700 52px 'Fraunces', serif";
       ctx.textAlign="center";
       const initials = member.nama.split(/\s+/).slice(0,2).map(w=>w[0]||"").join("").toUpperCase();
@@ -928,11 +921,11 @@
 
     function fieldRow(label, value, x, y, colonX, valX){
       ctx.font = "500 17px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillStyle = "#B3A184";
+      ctx.fillStyle = "#9C8564";
       ctx.fillText(label, x, y);
       ctx.fillText(":", colonX, y);
       ctx.font = "600 18px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillStyle = "#F5EEDD";
+      ctx.fillStyle = "#2A2018";
       ctx.fillText(String(value||"-"), valX, y);
     }
 
@@ -951,25 +944,25 @@
       fy += rowGap + 22;
 
       ctx.font = "600 19px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillStyle = "#F0DFB8";
+      ctx.fillStyle = "#5C1A27";
       ctx.fillText("Berlaku Hingga  " + formatDateShort(member.validUntil), fx, fy);
 
       ctx.textAlign = "right";
       ctx.font = "500 12.5px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillStyle = "#8F7E63";
-      ctx.fillText("Terbit " + formatDateShort(member.tglDaftar), W-40, darkH-20);
+      ctx.fillStyle = "#AD9668";
+      ctx.fillText("Terbit " + formatDateShort(member.tglDaftar), W-40, topH-20);
       ctx.textAlign = "left";
 
-      // ---- panel barcode (terang, kontras dengan tema gelap) ----
-      const sg = ctx.createLinearGradient(0,darkH,0,H);
+      // ---- panel barcode ----
+      const sg = ctx.createLinearGradient(0,topH,0,H);
       sg.addColorStop(0,"#F4EFE2"); sg.addColorStop(1,"#EDE6D2");
       ctx.fillStyle = sg;
-      ctx.fillRect(0, darkH, W, stripH);
+      ctx.fillRect(0, topH, W, stripH);
       ctx.fillStyle = "rgba(122,35,52,0.5)";
-      ctx.fillRect(0, darkH, W, 3);
+      ctx.fillRect(0, topH, W, 3);
 
       const bw = 640, bh = 62;
-      const bx = (W-bw)/2, by = darkH + 26;
+      const bx = (W-bw)/2, by = topH + 26;
       drawBarcode(ctx, member.id, bx, by, bw, bh, "#20140D");
 
       ctx.font = "600 17px 'JetBrains Mono', monospace";

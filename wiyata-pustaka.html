@@ -277,100 +277,93 @@
 </div>
 
 <nav class="tabs" id="tabsDesktop">
-  <button class="tab-btn active" data-tab="anggota">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-    Anggota Baru
+  <button class="tab-btn active" data-tab="survei">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 20l-1.4-1.3C5.4 14.4 2 11.3 2 7.6 2 4.6 4.4 2.3 7.3 2.3c1.7 0 3.3.8 4.7 2.2 1.4-1.4 3-2.2 4.7-2.2 2.9 0 5.3 2.3 5.3 5.3 0 3.7-3.4 6.8-8.6 11.1L12 20z"/></svg>
+    Survei Kepuasan
   </button>
   <button class="tab-btn" data-tab="permintaan">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     Permintaan Buku
   </button>
-  <button class="tab-btn" data-tab="survei">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 20l-1.4-1.3C5.4 14.4 2 11.3 2 7.6 2 4.6 4.4 2.3 7.3 2.3c1.7 0 3.3.8 4.7 2.2 1.4-1.4 3-2.2 4.7-2.2 2.9 0 5.3 2.3 5.3 5.3 0 3.7-3.4 6.8-8.6 11.1L12 20z"/></svg>
-    Survei Kepuasan
+  <button class="tab-btn" data-tab="anggota">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Anggota Baru
   </button>
 </nav>
 
 <main>
 
-  <!-- ================= PANEL: ANGGOTA ================= -->
-  <section class="panel active" id="panel-anggota">
+  <!-- ================= PANEL: SURVEI ================= -->
+  <section class="panel active" id="panel-survei">
     <div class="card">
       <div class="section-head">
         <div>
-          <div class="eyebrow">Formulir 01</div>
-          <h2>Pendaftaran Anggota Baru</h2>
+          <div class="eyebrow">Formulir 03</div>
+          <h2>Survei Kepuasan Pelayanan</h2>
         </div>
       </div>
-      <p class="sub">Isi data lengkap untuk mendaftar sebagai anggota Perpustakaan Wiyata Pustaka. Kartu anggota akan dibuat otomatis dan dapat langsung diunduh setelah data disimpan.</p>
+      <p class="sub">Bantu kami meningkatkan mutu layanan perpustakaan dengan memberikan penilaian jujur pada aspek-aspek berikut.</p>
 
-      <form id="formAnggota" novalidate>
+      <form id="formSurvei" novalidate>
         <div class="grid">
-          <div class="field full">
-            <label>Nama Lengkap <span class="req">*</span></label>
-            <input type="text" id="a-nama" required placeholder="Contoh: Siti Rahmawati">
+          <div class="field">
+            <label>Nama (opsional)</label>
+            <input type="text" id="s-nama" placeholder="Boleh dikosongkan / anonim">
           </div>
           <div class="field">
-            <label>Jenis Anggota <span class="req">*</span></label>
-            <select id="a-jenis" required>
-              <option value="">Pilih jenis anggota</option>
-              <option value="Siswa">Siswa</option>
-              <option value="Guru">Guru</option>
-              <option value="Staf">Staf / Karyawan</option>
+            <label>Status</label>
+            <select id="s-status">
+              <option value="">Pilih status</option>
+              <option>Siswa</option>
+              <option>Guru</option>
+              <option>Staf</option>
             </select>
           </div>
-          <div class="field">
-            <label>NIS / NIP <span class="req">*</span></label>
-            <input type="text" id="a-nis" required placeholder="Nomor induk">
-          </div>
-          <div class="field">
-            <label>Kelas / Jurusan atau Jabatan <span class="req">*</span></label>
-            <input type="text" id="a-kelas" required placeholder="Contoh: XI TKJ 2 / Guru Matematika">
-          </div>
-          <div class="field">
-            <label>Nomor Telepon</label>
-            <input type="tel" id="a-telp" placeholder="08xxxxxxxxxx">
-          </div>
-          <div class="field full">
-            <label>Alamat</label>
-            <input type="text" id="a-alamat" placeholder="Alamat tempat tinggal">
-          </div>
-          <div class="field full">
-            <label>Foto (opsional)</label>
-            <div class="photo-drop">
-              <div class="thumb" id="photoThumb">WP</div>
-              <input type="file" id="a-foto" accept="image/*">
-            </div>
-          </div>
+        </div>
+
+        <div class="grid" style="margin-top:14px;">
+          <div class="field full" id="ratingWrap"></div>
+        </div>
+
+        <div class="field full" style="margin-top:14px;">
+          <label>Kritik dan Saran</label>
+          <textarea id="s-saran" placeholder="Tuliskan masukan Anda untuk perpustakaan"></textarea>
         </div>
 
         <div class="btn-row">
-          <button type="submit" class="btn btn-primary">Simpan &amp; Buat Kartu Anggota</button>
-          <button type="reset" class="btn btn-ghost">Bersihkan Formulir</button>
+          <button type="submit" class="btn btn-primary">Kirim Survei</button>
+          <button type="reset" class="btn btn-ghost">Bersihkan</button>
         </div>
-        <div class="notice" id="notice-anggota"></div>
+        <div class="notice" id="notice-survei"></div>
       </form>
+    </div>
 
-      <div class="card-preview-wrap" id="cardPreviewWrap">
-        <h3>Pratinjau Kartu Anggota</h3>
-        <canvas id="cardCanvas" width="1000" height="630"></canvas>
-        <div class="btn-row">
-          <button class="btn btn-gold" id="btnDownloadCard">⬇ Unduh Kartu Anggota (PNG)</button>
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Ringkasan</div>
+          <h2 style="font-size:16px;">Rata-rata Kepuasan</h2>
         </div>
       </div>
+      <div class="stat-strip">
+        <div class="stat-chip"><div class="n" id="statCount">0</div><div class="l">Responden</div></div>
+        <div class="stat-chip"><div class="n" id="statAvg">0.0</div><div class="l">Rata-rata Skor</div></div>
+      </div>
+      <div class="summary-list" id="summaryList"></div>
     </div>
 
     <div class="card">
       <div class="section-head">
         <div>
           <div class="eyebrow">Data Tersimpan</div>
-          <h2 style="font-size:16px;">Daftar Anggota Terdaftar</h2>
+          <h2 style="font-size:16px;">Kritik &amp; Saran Masuk</h2>
         </div>
+        <button class="btn btn-ghost" id="btnExportSurvei" style="font-size:11.5px; padding:8px 12px;">⬇ Ekspor CSV</button>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>No. Anggota</th><th>Nama</th><th>Jenis</th><th>Kelas / Jabatan</th><th>Terdaftar</th><th>Kartu</th></tr></thead>
-          <tbody id="tblAnggota"><tr class="empty-row"><td colspan="6">Belum ada anggota terdaftar pada sesi ini.</td></tr></tbody>
+          <thead><tr><th>Tanggal</th><th>Nama</th><th>Status</th><th>Skor</th><th>Saran</th></tr></thead>
+          <tbody id="tblSurvei"><tr class="empty-row"><td colspan="5">Belum ada survei masuk pada sesi ini.</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -454,77 +447,84 @@
     </div>
   </section>
 
-  <!-- ================= PANEL: SURVEI ================= -->
-  <section class="panel" id="panel-survei">
+  <!-- ================= PANEL: ANGGOTA ================= -->
+  <section class="panel" id="panel-anggota">
     <div class="card">
       <div class="section-head">
         <div>
-          <div class="eyebrow">Formulir 03</div>
-          <h2>Survei Kepuasan Pelayanan</h2>
+          <div class="eyebrow">Formulir 01</div>
+          <h2>Pendaftaran Anggota Baru</h2>
         </div>
       </div>
-      <p class="sub">Bantu kami meningkatkan mutu layanan perpustakaan dengan memberikan penilaian jujur pada aspek-aspek berikut.</p>
+      <p class="sub">Isi data lengkap untuk mendaftar sebagai anggota Perpustakaan Wiyata Pustaka. Kartu anggota akan dibuat otomatis dan dapat langsung diunduh setelah data disimpan.</p>
 
-      <form id="formSurvei" novalidate>
+      <form id="formAnggota" novalidate>
         <div class="grid">
-          <div class="field">
-            <label>Nama (opsional)</label>
-            <input type="text" id="s-nama" placeholder="Boleh dikosongkan / anonim">
+          <div class="field full">
+            <label>Nama Lengkap <span class="req">*</span></label>
+            <input type="text" id="a-nama" required placeholder="Contoh: Siti Rahmawati">
           </div>
           <div class="field">
-            <label>Status</label>
-            <select id="s-status">
-              <option value="">Pilih status</option>
-              <option>Siswa</option>
-              <option>Guru</option>
-              <option>Staf</option>
+            <label>Jenis Anggota <span class="req">*</span></label>
+            <select id="a-jenis" required>
+              <option value="">Pilih jenis anggota</option>
+              <option value="Siswa">Siswa</option>
+              <option value="Guru">Guru</option>
+              <option value="Staf">Staf / Karyawan</option>
             </select>
           </div>
-        </div>
-
-        <div class="grid" style="margin-top:14px;">
-          <div class="field full" id="ratingWrap"></div>
-        </div>
-
-        <div class="field full" style="margin-top:14px;">
-          <label>Kritik dan Saran</label>
-          <textarea id="s-saran" placeholder="Tuliskan masukan Anda untuk perpustakaan"></textarea>
+          <div class="field">
+            <label>NIS / NIP <span class="req">*</span></label>
+            <input type="text" id="a-nis" required placeholder="Nomor induk">
+          </div>
+          <div class="field">
+            <label>Kelas / Jurusan atau Jabatan <span class="req">*</span></label>
+            <input type="text" id="a-kelas" required placeholder="Contoh: XI TKJ 2 / Guru Matematika">
+          </div>
+          <div class="field">
+            <label>Nomor Telepon</label>
+            <input type="tel" id="a-telp" placeholder="08xxxxxxxxxx">
+          </div>
+          <div class="field full">
+            <label>Alamat</label>
+            <input type="text" id="a-alamat" placeholder="Alamat tempat tinggal">
+          </div>
+          <div class="field full">
+            <label>Foto (opsional)</label>
+            <div class="photo-drop">
+              <div class="thumb" id="photoThumb">WP</div>
+              <input type="file" id="a-foto" accept="image/*">
+            </div>
+          </div>
         </div>
 
         <div class="btn-row">
-          <button type="submit" class="btn btn-primary">Kirim Survei</button>
-          <button type="reset" class="btn btn-ghost">Bersihkan</button>
+          <button type="submit" class="btn btn-primary">Simpan &amp; Buat Kartu Anggota</button>
+          <button type="reset" class="btn btn-ghost">Bersihkan Formulir</button>
         </div>
-        <div class="notice" id="notice-survei"></div>
+        <div class="notice" id="notice-anggota"></div>
       </form>
-    </div>
 
-    <div class="card">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Ringkasan</div>
-          <h2 style="font-size:16px;">Rata-rata Kepuasan</h2>
+      <div class="card-preview-wrap" id="cardPreviewWrap">
+        <h3>Pratinjau Kartu Anggota</h3>
+        <canvas id="cardCanvas" width="1000" height="630"></canvas>
+        <div class="btn-row">
+          <button class="btn btn-gold" id="btnDownloadCard">⬇ Unduh Kartu Anggota (PNG)</button>
         </div>
       </div>
-      <div class="stat-strip">
-        <div class="stat-chip"><div class="n" id="statCount">0</div><div class="l">Responden</div></div>
-        <div class="stat-chip"><div class="n" id="statAvg">0.0</div><div class="l">Rata-rata Skor</div></div>
-      </div>
-      <div class="summary-list" id="summaryList"></div>
     </div>
 
     <div class="card">
       <div class="section-head">
         <div>
           <div class="eyebrow">Data Tersimpan</div>
-          <h2 style="font-size:16px;">Kritik &amp; Saran Masuk</h2>
+          <h2 style="font-size:16px;">Daftar Anggota Terdaftar</h2>
         </div>
-        <button class="btn btn-ghost" id="btnExportSurvei" style="font-size:11.5px; padding:8px 12px;">⬇ Ekspor CSV</button>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Tanggal</th><th>Nama</th><th>Status</th><th>Skor</th><th>Saran</th></tr></thead>
-          <tbody id="tblSurvei"><tr class="empty-row"><td colspan="5">Belum ada survei masuk pada sesi ini.</td></tr></tbody>
+          <thead><tr><th>No. Anggota</th><th>Nama</th><th>Jenis</th><th>Kelas / Jabatan</th><th>Terdaftar</th><th>Kartu</th></tr></thead>
+          <tbody id="tblAnggota"><tr class="empty-row"><td colspan="6">Belum ada anggota terdaftar pada sesi ini.</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -536,17 +536,17 @@
 
 <nav class="bottom-nav">
   <div class="row">
-    <button class="active" data-tab="anggota">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      Anggota
+    <button class="active" data-tab="survei">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 20l-1.4-1.3C5.4 14.4 2 11.3 2 7.6 2 4.6 4.4 2.3 7.3 2.3c1.7 0 3.3.8 4.7 2.2 1.4-1.4 3-2.2 4.7-2.2 2.9 0 5.3 2.3 5.3 5.3 0 3.7-3.4 6.8-8.6 11.1L12 20z"/></svg>
+      Survei
     </button>
     <button data-tab="permintaan">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       Permintaan
     </button>
-    <button data-tab="survei">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 20l-1.4-1.3C5.4 14.4 2 11.3 2 7.6 2 4.6 4.4 2.3 7.3 2.3c1.7 0 3.3.8 4.7 2.2 1.4-1.4 3-2.2 4.7-2.2 2.9 0 5.3 2.3 5.3 5.3 0 3.7-3.4 6.8-8.6 11.1L12 20z"/></svg>
-      Survei
+    <button data-tab="anggota">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Anggota
     </button>
   </div>
 </nav>

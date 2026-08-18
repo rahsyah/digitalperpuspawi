@@ -358,7 +358,7 @@
 // GANTI dengan URL Web App hasil deploy Apps Script (Code.gs)
 // =====================================================================
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/GANTI_DENGAN_DEPLOYMENT_ID/exec'
+  API_URL: 'https://script.google.com/macros/s/AKfycbzZc7TEXzrtfOtq8JRSusEa_d-3MqS8y_lq8UfsDrfIbZLFEZwsouqoL9PqGTr-8WrU5g/exec'
 };
 
 let PIN = null;
@@ -367,7 +367,7 @@ let foundLoans = [];
 
 // ---------- helper API ----------
 async function callApi(action, payload) {
-  const res = await fetch(script.google.com/macros/s/AKfycbzZc7TEXzrtfOtq8JRSusEa_d-3MqS8y_lq8UfsDrfIbZLFEZwsouqoL9PqGTr-8WrU5g/exec, {
+  const res = await fetch(CONFIG.API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // hindari CORS preflight
     body: JSON.stringify({ action, payload: payload || {} })
@@ -375,7 +375,7 @@ async function callApi(action, payload) {
   return res.json();
 }
 async function callApiGet(action) {
-  const res = await fetch(script.google.com/macros/s/AKfycbzZc7TEXzrtfOtq8JRSusEa_d-3MqS8y_lq8UfsDrfIbZLFEZwsouqoL9PqGTr-8WrU5g/exec + '?action=' + encodeURIComponent(action));
+  const res = await fetch(CONFIG.API_URL + '?action=' + encodeURIComponent(action));
   return res.json();
 }
 

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sirkulasi — Wiyata Pustaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#100c08;
+    --navy-900:#171009;
+    --navy-800:#211a11;
+    --navy-700:#2b2216;
+    --panel:#1b140d;
+    --panel-2:#241c12;
+    --border:#3a2e1c;
+    --gold:#e8b84b;
+    --gold2:#c99a3a;
+    --text:#f1e9da;
+    --muted:#a89a82;
+    --danger:#e0685a;
+    --success:#7fbf7f;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:radial-gradient(circle at 20% 0%, #1c150c 0%, var(--navy-950) 55%);
+    color:var(--text);
+    font-family:'DM Sans',sans-serif;
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+
+  header.top{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 20px;max-width:900px;margin:0 auto;
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .logo-box{
+    width:48px;height:48px;border-radius:12px;
+    background:var(--gold);color:var(--navy-950);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .brand h1{margin:0;font-size:22px;color:var(--text);}
+  .brand .sub{font-size:11px;letter-spacing:.12em;color:var(--gold2);font-weight:600;}
+  .top-actions{display:flex;gap:10px;align-items:center;}
+  .pill-btn{
+    display:flex;align-items:center;gap:6px;
+    background:var(--panel-2);border:1px solid var(--border);
+    color:var(--text);padding:8px 16px;border-radius:999px;
+    font-size:13px;text-decoration:none;cursor:pointer;
+  }
+  .badge{
+    display:flex;align-items:center;gap:6px;
+    background:var(--panel-2);border:1px solid var(--border);
+    padding:8px 14px;border-radius:999px;font-size:13px;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);}
+  .dot.on{background:var(--success);}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:10px 0 26px;
+  }
+  .stat-box{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 18px;
+  }
+  .stat-box .num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--gold);}
+  .stat-box .label{font-size:10.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+
+  .tabs{
+    display:flex;background:var(--panel);border:1px solid var(--border);
+    border-radius:999px;padding:5px;margin-bottom:28px;
+  }
+  .tab{
+    flex:1;text-align:center;padding:10px 12px;border-radius:999px;
+    font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    user-select:none;
+  }
+  .tab.active{
+    background:linear-gradient(135deg,var(--gold),var(--gold2));
+    color:var(--navy-950);
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .eyebrow{font-size:11px;letter-spacing:.14em;color:var(--gold2);font-weight:700;text-transform:uppercase;margin-bottom:6px;}
+  .panel h2{margin:0 0 8px;font-size:26px;}
+  .panel .desc{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:22px;max-width:640px;}
+
+  .card{
+    background:var(--panel);border:1px solid var(--border);border-radius:20px;
+    padding:26px;margin-bottom:20px;
+  }
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;font-size:11px;font-weight:700;letter-spacing:.06em;
+    color:var(--muted);text-transform:uppercase;margin-bottom:8px;
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  input[type=text], input[type=tel], input[type=number], select, textarea{
+    width:100%;background:var(--navy-900);border:1px solid var(--border);
+    border-radius:10px;padding:12px 14px;color:var(--text);font-size:14px;
+    font-family:'DM Sans',sans-serif;
+  }
+  input::placeholder, textarea::placeholder{color:#6e6250;}
+  textarea{resize:vertical;min-height:90px;}
+  select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a89a82' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 14px center;}
+
+  .divider{
+    text-align:center;font-size:11px;letter-spacing:.14em;color:var(--muted);
+    text-transform:uppercase;margin:26px 0;position:relative;
+  }
+  .divider::before,.divider::after{
+    content:"";position:absolute;top:50%;width:38%;height:1px;background:var(--border);
+  }
+  .divider::before{left:0;} .divider::after{right:0;}
+
+  .book-block{
+    border:1px dashed var(--border);border-radius:16px;padding:20px;margin-bottom:16px;background:var(--panel-2);
+  }
+  .book-block .book-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .book-block .book-title{color:var(--gold);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .remove-book{background:none;border:none;color:var(--danger);font-size:12px;cursor:pointer;}
+  .qty-row{display:grid;grid-template-columns:1fr 110px;gap:16px;}
+
+  .add-link{
+    display:block;text-align:center;color:var(--gold);font-weight:600;font-size:14px;
+    background:none;border:none;cursor:pointer;padding:10px;width:100%;
+  }
+
+  .btn{
+    width:100%;padding:15px;border-radius:12px;border:none;font-weight:700;font-size:15px;
+    cursor:pointer;font-family:'DM Sans',sans-serif;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy-950);}
+  .btn-secondary{background:var(--panel-2);border:1px solid var(--border);color:var(--text);}
+  .btn:disabled{opacity:.55;cursor:not-allowed;}
+
+  .subtabs{display:flex;gap:10px;margin-bottom:22px;}
+  .subtab{
+    padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;
+    background:var(--panel-2);border:1px solid var(--border);color:var(--muted);cursor:pointer;
+  }
+  .subtab.active{background:var(--gold);color:var(--navy-950);border-color:var(--gold);}
+  .subpanel{display:none;} .subpanel.active{display:block;}
+
+  .msg{padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:18px;display:none;}
+  .msg.show{display:block;}
+  .msg.ok{background:rgba(127,191,127,.12);border:1px solid var(--success);color:var(--success);}
+  .msg.err{background:rgba(224,104,90,.12);border:1px solid var(--danger);color:var(--danger);}
+
+  .list-item{
+    background:var(--panel-2);border:1px solid var(--border);border-radius:14px;
+    padding:16px 18px;margin-bottom:12px;
+  }
+  .list-item .li-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .li-name{font-weight:700;font-size:15px;}
+  .li-meta{color:var(--muted);font-size:12.5px;margin-top:2px;line-height:1.5;}
+  .li-actions{display:flex;gap:8px;margin-top:14px;}
+  .li-actions input{flex:1;}
+  .li-actions .btn{width:auto;padding:11px 16px;font-size:13px;}
+  .empty-state{color:var(--muted);font-size:13.5px;text-align:center;padding:30px 10px;}
+
+  .checkline{
+    display:flex;align-items:center;gap:10px;background:var(--panel-2);
+    border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13.5px;
+  }
+  .checkline input{width:auto;}
+
+  .lock-gate{text-align:center;padding:50px 10px;}
+  .lock-gate .lock-icon{font-size:34px;margin-bottom:14px;}
+  .lock-gate input{max-width:220px;margin:0 auto 16px;text-align:center;letter-spacing:.3em;}
+  .lock-gate .btn{max-width:220px;margin:0 auto;}
+
+  @media (max-width:640px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .row2, .qty-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <div class="logo-box">📖</div>
+    <div>
+      <h1>Wiyata Pustaka</h1>
+      <div class="sub">SMK PAWIYATAN</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <a class="pill-btn" href="index.html">🏠 Home</a>
+    <div class="badge"><span class="dot" id="roleDot"></span><span id="roleLabel">Tamu</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat-box"><div class="num" id="statMenunggu">–</div><div class="label">Menunggu</div></div>
+    <div class="stat-box"><div class="num" id="statDipinjam">–</div><div class="label">Dipinjam</div></div>
+    <div class="stat-box"><div class="num" id="statKembali">–</div><div class="label">Kembali</div></div>
+    <div class="stat-box"><div class="num" id="statKunjungan">–</div><div class="label">Kunjungan</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab" data-tab="kunjungan">Kunjungan</div>
+    <div class="tab active" data-tab="pinjam">Pinjam</div>
+    <div class="tab" data-tab="status">Status 🔒</div>
+  </div>
+
+  <!-- ============ TAB KUNJUNGAN ============ -->
+  <div class="panel" id="panel-kunjungan">
+    <div class="eyebrow">Diisi sendiri oleh anggota</div>
+    <h2>Form Kunjungan Perpustakaan</h2>
+    <div class="desc">Isi data ini setiap kali kamu datang ke perpustakaan, sebelum mulai membaca atau mengerjakan tugas.</div>
+
+    <div class="msg" id="msgKunjungan"></div>
+    <div class="card">
+      <form id="formKunjungan">
+        <div class="field">
+          <label>Nama Anggota</label>
+          <input type="text" id="kNama" placeholder="Nama kamu" required>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Kategori Anggota</label>
+            <select id="kKategori">
+              <option>Siswa</option>
+              <option>Guru</option>
+              <option>Karyawan</option>
+              <option>Tamu</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Kelas / Unit</label>
+            <input type="text" id="kKelas" placeholder="cth. XI TKJ 2">
+          </div>
+        </div>
+        <div class="field">
+          <label>Nomor WhatsApp</label>
+          <input type="tel" id="kNoWa" placeholder="cth. 081234567890">
+        </div>
+        <div class="field">
+          <label>Keperluan</label>
+          <textarea id="kKeperluan" placeholder="cth. Membaca buku novel, mengerjakan tugas, dll." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Catat Kunjungan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ TAB PINJAM ============ -->
+  <div class="panel active" id="panel-pinjam">
+    <div class="eyebrow">Diisi sendiri oleh anggota</div>
+    <h2 id="pinjamTitle">Form Peminjaman Buku</h2>
+    <div class="desc" id="pinjamDesc">Isi data ini sebelum membawa buku ke meja sirkulasi. Kalau meminjam lebih dari satu judul, tambahkan judul buku lagi. Pengajuanmu akan diverifikasi oleh pustakawan di menu Status.</div>
+
+    <div class="subtabs">
+      <div class="subtab active" data-sub="ajukan">Ajukan Peminjaman</div>
+      <div class="subtab" data-sub="kembalikan">Ajukan Pengembalian</div>
+    </div>
+
+    <!-- --- Ajukan Peminjaman --- -->
+    <div class="subpanel active" id="sub-ajukan">
+      <div class="msg" id="msgPeminjaman"></div>
+      <div class="card">
+        <form id="formPeminjaman">
+          <div class="field">
+            <label>Nama Anggota</label>
+            <input type="text" id="pNama" placeholder="Nama kamu" required>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label>Kategori Anggota</label>
+              <select id="pKategori">
+                <option>Siswa</option>
+                <option>Guru</option>
+                <option>Karyawan</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Kelas</label>
+              <input type="text" id="pKelas" placeholder="cth. XI TKJ 2">
+            </div>
+          </div>
+          <div class="field">
+            <label>Nomor WhatsApp</label>
+            <input type="tel" id="pNoWa" placeholder="cth. 081234567890" required>
+          </div>
+
+          <div class="divider">Buku yang dipinjam</div>
+          <div id="bookList"></div>
+          <button type="button" class="add-link" id="btnAddBook">+ Tambah Judul Buku Lagi</button>
+
+          <button type="submit" class="btn btn-primary" style="margin-top:18px;">Ajukan Peminjaman</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- --- Ajukan Pengembalian --- -->
+    <div class="subpanel" id="sub-kembalikan">
+      <div class="msg" id="msgPengembalian"></div>
+      <div class="card">
+        <div class="field">
+          <label>Nomor WhatsApp yang dipakai saat meminjam</label>
+          <input type="tel" id="rNoWa" placeholder="cth. 081234567890">
+        </div>
+        <button type="button" class="btn btn-secondary" id="btnCariPinjaman">Cari Peminjaman Saya</button>
+      </div>
+      <div id="loanResults"></div>
+      <button type="button" class="btn btn-primary" id="btnAjukanKembali" style="display:none;">Ajukan Pengembalian</button>
+    </div>
+  </div>
+
+  <!-- ============ TAB STATUS (PUSTAKAWAN) ============ -->
+  <div class="panel" id="panel-status">
+    <div id="statusLocked">
+      <div class="eyebrow">Khusus Pustakawan</div>
+      <h2>Verifikasi Sirkulasi</h2>
+      <div class="card lock-gate">
+        <div class="lock-icon">🔒</div>
+        <div class="desc" style="margin:0 auto 18px;">Masukkan PIN pustakawan untuk memverifikasi pengajuan peminjaman dan pengembalian.</div>
+        <input type="text" id="pinInput" placeholder="PIN">
+        <div class="msg" id="msgLogin" style="max-width:260px;margin:0 auto 14px;"></div>
+        <button type="button" class="btn btn-primary" id="btnLogin">Masuk</button>
+      </div>
+    </div>
+
+    <div id="statusUnlocked" style="display:none;">
+      <div class="eyebrow">Pustakawan</div>
+      <h2>Verifikasi Sirkulasi</h2>
+      <div class="desc">Setujui pengajuan peminjaman dan konfirmasi pengembalian buku. Data akan langsung diperbarui di spreadsheet.</div>
+
+      <div class="subtabs">
+        <div class="subtab active" data-vsub="pinjaman">Pengajuan Peminjaman</div>
+        <div class="subtab" data-vsub="pengembalian">Pengajuan Pengembalian</div>
+      </div>
+
+      <div class="subpanel active" id="vsub-pinjaman">
+        <div id="listPeminjaman"></div>
+      </div>
+      <div class="subpanel" id="vsub-pengembalian">
+        <div id="listPengembalian"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =====================================================================
+// GANTI dengan URL Web App hasil deploy Apps Script (Code.gs)
+// =====================================================================
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/GANTI_DENGAN_DEPLOYMENT_ID/exec'
+};
+
+let PIN = null;
+let bookCount = 0;
+let foundLoans = [];
+
+// ---------- helper API ----------
+async function callApi(action, payload) {
+  const res = await fetch(CONFIG.API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // hindari CORS preflight
+    body: JSON.stringify({ action, payload: payload || {} })
+  });
+  return res.json();
+}
+async function callApiGet(action) {
+  const res = await fetch(CONFIG.API_URL + '?action=' + encodeURIComponent(action));
+  return res.json();
+}
+
+function showMsg(id, ok, text) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg show ' + (ok ? 'ok' : 'err');
+}
+
+// ---------- Tabs utama ----------
+document.querySelectorAll('.tab').forEach(function (tab) {
+  tab.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'status' && PIN) refreshVerifikasi();
+  });
+});
+
+// ---------- Subtabs Pinjam ----------
+document.querySelectorAll('#panel-pinjam .subtab').forEach(function (t) {
+  t.addEventListener('click', function () {
+    document.querySelectorAll('#panel-pinjam .subtab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('#panel-pinjam .subpanel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('sub-' + t.dataset.sub).classList.add('active');
+  });
+});
+
+// ---------- Subtabs Verifikasi ----------
+document.querySelectorAll('#statusUnlocked .subtab').forEach(function (t) {
+  t.addEventListener('click', function () {
+    document.querySelectorAll('#statusUnlocked .subtab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('#statusUnlocked .subpanel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('vsub-' + t.dataset.vsub).classList.add('active');
+  });
+});
+
+// ---------- STATISTIK ----------
+async function loadStats() {
+  try {
+    const r = await callApiGet('getStats');
+    if (r.ok) {
+      document.getElementById('statMenunggu').textContent = r.menunggu;
+      document.getElementById('statDipinjam').textContent = r.dipinjam;
+      document.getElementById('statKembali').textContent = r.kembali;
+      document.getElementById('statKunjungan').textContent = r.kunjungan;
+    }
+  } catch (e) { /* diamkan jika gagal, tidak kritikal */ }
+}
+loadStats();
+
+// ---------- FORM KUNJUNGAN ----------
+document.getElementById('formKunjungan').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  const payload = {
+    nama: document.getElementById('kNama').value.trim(),
+    kategori: document.getElementById('kKategori').value,
+    kelas: document.getElementById('kKelas').value.trim(),
+    noWhatsapp: document.getElementById('kNoWa').value.trim(),
+    keperluan: document.getElementById('kKeperluan').value.trim()
+  };
+  try {
+    const r = await callApi('submitKunjungan', payload);
+    if (r.ok) {
+      showMsg('msgKunjungan', true, 'Kunjungan berhasil dicatat. Selamat membaca!');
+      e.target.reset();
+      loadStats();
+    } else {
+      showMsg('msgKunjungan', false, r.error || 'Gagal mencatat kunjungan.');
+    }
+  } catch (err) {
+    showMsg('msgKunjungan', false, 'Terjadi kesalahan koneksi.');
+  }
+  btn.disabled = false;
+});
+
+// ---------- BLOK BUKU DINAMIS ----------
+function addBookBlock() {
+  bookCount++;
+  const div = document.createElement('div');
+  div.className = 'book-block';
+  div.dataset.idx = bookCount;
+  div.innerHTML = `
+    <div class="book-head">
+      <span class="book-title">Buku #${bookCount}</span>
+      <button type="button" class="remove-book">Hapus</button>
+    </div>
+    <div class="field">
+      <label>Judul Buku</label>
+      <input type="text" class="bJudul" placeholder="Judul buku yang dipinjam" required>
+    </div>
+    <div class="field">
+      <label>Nama Pengarang</label>
+      <input type="text" class="bPengarang" placeholder="cth. Andrea Hirata">
+    </div>
+    <div class="qty-row">
+      <div class="field" style="margin-bottom:0;">
+        <label>Nama Penerbit</label>
+        <input type="text" class="bPenerbit" placeholder="cth. Gramedia Pustaka Utama">
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label>Jumlah</label>
+        <input type="number" class="bJumlah" min="1" value="1">
+      </div>
+    </div>
+  `;
+  div.querySelector('.remove-book').addEventListener('click', function () {
+    if (document.querySelectorAll('.book-block').length > 1) div.remove();
+  });
+  document.getElementById('bookList').appendChild(div);
+}
+document.getElementById('btnAddBook').addEventListener('click', addBookBlock);
+addBookBlock(); // buku #1 default
+
+// ---------- FORM PEMINJAMAN ----------
+document.getElementById('formPeminjaman').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.disabled = true;
+
+  const buku = [];
+  document.querySelectorAll('.book-block').forEach(function (blk) {
+    const judul = blk.querySelector('.bJudul').value.trim();
+    if (!judul) return;
+    buku.push({
+      judul: judul,
+      pengarang: blk.querySelector('.bPengarang').value.trim(),
+      penerbit: blk.querySelector('.bPenerbit').value.trim(),
+      jumlah: parseInt(blk.querySelector('.bJumlah').value, 10) || 1
+    });
+  });
+
+  const payload = {
+    nama: document.getElementById('pNama').value.trim(),
+    kategori: document.getElementById('pKategori').value,
+    kelas: document.getElementById('pKelas').value.trim(),
+    noWhatsapp: document.getElementById('pNoWa').value.trim(),
+    buku: buku
+  };
+
+  try {
+    const r = await callApi('submitPeminjaman', payload);
+    if (r.ok) {
+      showMsg('msgPeminjaman', true, 'Pengajuan peminjaman berhasil dikirim. Tunggu verifikasi pustakawan sebelum mengambil buku.');
+      e.target.reset();
+      document.getElementById('bookList').innerHTML = '';
+      bookCount = 0;
+      addBookBlock();
+      loadStats();
+    } else {
+      showMsg('msgPeminjaman', false, r.error || 'Gagal mengirim pengajuan.');
+    }
+  } catch (err) {
+    showMsg('msgPeminjaman', false, 'Terjadi kesalahan koneksi.');
+  }
+  btn.disabled = false;
+});
+
+// ---------- FORM PENGEMBALIAN ----------
+document.getElementById('btnCariPinjaman').addEventListener('click', async function () {
+  const noWa = document.getElementById('rNoWa').value.trim();
+  const box = document.getElementById('loanResults');
+  const btnKembali = document.getElementById('btnAjukanKembali');
+  if (!noWa) { showMsg('msgPengembalian', false, 'Isi nomor WhatsApp terlebih dahulu.'); return; }
+
+  box.innerHTML = '<div class="empty-state">Mencari data…</div>';
+  try {
+    const r = await callApi('cariPeminjamanAktif', { noWhatsapp: noWa });
+    if (!r.ok) { showMsg('msgPengembalian', false, r.error || 'Gagal mencari data.'); box.innerHTML = ''; return; }
+    foundLoans = r.data || [];
+    if (!foundLoans.length) {
+      box.innerHTML = '<div class="empty-state">Tidak ada buku aktif yang sedang dipinjam dengan nomor ini.</div>';
+      btnKembali.style.display = 'none';
+      return;
+    }
+    box.innerHTML = foundLoans.map(function (l, i) {
+      return `<label class="checkline">
+        <input type="checkbox" class="loanCheck" value="${l.ID_Transaksi}">
+        <span><strong>${l.Judul_Buku}</strong> — dipinjam ${l.Nama} · estimasi kembali ${l.Estimasi_Kembali || '-'}</span>
+      </label>`;
+    }).join('');
+    btnKembali.style.display = 'block';
+  } catch (err) {
+    showMsg('msgPengembalian', false, 'Terjadi kesalahan koneksi.');
+    box.innerHTML = '';
+  }
+});
+
+document.getElementById('btnAjukanKembali').addEventListener('click', async function () {
+  const ids = Array.from(document.querySelectorAll('.loanCheck:checked')).map(c => c.value);
+  if (!ids.length) { showMsg('msgPengembalian', false, 'Pilih minimal satu buku untuk dikembalikan.'); return; }
+  this.disabled = true;
+  try {
+    const r = await callApi('ajukanPengembalian', { idList: ids });
+    if (r.ok) {
+      showMsg('msgPengembalian', true, 'Pengajuan pengembalian terkirim. Serahkan buku ke pustakawan untuk dikonfirmasi.');
+      document.getElementById('loanResults').innerHTML = '';
+      this.style.display = 'none';
+      document.getElementById('rNoWa').value = '';
+    } else {
+      showMsg('msgPengembalian', false, r.error || 'Gagal mengajukan pengembalian.');
+    }
+  } catch (err) {
+    showMsg('msgPengembalian', false, 'Terjadi kesalahan koneksi.');
+  }
+  this.disabled = false;
+});
+
+// ---------- LOGIN PUSTAKAWAN ----------
+document.getElementById('btnLogin').addEventListener('click', async function () {
+  const pin = document.getElementById('pinInput').value.trim();
+  if (!pin) return;
+  this.disabled = true;
+  try {
+    const r = await callApi('login', { pin: pin });
+    if (r.ok) {
+      PIN = pin;
+      document.getElementById('statusLocked').style.display = 'none';
+      document.getElementById('statusUnlocked').style.display = 'block';
+      document.getElementById('roleLabel').textContent = 'Pustakawan';
+      document.getElementById('roleDot').classList.add('on');
+      refreshVerifikasi();
+    } else {
+      showMsg('msgLogin', false, 'PIN salah, coba lagi.');
+    }
+  } catch (err) {
+    showMsg('msgLogin', false, 'Terjadi kesalahan koneksi.');
+  }
+  this.disabled = false;
+});
+
+// ---------- DAFTAR VERIFIKASI ----------
+async function refreshVerifikasi() {
+  await Promise.all([loadPendingPeminjaman(), loadPendingPengembalian()]);
+  loadStats();
+}
+
+async function loadPendingPeminjaman() {
+  const box = document.getElementById('listPeminjaman');
+  box.innerHTML = '<div class="empty-state">Memuat…</div>';
+  const r = await callApi('getPendingPeminjaman', { pin: PIN });
+  if (!r.ok) { box.innerHTML = '<div class="empty-state">Gagal memuat data.</div>'; return; }
+  const data = r.data || [];
+  if (!data.length) { box.innerHTML = '<div class="empty-state">Tidak ada pengajuan peminjaman yang menunggu verifikasi.</div>'; return; }
+
+  box.innerHTML = data.map(function (d, i) {
+    return `
+    <div class="list-item">
+      <div class="li-top">
+        <div>
+          <div class="li-name">${d.Nama} <span style="color:var(--muted);font-weight:400;">(${d.Kategori_User}${d.Kelas_Jurusan && d.Kelas_Jurusan !== '-' ? ' · ' + d.Kelas_Jurusan : ''})</span></div>
+          <div class="li-meta">${d.Judul_Buku} — ${d.Pengarang_Buku} · ${d.Jumlah_Buku} eksemplar<br>Diajukan ${d.Tanggal_Pengajuan} ${d.Jam_Pengajuan} · WA ${d.No_WhatsApp}</div>
+        </div>
+      </div>
+      <div class="li-actions">
+        <input type="text" placeholder="Nama pustakawan" id="verif-nama-${i}">
+        <button class="btn btn-primary" data-idx="${i}" data-id="${d.ID_Transaksi}" data-act="approve">Setujui</button>
+        <button class="btn btn-secondary" data-idx="${i}" data-id="${d.ID_Transaksi}" data-act="reject">Tolak</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  box.querySelectorAll('button[data-act]').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      const idx = this.dataset.idx;
+      const nama = document.getElementById('verif-nama-' + idx).value.trim();
+      if (!nama) { alert('Isi nama pustakawan terlebih dahulu.'); return; }
+      this.disabled = true;
+      const r2 = await callApi('verifikasiPeminjaman', {
+        pin: PIN, idTransaksi: this.dataset.id, namaVerifikator: nama, setuju: this.dataset.act === 'approve'
+      });
+      if (r2.ok) { loadPendingPeminjaman(); loadStats(); }
+      else { alert(r2.error || 'Gagal memproses verifikasi.'); this.disabled = false; }
+    });
+  });
+}
+
+async function loadPendingPengembalian() {
+  const box = document.getElementById('listPengembalian');
+  box.innerHTML = '<div class="empty-state">Memuat…</div>';
+  const r = await callApi('getPendingPengembalian', { pin: PIN });
+  if (!r.ok) { box.innerHTML = '<div class="empty-state">Gagal memuat data.</div>'; return; }
+  const data = r.data || [];
+  if (!data.length) { box.innerHTML = '<div class="empty-state">Tidak ada pengajuan pengembalian yang menunggu verifikasi.</div>'; return; }
+
+  box.innerHTML = data.map(function (d, i) {
+    return `
+    <div class="list-item">
+      <div class="li-top">
+        <div>
+          <div class="li-name">${d.Nama}</div>
+          <div class="li-meta">${d.Judul_Buku} · dipinjam sejak ${d.Tanggal_Pinjam} · WA ${d.No_WhatsApp}</div>
+        </div>
+      </div>
+      <div class="li-actions">
+        <input type="text" placeholder="Nama pustakawan" id="verifk-nama-${i}">
+        <button class="btn btn-primary" data-idx="${i}" data-id="${d.ID_Transaksi}">Konfirmasi Kembali</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  box.querySelectorAll('button[data-id]').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      const idx = this.dataset.idx;
+      const nama = document.getElementById('verifk-nama-' + idx).value.trim();
+      if (!nama) { alert('Isi nama pustakawan terlebih dahulu.'); return; }
+      this.disabled = true;
+      const r2 = await callApi('verifikasiPengembalian', { pin: PIN, idTransaksi: this.dataset.id, namaVerifikator: nama });
+      if (r2.ok) { loadPendingPengembalian(); loadStats(); }
+      else { alert(r2.error || 'Gagal memproses verifikasi.'); this.disabled = false; }
+    });
+  });
+}
+</script>
+</body>
+</html>

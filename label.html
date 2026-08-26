@@ -150,9 +150,9 @@
     gap:0;
     padding:2px 4px 4px;
   }
-  .label-codes .klas{font-size:15pt;font-weight:800;line-height:1.1;}
-  .label-codes .kode{font-size:15pt;font-weight:800;line-height:1.1;letter-spacing:.5px;}
-  .label-codes .judulcode{font-size:11pt;font-weight:700;line-height:1.1;}
+  .label-codes .klas{font-size:12pt;font-weight:800;line-height:1.15;}
+  .label-codes .kode{font-size:12pt;font-weight:800;line-height:1.15;letter-spacing:.5px;}
+  .label-codes .judulcode{font-size:12pt;font-weight:700;line-height:1.15;}
 
   .empty-hint{
     color:#888;font-size:.85rem;text-align:center;padding:30px 10px;
@@ -251,6 +251,12 @@
         <label>Kolom per Baris (cetak)</label>
         <input type="number" id="cols" value="2" min="1" max="4" style="width:90px;">
       </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:400;">
+          <input type="checkbox" id="showBarcodeNum" style="width:auto;"> Tampilkan angka di bawah barcode
+        </label>
+      </div>
     </div>
     <div class="btn-row">
       <button class="btn-gold" id="btnRender">Buat / Perbarui Pratinjau Label</button>
@@ -267,6 +273,7 @@
       </div>
       <span class="count-pill" id="countPill">0 dipilih</span>
     </div>
+    <div class="status err" id="barcodeWarn" style="display:none;"></div>
     <div class="table-wrap">
       <table class="data-table" id="dataTable"></table>
     </div>
@@ -293,9 +300,10 @@ let selected = new Set();
 const targetFields = [
   {key:'barcode', label:'No. Barcode / ID Item', required:true},
   {key:'judul', label:'Judul Buku', required:true},
-  {key:'klasifikasi', label:'No. Klasifikasi (DDC)', required:false},
-  {key:'kodebuku', label:'Kode Buku / 3 Huruf Pengarang', required:false},
-  {key:'kodejudul', label:'Kode Judul (1 huruf)', required:false},
+  {key:'pengarang', label:'Pengarang (untuk buat Kode Buku otomatis)', required:false},
+  {key:'klasifikasi', label:'No. Klasifikasi / No Panggil (DDC)', required:false},
+  {key:'kodebuku', label:'Kode Buku / 3 Huruf Pengarang (kosongkan utk otomatis)', required:false},
+  {key:'kodejudul', label:'Kode Judul (1 huruf, kosongkan utk otomatis)', required:false},
 ];
 
 // ---------- tabs ----------
@@ -395,17 +403,19 @@ document.getElementById('btnLoadCsv').addEventListener('click', ()=>{
 
 function guessMapping(hdrs){
   const lower = hdrs.map(h=>h.toLowerCase());
+  const used = new Set();
   const find = (...keys)=>{
     for(const k of keys){
-      const idx = lower.findIndex(h=>h.includes(k));
-      if(idx>-1) return hdrs[idx];
+      const idx = lower.findIndex((h,i)=>h.includes(k) && !used.has(i));
+      if(idx>-1){ used.add(idx); return hdrs[idx]; }
     }
     return '';
   };
   return {
-    barcode: find('barcode','id_item','no. barcode','no_barcode'),
+    barcode: find('kode buku / barcode','barcode','id_item','no. barcode','no_barcode'),
     judul: find('judul'),
-    klasifikasi: find('klasifikasi','ddc','no. klas'),
+    pengarang: find('pengarang','penulis','author'),
+    klasifikasi: find('no panggil','klasifikasi','ddc','no. klas'),
     kodebuku: find('kode_buku','kode buku','kode pengarang'),
     kodejudul: find('kode_judul','kode judul'),
   };
@@ -490,6 +500,25 @@ function updateCountPill(){
 document.getElementById('btnRender').addEventListener('click', renderLabels);
 document.getElementById('btnPrint').addEventListener('click', ()=>window.print());
 
+function deriveKodeBuku(pengarang){
+  if(!pengarang) return '';
+  // ambil nama penulis pertama saja (sebelum , & 'dan' dkk), lalu ambil kata terakhir (biasanya nama keluarga)
+  let first = pengarang.split(/,|&|\bdan\b|\bDan\b/)[0].trim();
+  const words = first.split(/\s+/).filter(Boolean);
+  if(words.length===0) return '';
+  const surname = words[words.length-1].replace(/[^a-zA-Z]/g,'');
+  return surname.slice(0,3).toUpperCase();
+}
+function deriveKodeJudul(judul){
+  if(!judul) return '';
+  const stop = ['the','a','an','di','ke','dari','dan','yang','untuk'];
+  const words = judul.trim().split(/\s+/).filter(Boolean);
+  let w = words[0] || '';
+  if(stop.includes(w.toLowerCase()) && words[1]) w = words[1];
+  const letter = w.replace(/[^a-zA-Z]/g,'').charAt(0);
+  return letter.toLowerCase();
+}
+
 function renderLabels(){
   const sheet = document.getElementById('labelSheet');
   const hint = document.getElementById('emptyHint');
@@ -500,6 +529,21 @@ function renderLabels(){
     return;
   }
   hint.style.display='none';
+
+  const warnEl = document.getElementById('barcodeWarn');
+  const missingCount = rows0Filter();
+  function rows0Filter(){
+    if(!mapping.barcode) return rawRows.filter(r=>selected.has(r.__idx)).length;
+    return rawRows.filter(r=>selected.has(r.__idx) && !String(r[mapping.barcode]??'').trim()).length;
+  }
+  if(missingCount > 0){
+    warnEl.style.display='block';
+    warnEl.textContent = mapping.barcode
+      ? `${missingCount} buku terpilih belum punya nilai di kolom barcode ("${mapping.barcode}") — labelnya akan dicetak tanpa gambar barcode.`
+      : `Kolom sumber untuk No. Barcode belum dipilih di bagian "Cocokkan Kolom" — semua label akan tanpa barcode.`;
+  } else {
+    warnEl.style.display='none';
+  }
 
   const libName = document.getElementById('libName').value.trim() || 'PERPUSTAKAAN';
   const barcodeType = document.getElementById('barcodeType').value;
@@ -514,9 +558,12 @@ function renderLabels(){
   rows.forEach(r=>{
     const barcodeVal = String(r[mapping.barcode] ?? '').trim();
     const judul = String(r[mapping.judul] ?? '').trim();
+    const pengarang = String(r[mapping.pengarang] ?? '').trim();
     const klas = String(r[mapping.klasifikasi] ?? '').trim();
-    const kodebuku = String(r[mapping.kodebuku] ?? '').trim();
-    const kodejudul = String(r[mapping.kodejudul] ?? '').trim();
+    let kodebuku = String(r[mapping.kodebuku] ?? '').trim();
+    let kodejudul = String(r[mapping.kodejudul] ?? '').trim();
+    if(!kodebuku && !mapping.kodebuku) kodebuku = deriveKodeBuku(pengarang);
+    if(!kodejudul && !mapping.kodejudul) kodejudul = deriveKodeJudul(judul);
 
     const label = document.createElement('div');
     label.className = 'label';
@@ -557,9 +604,9 @@ function renderLabels(){
           format: barcodeType,
           width: 1.1,
           height: Math.max(20, labelW*0.5),
-          fontSize: 8,
           margin: 2,
-          displayValue: true
+          fontSize: 8,
+          displayValue: document.getElementById('showBarcodeNum').checked
         });
       }catch(e){
         svg.outerHTML = `<div style="writing-mode:vertical-rl;font-size:8pt;">(barcode tidak valid: ${escapeHtml(barcodeVal)})</div>`;

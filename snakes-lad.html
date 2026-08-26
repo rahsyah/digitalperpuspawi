@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Ular Tangga Informatika</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+  html, body {
+    margin: 0; padding: 0; min-height: 100%;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg, #0b3d2e 0%, #145c3f 40%, #1e7a4f 100%);
+  }
+  #app { display: flex; flex-direction: column; align-items: center; padding: 8px 6px 20px; min-height: 100vh; }
+
+  #header { text-align: center; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,.4); margin-bottom: 6px; }
+  #header h1 { margin: 0; font-size: clamp(16px, 3.4vw, 26px); letter-spacing: 1px; }
+  #header .sub { font-size: clamp(10px, 2vw, 13px); opacity: .85; margin-top: 2px; }
+
+  #turnBar {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: rgba(0,0,0,.3); color: #fff; padding: 6px 16px; border-radius: 30px;
+    font-size: clamp(12px,2.4vw,15px); font-weight: 600; margin-bottom: 8px; text-align: center;
+  }
+  #turnDot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+  #scoreboard {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 8px; max-width: 560px;
+  }
+  .scoreCard {
+    display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,.28); color: #fff;
+    padding: 4px 10px; border-radius: 20px; font-size: clamp(10px,2vw,12px); font-weight: 600;
+    border: 2px solid transparent;
+  }
+  .scoreCard.active { border-color: #ffd54a; background: rgba(255,213,74,.22); }
+  .scoreDot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  #boardWrap { position: relative; width: min(94vw, 560px); aspect-ratio: 1 / 1; }
+  #board {
+    position: relative; width: 100%; height: 100%;
+    display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
+    border: 3px solid #6b4a1f; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  }
+  .cell {
+    position: relative; display: flex; align-items: flex-start; justify-content: flex-end;
+    font-size: clamp(7px, 1.6vw, 11px); font-weight: 600; color: rgba(0,0,0,.55);
+    padding: 2px 3px; border: 0.5px solid rgba(0,0,0,.08);
+  }
+  .cellA { background: #fdf6e3; }
+  .cellB { background: #f4e6c1; }
+  .cell.q { background: repeating-linear-gradient(135deg,#fff8dc,#fff8dc 6px,#ffe9a8 6px,#ffe9a8 12px); }
+  .cell.ladderBottom { background: #d7f5d1; }
+  .cell.ladderTop { background: #eafff0; }
+  .cell.snakeHead { background: #ffd6d6; }
+  .cell.snakeTail { background: #ffecec; }
+  .cellIcon { position: absolute; bottom: 1px; left: 1px; font-size: clamp(9px,2.4vw,15px); }
+  .cell.finish { background: linear-gradient(45deg,#e24b4a 25%,#fff 25%,#fff 50%,#e24b4a 50%,#e24b4a 75%,#fff 75%); }
+
+  .token {
+    position: absolute; width: 6.4%; height: 6.4%; border-radius: 50%; border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,.5); transition: left .35s ease, top .35s ease;
+    display: flex; align-items: center; justify-content: center; font-size: clamp(8px,1.8vw,12px);
+    z-index: 5;
+  }
+
+  #controls { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 14px; }
+  #diceDisplay {
+    width: 58px; height: 58px; background: #fff; border-radius: 12px; display: flex;
+    align-items: center; justify-content: center; font-size: 34px; box-shadow: 0 4px 10px rgba(0,0,0,.35);
+  }
+  #rollBtn {
+    background: #e24b4a; color: #fff; border: none; padding: 12px 30px; border-radius: 30px;
+    font-size: clamp(14px,3vw,17px); font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,.4);
+  }
+  #rollBtn:active { transform: scale(.96); }
+  #rollBtn:disabled { opacity: .5; cursor: default; }
+
+  #legend {
+    margin-top: 12px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    color: #fff; font-size: clamp(9px,1.9vw,11px); max-width: 560px;
+  }
+  #legend span { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,.25); padding: 3px 8px; border-radius: 20px; }
+
+  #feedback {
+    position: fixed; left: 50%; top: 40%; transform: translate(-50%,-50%) scale(0.6);
+    background: rgba(0,0,0,.8); color: #ffd54a; padding: 10px 22px; border-radius: 30px;
+    font-size: clamp(13px,3vw,18px); font-weight: 700; opacity: 0; pointer-events: none;
+    transition: all .25s ease; z-index: 25; white-space: nowrap; text-align: center; max-width: 90vw;
+  }
+  #feedback.show { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+
+  .modalOverlayBase {
+    position: fixed; inset: 0; background: rgba(0,0,0,.65); display: none;
+    align-items: center; justify-content: center; z-index: 40; padding: 16px;
+  }
+  .modalOverlayBase.show { display: flex; }
+  #modalBox, #setupBox {
+    background: #fff; border-radius: 16px; padding: 18px; max-width: 460px; width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5); max-height: 88vh; overflow-y: auto;
+  }
+  #modalTitle { font-size: clamp(12px,2.6vw,14px); font-weight: 700; color: #a32d2d; margin: 0 0 8px; text-align: center; }
+  #modalQ { font-size: clamp(13px,2.8vw,16px); font-weight: 600; color: #2c2c2a; margin: 0 0 12px; line-height: 1.4; }
+  .modalOptWrap { display: flex; flex-direction: column; gap: 8px; }
+  .modalOpt {
+    text-align: left; border: 1.5px solid #ddd; background: #fafafa; border-radius: 10px;
+    padding: 10px 12px; font-size: clamp(12px,2.4vw,14px); cursor: pointer; display: flex; gap: 8px;
+  }
+  .modalOpt:active { transform: scale(.98); }
+  .modalOpt.correct { background: #4caf50; color: #fff; border-color: #4caf50; }
+  .modalOpt.wrong { background: #b71c1c; color: #fff; border-color: #b71c1c; }
+  .modalOpt.disabled { pointer-events: none; opacity: .6; }
+  #modalTimerWrap { height: 5px; background: #eee; border-radius: 4px; margin: 0 0 12px; overflow: hidden; }
+  #modalTimer { height: 100%; width: 100%; background: #e24b4a; transition: width .15s linear; }
+
+  #setupBox h2 { margin: 0 0 4px; font-size: clamp(16px,3.4vw,20px); color: #a32d2d; text-align: center; }
+  #setupBox p.desc { text-align: center; color: #666; font-size: clamp(11px,2.2vw,13px); margin: 0 0 14px; }
+  .countPicker { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; }
+  .countBtn {
+    border: 2px solid #ddd; background: #fafafa; border-radius: 10px; padding: 8px 16px;
+    font-weight: 700; cursor: pointer; font-size: 14px;
+  }
+  .countBtn.active { border-color: #e24b4a; background: #ffe9e6; color: #a32d2d; }
+  .nameRow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .nameDot { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+  .nameRow input {
+    flex: 1; padding: 9px 10px; border-radius: 8px; border: 1.5px solid #ddd; font-size: 14px;
+  }
+  #startBtn {
+    width: 100%; margin-top: 6px; background: #e24b4a; color: #fff; border: none; padding: 12px;
+    border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+
+  #overlay {
+    position: fixed; inset: 0; background: rgba(0,20,10,.9); display: none;
+    align-items: center; justify-content: center; z-index: 50; flex-direction: column; text-align: center; padding: 20px;
+  }
+  #overlay.show { display: flex; }
+  #overlay h2 { color: #ffd54a; font-size: clamp(24px,6vw,40px); margin: 0 0 8px; text-shadow: 0 3px 6px rgba(0,0,0,.5); }
+  #overlay p { color: #fff; font-size: clamp(13px,3vw,16px); margin: 0 0 6px; }
+  #finalScores { color: #fff; font-size: clamp(12px,2.6vw,14px); margin: 0 0 18px; opacity: .9; }
+  #restartBtn {
+    background: #e24b4a; color: #fff; border: none; padding: 12px 28px; border-radius: 30px;
+    font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,.4);
+  }
+  .confetti { position: fixed; top: -10px; width: 8px; height: 14px; opacity: .9; animation: fall linear forwards; z-index: 51; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="header">
+    <h1>❄️ Ular Tangga Informatika ❄️</h1>
+    <div class="sub">Lompat tangga, hindari ular, taklukkan rintangan soal — raih kemenangan di petak 100!</div>
+  </div>
+
+  <div id="turnBar"><span id="turnDot" style="background:#e24b4a;"></span><span id="turnText">Giliran: -</span></div>
+  <div id="scoreboard"></div>
+
+  <div id="boardWrap">
+    <div id="board"></div>
+  </div>
+
+  <div id="controls">
+    <div id="diceDisplay">⚀</div>
+    <button id="rollBtn">🎲 Lempar Cube</button>
+  </div>
+
+  <div id="legend">
+    <span>❓ Soal: benar +3 langkah</span>
+    <span>🪜 Tangga: benar naik ke atas</span>
+    <span>🐍 Ular: benar tetap selamat</span>
+    <span>❗ Salah: tetap di tempat, wajib jawab lagi giliran berikutnya — 5x salah balik ke start</span>
+  </div>
+</div>
+
+<div id="feedback"></div>
+
+<div class="modalOverlayBase" id="modalOverlay">
+  <div id="modalBox">
+    <div id="modalTitle">RINTANGAN SOAL</div>
+    <div id="modalTimerWrap"><div id="modalTimer"></div></div>
+    <div id="modalQ"></div>
+    <div class="modalOptWrap" id="modalOpts"></div>
+  </div>
+</div>
+
+<div class="modalOverlayBase show" id="setupOverlay">
+  <div id="setupBox">
+    <h2>🇮🇩 Siapkan Pemain</h2>
+    <p class="desc">Pilih jumlah pemain lalu isi nama tiap tim untuk memulai permainan.</p>
+    <div class="countPicker" id="countPicker"></div>
+    <div id="nameForm"></div>
+    <button id="startBtn">Mulai Permainan</button>
+  </div>
+</div>
+
+<div id="overlay">
+  <h2 id="overlayTitle">🎉 MERDEKA! 🎉</h2>
+  <p id="overlaySub">Tim Merah mencapai petak 100 lebih dulu!</p>
+  <div id="finalScores"></div>
+  <button id="restartBtn">Main Lagi</button>
+</div>
+
+<script>
+const QUESTIONS = [
+{q:"Contoh mesin pencari yang biasanya digunakan untuk mencari informasi melalui browser adalah ....", o:["Mozilla Firefox","Google Chrome","Microsoft Edge","Yandex","Safari"], c:3},
+{q:"Mesin pencari bisa digunakan untuk menemukan informasi berdasarkan ....", o:["kebenaran informasi","teks atau video yang masukkan","preferensi pengguna","input teks atau gambar pengguna","kecepatan internet pengguna"], c:3},
+{q:'Menuliskan variabel inanchor: 2017 maka akan menampilkan ....', o:["halaman yang ditautkan oleh situs lain dengan teks \u201c2017\u201d","halaman dengan artikel dari tahun 2017","halaman yang memuat artikel hanya terbit pada tahun 2017","halaman yang ada kata \u201c2017\u201d di judul artikelnya","halaman yang ada kata \u201c2017\u201d di dalam kontennya"], c:0},
+{q:'Angga mencari informasi dengan bantuan mesin pencari. Hasilnya di beberapa sumber yang Angga pilih memuat kata "algoritma perulangan" di setiap isi kontennya. Teknik pencarian yang digunakan Angga menggunakan variabel ....', o:["cache:","filetype:","site:","intext:","inurl:"], c:3},
+{q:'Perhatikan kode program berikut ini!\nfor a in range(4):\n    print(a,end="")\nOutput dari kode program Python tersebut adalah ....', o:["0, 1, 2, 3, 4","0, 1, 2, 3","1234","01234","0123"], c:4},
+{q:"Python berjalan pada sistem interpreter yang berarti ....", o:["kode dapat dieksekusi segera setelah ditulis","kode program harus dikompilasi terlebih dahulu","kode dapat langsung di-build menjadi aplikasi","setelah dijalankan tidak dapat diedit lagi","terbatas dalam pengaturan tipe data"], c:0},
+{q:"Tipe data yang memberikan respons benar atau salah adalah ....", o:["integer","float","boolean","string","list"], c:2},
+{q:"Untuk mencetak data dalam bahasa Python menggunakan perintah ....", o:["for","print","cout","write","read"], c:1},
+{q:"Menyimpan data dengan berbagai jenis tipe data, namun data tersebut tidak dapat diubah maka dapat menggunakan tipe data ....", o:["complex","tuple","list","dictionary","string"], c:1},
+{q:"Memasukkan nilai 3 pada variabel a, kemudian membuat variabel b yang bernilai a - 1, dan variabel c yang bernilai a + b maka jika dijalankan variabel c akan bernilai ....", o:["3","2","4","6","5"], c:4},
+{q:"Membuat grafik atau diagram pada Python dapat menggunakan library ....", o:["Pandas","BeautifulSoup","Requests","Numpy","Plotly"], c:4},
+{q:"Array dengan nilai [api, angin, tanah, air] jika di-append listrik maka menjadi ....", o:["[listrik, api, angin, tanah, air]","[api, angin, tanah, air, listrik]","[listrik]","[api, angin, listrik, tanah, air]","[api, angin, tanah, listrik]"], c:1},
+{q:"Jaka melakukan pengumpulan data melalui berbagai teknik: data dari situs pemerintah, jurnal hasil penelitian, pernyataan dari narasumber, gagasan dari temannya, dan hasil survei. Data yang tidak tepat digunakan sebagai rujukan adalah ....", o:["data dari situs pemerintah","jurnal hasil penelitian","pernyataan dari narasumber","gagasan dari temannya","hasil survei"], c:3},
+{q:"Cara yang bisa digunakan untuk mengatasi agar tidak tertipu oleh berita palsu adalah ....", o:["sering membuka media sosial","meningkatkan keterampilan literasi digital","perbanyak menonton podcast di YouTube","kurangi penggunaan media sosial","jangan terlibat ke dalam dunia maya"], c:1},
+{q:"Kerja sama antara beberapa platform dengan organisasi periksa fakta bertujuan untuk ....", o:["mengurangi penyebaran informasi hoaks","memanipulasi informasi agar terkesan fakta","mengetahui tren hoaks yang mudah diaplikasikan","mengetahui pengguna yang suka menyebarkan hoaks","memiliki kontrol penuh dalam mengolah informasi"], c:0},
+{q:"Cek fakta adalah inovasi kolaborasi yang digunakan untuk ....", o:["meningkatkan keamanan siber","mengurangi informasi hoaks","menambah keamanan digital","melindungi data pribadi","pemberatas penipuan online"], c:1},
+{q:"Berita palsu bisa diidentifikasi melalui alur konten yang ....", o:["tertata dengan rapi","terstruktur","logis ceritanya","aneh dalam penyampaian","jelas maknanya"], c:3},
+{q:"Berikut yang bukan solusi untuk mengurangi dampak penyebaran berita hoaks adalah ....", o:["berhati-hati dengan informasi yang provokatif","cermat dalam melihat sumber berita","periksa fakta keaslian berita","mengecek sumber berita lain","membagikan informasi dari berita tersebut"], c:4},
+{q:"Berita yang ditulis dengan gaya humor atau sindiran, dan bisa mengecoh meskipun tidak memiliki niat jahat disebut ....", o:["satire","false context","imposter content","fabricate content","misleading content"], c:0},
+{q:"Yuli memastikan informasi yang ia peroleh memiliki kredibilitas baik dengan memperhatikan apakah informasi memiliki nama penulis dan kontak penulis. Aspek evaluasi yang Yuli terapkan adalah ....", o:["currency","relevance","authority","accuracy","purpose"], c:2},
+{q:"Cara penulisan variabel yang tepat untuk mencari artikel yang judulnya mengandung kata pemrograman dan berasal dari situs pemerintah Indonesia adalah ....", o:["intitle:pemrograman site:go.id","filetype:pemrograman site:go.id","inurl:pemrograman site:go.id","intext:pemrograman site:go.id","cache:pemrograman site:go.id"], c:0},
+{q:"Tipe data Python yang tepat untuk menyimpan data nama, umur, tanggal lahir, dan alamat berpasangan dengan nilainya adalah ....", o:["list","tuple","dictionary","string","boolean"], c:2},
+{q:'Perintah Python yang tepat untuk mencetak teks "2+3=5" ke layar adalah ....', o:['print(2+3=5)','print("2+3=5")','echo "2+3=5"','print(2+3)','cout << "2+3=5"'], c:1},
+{q:"Norma ingin memastikan keaktualan (currency) informasi yang ia dapatkan. Hal yang perlu ia perhatikan adalah ....", o:["tanggal publikasi dan apakah informasi masih relevan dengan perkembangan terkini","nama penulis dan kredibilitasnya","tujuan penulisan artikel","gaya bahasa yang digunakan penulis","jumlah kata dalam artikel"], c:0},
+{q:"Cara yang tepat untuk memverifikasi klaim viral yang banyak dibagikan warga digital adalah ....", o:["mengecek sumber asli dan membandingkan dengan media terpercaya lain","langsung membagikan ulang karena viral","percaya karena banyak yang membagikan","mengabaikan tanpa mengecek kebenarannya","hanya membaca judulnya saja"], c:0},
+{q:"Jika menggunakan mesin pencari dengan memasukkan inurl:pemrograman maka akan menghasilkan ....", o:["halaman web yang judulnya mengandung kata pemrograman","halaman web yang isi artikelnya membahas pemrograman","halaman web yang alamat URL-nya mengandung kata pemrograman","halaman web dari situs pemerintah tentang pemrograman","halaman web yang memuat kata pemrograman pada teks tautan"], c:2},
+{q:"Penggunaan variabel yang dapat digunakan untuk mengakses konten pada situs yang sedang perbaikan adalah ....", o:["site:","cache:","intitle:","daterange:","inurl:"], c:1},
+{q:"Informasi yang dianggap benar berdasarkan bukti yang ada disebut ....", o:["opini","fakta","data","analisis data","berita"], c:1},
+{q:"Andi memiliki variabel a bernilai 10. Kemudian, Andi membuat variabel baru b bernilai 2 dan variabel c bernilai 3. Andi menambahkan perintah c = c + c + b - a maka jika dicetak variabel c bernilai ....", o:["2","3","10","-2","error"], c:3},
+{q:"Tipe data dalam Python yang bisa menambahkan data dengan perintah append() adalah ....", o:["tuple","dictionary","list","string","complex"], c:2},
+{q:"Dalam bahasa Python, mencegah terjadinya eror dalam suatu operasi bisa diatasi dengan menerapkan ....", o:["override","try-except","debugging","logging","overloading"], c:1},
+{q:"Library Python yang bisa digunakan untuk mengubah data menjadi bentuk tabel adalah ....", o:["Requests","Pandas","BeautifulSoup","Plotly","Matplotlib"], c:1},
+{q:"Yudi membaca postingan di media sosial. Postingan menampilkan seorang tokoh yang benar menyampaikan pendapatnya, tetapi ternyata tidak ditampilkan sepenuhnya dan pemosting memelintir maknanya sehingga banyak orang tertipu. Jenis postingan ini adalah ....", o:["misleading content","false connection","imposter content","fabricated content","false context"], c:0},
+{q:"Data yang valid selain meyakinkan juga harus bisa ....", o:["menarik perhatian audiens","diakui oleh banyak orang","menambah pengetahuan","memengaruhi audiens","dibuktikan melalui fakta"], c:4},
+{q:"Dika memiliki kepribadian kritis terhadap informasi baru dan memastikan informasi yang ia temui memiliki tujuan jelas serta disampaikan secara seimbang dan objektif. Aspek yang diperhatikan Dika adalah ....", o:["currency","relevance","authority","accuracy","purpose"], c:4},
+{q:"Menyimpan file di IDE Code::Blocks dapat menggunakan shortcut ....", o:["Ctrl+Z","Ctrl+S","Ctrl+A","Ctrl+F","Ctrl+N"], c:1},
+{q:"Tipe data char memiliki ukuran memori sebesar ... byte.", o:["5","4","3","2","1"], c:4},
+{q:'Yura memiliki variabel umur dengan nilai 18. Yura mencetak dengan perintah print("umur"). Setelah dijalankan di layar tercetak kata umur. Hal tersebut dikarenakan ....', o:["umur bernilai integer sehingga hanya perlu menggunakan petik satu","untuk mencetak nilai di variabel tidak perlu tanda petik dua","seharusnya kata umur diganti dengan 18 (tanpa tanda petik)","tidak perlu menggunakan tanda kurung","seharusnya ada titik koma di akhir perintahnya"], c:2},
+{q:"Sekumpulan variabel yang memiliki tipe data sama dan mampu menyimpan beberapa nilai dalam satu variabel disebut ....", o:["library","keyword","tipe data","array","fungsi"], c:3},
+{q:'Natan merancang program dengan dua kondisi: jika benar mencetak "benar", jika salah mencetak "salah". Struktur if yang bisa digunakan Natan adalah ....', o:["if","if-else","if-else-if","else-if","switch-case"], c:1},
+{q:"Implementasi fitur undo dalam aplikasi pengolahan teks menerapkan prinsip ....", o:["array","stack","queue","linked list","dequeue"], c:1},
+{q:"Simbol diagram alir yang melambangkan titik percabangan yang salah satu cabangnya dapat dilalui program berdasarkan suatu kondisi adalah ....", o:["flowline","process","decision","connector","input/output"], c:2},
+{q:"Simbol diagram alir berbentuk persegi panjang (tanpa lekukan khusus) disebut simbol ....", o:["terminator","process","decision","connector","subprogram"], c:1},
+{q:"Tipe data yang digunakan untuk menyimpan angka desimal seperti 3,14 adalah ....", o:["int","string","float","bool","char"], c:2},
+{q:"Tisa memiliki rak buku berisi banyak komik dan mengambil komik paling atas dari tumpukan tersebut (prinsip stack). Perintah yang digunakan untuk pengambilan komik dari tumpukan teratas adalah ....", o:["pop","push","peek","isFull","isEmpty"], c:0},
+{q:"Berikut yang termasuk hal yang perlu diperhatikan pada aspek akurasi (Accuracy) dalam CRAAP adalah ....", o:["apakah informasi didukung bukti, dapat diverifikasi, dan bebas dari kesalahan","kapan informasi tersebut dipublikasikan","siapa yang membiayai penerbitan informasi","apakah informasi tersebut menarik untuk dibaca","berapa banyak informasi tersebut dibagikan"], c:0},
+{q:"Yuji melakukan web scraping dan parsing, namun data hasil parsing masih sulit dibaca. Langkah yang sebaiknya dilakukan Yuji selanjutnya adalah ....", o:["mengubah hasil parsing menjadi struktur tabel menggunakan library seperti Pandas","menghapus seluruh data hasil parsing","mengulang proses scraping tanpa parsing","mengganti website yang di-scraping","membiarkan data apa adanya"], c:0},
+{q:"Fungsi kode return 0; di akhir blok fungsi main pada bahasa C berfungsi untuk ....", o:["menandakan program selesai tanpa eror dan mengembalikan status sukses ke sistem operasi","menghentikan program secara paksa karena terjadi eror","mengulang eksekusi fungsi main dari awal","mendeklarasikan variabel baru bernilai 0","menghapus semua data dalam program"], c:0},
+{q:"Yang dimaksud dengan ekspresi binary dalam pemrograman adalah ....", o:["ekspresi yang melibatkan dua buah operand dan satu operator, contohnya a + b","ekspresi yang hanya melibatkan satu operand, contohnya -a","ekspresi yang menyimpan data dalam bentuk biner 0 dan 1 saja","ekspresi yang tidak menghasilkan nilai apapun","ekspresi khusus untuk struktur data stack"], c:0},
+{q:"Penulisan struktur perulangan do...while yang benar dalam bahasa C adalah ....", o:["do { ... } while(kondisi);","while(kondisi) { ... } do;","do while(kondisi) { ... }","for(kondisi) { do ... }","while { do(kondisi) ... }"], c:0}
+];
+
+const LADDERS = {1:38, 4:14, 9:31, 21:42, 28:84, 36:44, 51:67, 71:91};
+const SNAKES = {16:6, 47:26, 49:11, 56:53, 62:19, 64:60, 87:24, 93:73, 95:75, 98:78};
+const QUESTION_SQUARES = new Set([7,13,19,25,32,39,45,54,59,66,73,78,84,90,97]);
+
+const PLAYER_DEFS = [
+  { id:'p1', color:'#e24b4a', textColor:'#fff', emoji:'🔴', defaultName:'Tim Merah' },
+  { id:'p2', color:'#f4f4f4', textColor:'#7f1d17', emoji:'⚪', defaultName:'Tim Putih' },
+  { id:'p3', color:'#ffd54a', textColor:'#6b4a1f', emoji:'🟡', defaultName:'Tim Kuning' },
+  { id:'p4', color:'#3b82f6', textColor:'#fff', emoji:'🔵', defaultName:'Tim Biru' }
+];
+const OFFSETS = [[0.22,0.22],[0.72,0.22],[0.22,0.72],[0.72,0.72]];
+
+let cellPos = {};
+let players = [];
+let positions = {};
+let scores = {};
+let turnOrder = [];
+let currentTurnIdx = 0;
+let busy = false;
+let modalTimer = null;
+let playerCount = 2;
+
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function nextQuestion(){
+  const q = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)];
+  const order = shuffle(q.o.map((text,i)=>({text,orig:i})));
+  const newCorrect = order.findIndex(x=>x.orig===q.c);
+  return { q: q.q, o: order.map(x=>x.text), c: newCorrect };
+}
+
+function buildBoard(){
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  for(let r=10; r>=1; r--){
+    const base=(r-1)*10;
+    const rowNums = (r%2===1) ? Array.from({length:10},(_,i)=>base+1+i) : Array.from({length:10},(_,i)=>base+10-i);
+    const gridRow = 10 - r + 1;
+    rowNums.forEach((num,ci)=>{
+      cellPos[num] = { row: gridRow, col: ci+1 };
+      const cell = document.createElement('div');
+      cell.className = 'cell ' + (((gridRow+ci)%2===0)?'cellA':'cellB');
+      cell.dataset.num = num;
+      cell.textContent = num;
+      if(num===100) cell.classList.add('finish');
+      if(QUESTION_SQUARES.has(num)){ cell.classList.add('q'); addIcon(cell,'❓'); }
+      if(LADDERS[num]){ cell.classList.add('ladderBottom'); addIcon(cell,'🪜'); }
+      Object.values(LADDERS).forEach(top=>{ if(top===num) cell.classList.add('ladderTop'); });
+      if(SNAKES[num]){ cell.classList.add('snakeHead'); addIcon(cell,'🐍'); }
+      Object.values(SNAKES).forEach(tail=>{ if(tail===num) cell.classList.add('snakeTail'); });
+      board.appendChild(cell);
+    });
+  }
+  players.forEach((p)=>{
+    const t = document.createElement('div');
+    t.className = 'token';
+    t.id = 'token_' + p.id;
+    t.style.background = p.color;
+    t.style.color = p.textColor;
+    t.textContent = p.emoji;
+    board.parentElement.appendChild(t);
+  });
+}
+function addIcon(cell, ch){
+  const s = document.createElement('span');
+  s.className = 'cellIcon'; s.textContent = ch;
+  cell.appendChild(s);
+}
+
+function placeToken(playerId, num, animate){
+  const p = players.find(x=>x.id===playerId);
+  const idx = players.indexOf(p);
+  const el = document.getElementById('token_' + playerId);
+  if(!el) return;
+  const board = document.getElementById('board');
+  const cell = board.querySelector('[data-num="'+num+'"]');
+  if(!cell) return;
+  const bRect = board.getBoundingClientRect();
+  const cRect = cell.getBoundingClientRect();
+  const off = OFFSETS[idx % OFFSETS.length];
+  const left = ((cRect.left - bRect.left) + off[0]*cRect.width - (0.032*bRect.width)) / bRect.width * 100;
+  const top = ((cRect.top - bRect.top) + off[1]*cRect.height - (0.032*bRect.height)) / bRect.height * 100;
+  if(!animate) el.style.transition = 'none';
+  el.style.left = left + '%';
+  el.style.top = top + '%';
+  if(!animate) requestAnimationFrame(()=>{ el.style.transition = ''; });
+}
+
+function currentPlayer(){ return turnOrder[currentTurnIdx]; }
+
+function updateTurnBar(){
+  const p = currentPlayer();
+  document.getElementById('turnDot').style.background = p.color;
+  document.getElementById('turnText').textContent = 'Giliran: ' + p.name + (p.stuck ? ' (harus jawab soal dulu)' : '');
+  const btn = document.getElementById('rollBtn');
+  btn.textContent = p.stuck ? '❗ Jawab Soal' : '🎲 Lempar Cube';
+}
+
+function renderScoreboard(){
+  const wrap = document.getElementById('scoreboard');
+  wrap.innerHTML = '';
+  const cur = currentPlayer();
+  players.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'scoreCard' + (cur && cur.id===p.id ? ' active' : '');
+    const stuckTxt = p.stuck ? ' • terjebak ('+p.wrongCount+'/5)' : '';
+    card.innerHTML = '<span class="scoreDot" style="background:'+p.color+'"></span>' +
+      '<span>'+p.name+' • petak '+positions[p.id]+' • skor '+scores[p.id]+stuckTxt+'</span>';
+    wrap.appendChild(card);
+  });
+}
+
+function showFeedback(text){
+  const fb = document.getElementById('feedback');
+  fb.textContent = text;
+  fb.classList.add('show');
+  setTimeout(()=> fb.classList.remove('show'), 1100);
+}
+
+const DICE_FACES = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
+
+function rollDice(){
+  if(busy) return;
+  const p = currentPlayer();
+  if(p.stuck){
+    busy = true;
+    document.getElementById('rollBtn').disabled = true;
+    openQuestionModal(p, p.stuckType, p.stuckNum);
+    return;
+  }
+  busy = true;
+  document.getElementById('rollBtn').disabled = true;
+  const display = document.getElementById('diceDisplay');
+  let ticks = 0;
+  const spin = setInterval(()=>{
+    display.textContent = DICE_FACES[1 + Math.floor(Math.random()*6)];
+    ticks++;
+    if(ticks > 8){
+      clearInterval(spin);
+      const result = 1 + Math.floor(Math.random()*6);
+      display.textContent = DICE_FACES[result];
+      movePlayer(result);
+    }
+  }, 70);
+}
+
+function movePlayer(steps){
+  const p = currentPlayer();
+  let pos = positions[p.id];
+  let target = Math.min(100, pos + steps);
+  let cur = pos;
+  const stepMove = () => {
+    if(cur < target){
+      cur++;
+      positions[p.id] = cur;
+      placeToken(p.id, cur, true);
+      renderScoreboard();
+      setTimeout(stepMove, 160);
+    } else {
+      resolveLanding(p, cur);
+    }
+  };
+  setTimeout(stepMove, 160);
+}
+
+function resolveLanding(p, num){
+  if(num >= 100){
+    positions[p.id] = 100;
+    renderScoreboard();
+    setTimeout(()=> endGame(p), 400);
+    return;
+  }
+  if(LADDERS[num]){
+    setTimeout(()=> openQuestionModal(p, 'ladder', num), 300);
+    return;
+  }
+  if(SNAKES[num]){
+    setTimeout(()=> openQuestionModal(p, 'snake', num), 300);
+    return;
+  }
+  if(QUESTION_SQUARES.has(num)){
+    setTimeout(()=> openQuestionModal(p, 'question', num), 300);
+    return;
+  }
+  endTurn();
+}
+
+function endTurn(){
+  currentTurnIdx = (currentTurnIdx + 1) % turnOrder.length;
+  updateTurnBar();
+  renderScoreboard();
+  busy = false;
+  document.getElementById('rollBtn').disabled = false;
+}
+
+function openQuestionModal(p, type, num){
+  const cur = nextQuestion();
+  const overlay = document.getElementById('modalOverlay');
+  const title = document.getElementById('modalTitle');
+  const qEl = document.getElementById('modalQ');
+  const optsWrap = document.getElementById('modalOpts');
+  const typeLabel = type==='ladder' ? '🪜 RINTANGAN TANGGA' : (type==='snake' ? '🐍 RINTANGAN ULAR' : '❓ RINTANGAN SOAL');
+  const attemptTxt = p.stuck ? ' (percobaan ke-'+(p.wrongCount+1)+')' : '';
+  title.textContent = typeLabel + ' — ' + p.name + attemptTxt;
+  qEl.textContent = cur.q;
+  optsWrap.innerHTML = '';
+  const letters=['A','B','C','D','E'];
+  let answered = false;
+  cur.o.forEach((opt,i)=>{
+    const btn = document.createElement('div');
+    btn.className = 'modalOpt';
+    btn.innerHTML = '<b>'+letters[i]+'.</b> <span>'+opt+'</span>';
+    btn.addEventListener('click', ()=>{
+      if(answered) return;
+      answered = true;
+      clearInterval(modalTimer);
+      document.querySelectorAll('.modalOpt').forEach(b=>b.classList.add('disabled'));
+      if(i === cur.c){
+        btn.classList.add('correct');
+        setTimeout(()=> closeModal(p, type, num, true), 700);
+      } else {
+        btn.classList.add('wrong');
+        optsWrap.children[cur.c].classList.add('correct');
+        setTimeout(()=> closeModal(p, type, num, false), 900);
+      }
+    });
+    optsWrap.appendChild(btn);
+  });
+  overlay.classList.add('show');
+  let timeLeft = 15;
+  const bar = document.getElementById('modalTimer');
+  bar.style.transition = 'none'; bar.style.width='100%';
+  requestAnimationFrame(()=>{ bar.style.transition='width 1s linear'; });
+  modalTimer = setInterval(()=>{
+    timeLeft--;
+    bar.style.width = Math.max(0,(timeLeft/15)*100)+'%';
+    if(timeLeft<=0){
+      clearInterval(modalTimer);
+      if(!answered){
+        answered = true;
+        document.querySelectorAll('.modalOpt').forEach(b=>b.classList.add('disabled'));
+        optsWrap.children[cur.c].classList.add('correct');
+        setTimeout(()=> closeModal(p, type, num, false), 900);
+      }
+    }
+  }, 1000);
+}
+
+function closeModal(p, type, num, correct){
+  document.getElementById('modalOverlay').classList.remove('show');
+  let pos = positions[p.id];
+
+  if(correct){
+    scores[p.id] += 1;
+    p.stuck = false;
+    p.wrongCount = 0;
+    p.stuckType = null;
+    p.stuckNum = null;
+
+    if(type === 'ladder'){
+      pos = LADDERS[num];
+      showFeedback('✅ '+p.name+' menjawab benar! Naik tangga ke petak '+pos+' 🪜');
+    } else if(type === 'snake'){
+      showFeedback('✅ '+p.name+' menjawab benar! Tetap di petak '+pos+' (selamat dari ular 🐍)');
+    } else {
+      pos = Math.min(100, pos + 3);
+      showFeedback('✅ '+p.name+' menjawab benar! Bonus maju 3 langkah!');
+    }
+
+    positions[p.id] = pos;
+    placeToken(p.id, pos, true);
+    renderScoreboard();
+    setTimeout(()=>{
+      if(pos >= 100){ endGame(p); } else { endTurn(); }
+    }, 550);
+  } else {
+    p.wrongCount += 1;
+    if(p.wrongCount >= 5){
+      p.stuck = false;
+      p.wrongCount = 0;
+      p.stuckType = null;
+      p.stuckNum = null;
+      pos = 1;
+      showFeedback('💥 '+p.name+' sudah 5 kali salah! Kembali ke petak start (1).');
+      positions[p.id] = pos;
+      placeToken(p.id, pos, true);
+      renderScoreboard();
+      setTimeout(endTurn, 600);
+    } else {
+      p.stuck = true;
+      p.stuckType = type;
+      p.stuckNum = num;
+      showFeedback('❌ '+p.name+' salah! ('+p.wrongCount+'/5) Tetap di petak '+pos+', harus jawab lagi.');
+      renderScoreboard();
+      setTimeout(endTurn, 700);
+    }
+  }
+}
+
+function confettiBurst(){
+  const colors = ['#e24b4a','#ffffff','#ffd54a','#3b82f6'];
+  for(let i=0;i<60;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random()*100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDuration = (2 + Math.random()*1.5) + 's';
+    c.style.animationDelay = (Math.random()*0.6) + 's';
+    document.body.appendChild(c);
+    setTimeout(()=> c.remove(), 4000);
+  }
+}
+
+function endGame(winner){
+  const overlay = document.getElementById('overlay');
+  document.getElementById('overlayTitle').textContent = '🎉 ' + winner.name.toUpperCase() + ' MERDEKA! 🎉';
+  document.getElementById('overlaySub').textContent = winner.name + ' mencapai petak 100 lebih dulu!';
+  const ranked = players.slice().sort((a,b)=> scores[b.id]-scores[a.id]);
+  document.getElementById('finalScores').innerHTML = 'Skor akhir: ' +
+    ranked.map(p=> p.name + ' (' + scores[p.id] + ')').join(' &nbsp;•&nbsp; ');
+  overlay.classList.add('show');
+  confettiBurst();
+}
+
+function initGame(){
+  positions = {}; scores = {};
+  players.forEach(p=>{ positions[p.id] = 1; scores[p.id] = 0; });
+  turnOrder = players.slice();
+  currentTurnIdx = 0;
+  busy = false;
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('rollBtn').disabled = false;
+  buildBoard();
+  players.forEach(p=> placeToken(p.id, 1, false));
+  updateTurnBar();
+  renderScoreboard();
+}
+
+function buildSetupForm(){
+  const picker = document.getElementById('countPicker');
+  picker.innerHTML = '';
+  [2,3,4].forEach(n=>{
+    const b = document.createElement('button');
+    b.className = 'countBtn' + (n===playerCount ? ' active' : '');
+    b.textContent = n + ' Pemain';
+    b.addEventListener('click', ()=>{ playerCount = n; buildSetupForm(); });
+    picker.appendChild(b);
+  });
+  const form = document.getElementById('nameForm');
+  form.innerHTML = '';
+  for(let i=0;i<playerCount;i++){
+    const def = PLAYER_DEFS[i];
+    const row = document.createElement('div');
+    row.className = 'nameRow';
+    row.innerHTML = '<span class="nameDot" style="background:'+def.color+'"></span>';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.maxLength = 20;
+    input.placeholder = def.defaultName;
+    input.id = 'nameInput_' + i;
+    row.appendChild(input);
+    form.appendChild(row);
+  }
+}
+
+function startGame(){
+  players = [];
+  for(let i=0;i<playerCount;i++){
+    const def = PLAYER_DEFS[i];
+    const input = document.getElementById('nameInput_' + i);
+    const name = (input && input.value.trim()) ? input.value.trim() : def.defaultName;
+    players.push({ id: def.id, name: name, color: def.color, textColor: def.textColor, emoji: def.emoji, stuck:false, wrongCount:0, stuckType:null, stuckNum:null });
+  }
+  document.getElementById('setupOverlay').classList.remove('show');
+  initGame();
+}
+
+document.getElementById('rollBtn').addEventListener('click', rollDice);
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('restartBtn').addEventListener('click', ()=>{
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('setupOverlay').classList.add('show');
+  buildSetupForm();
+});
+
+window.addEventListener('resize', ()=>{
+  if(!players.length) return;
+  players.forEach(p=> placeToken(p.id, positions[p.id], false));
+});
+
+buildSetupForm();
+</script>
+</body>
+</html>

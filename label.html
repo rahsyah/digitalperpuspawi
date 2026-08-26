@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator Label Barcode Perpustakaan</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.5/JsBarcode.all.min.js"></script>
+<style>
+  :root{
+    --navy-950:#0a1628;
+    --navy-900:#0f2242;
+    --navy-800:#16305c;
+    --navy-700:#1e3a70;
+    --gold:#e8b84b;
+    --gold2:#f2cf7e;
+    --paper:#f6f4ee;
+    --ink:#1c2230;
+    --line:#dcd6c6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .app-shell{max-width:1180px;margin:0 auto;padding:28px 20px 80px;}
+  header.top{
+    background:linear-gradient(135deg,var(--navy-950),var(--navy-800));
+    color:#fff;border-radius:14px;padding:22px 26px;margin-bottom:22px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  header.top h1{margin:0;font-size:1.35rem;letter-spacing:.2px;}
+  header.top p{margin:4px 0 0;color:#d8ddea;font-size:.86rem;}
+  .badge{
+    background:var(--gold);color:var(--navy-950);font-weight:700;
+    padding:6px 12px;border-radius:999px;font-size:.78rem;white-space:nowrap;
+  }
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:20px 22px;margin-bottom:18px;
+  }
+  .card h2{
+    margin:0 0 4px;font-size:1.02rem;color:var(--navy-900);
+    display:flex;align-items:center;gap:10px;
+  }
+  .step-no{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:24px;height:24px;border-radius:50%;background:var(--navy-900);color:var(--gold2);
+    font-size:.78rem;font-weight:700;flex:none;
+  }
+  .card .sub{margin:0 0 16px;color:#666;font-size:.83rem;}
+  .row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+  .field{display:flex;flex-direction:column;gap:5px;font-size:.82rem;color:#444;}
+  .field input,.field select,.field textarea{
+    border:1px solid #ccc;border-radius:7px;padding:8px 10px;font-size:.88rem;
+    font-family:inherit;background:#fff;color:var(--ink);
+  }
+  .field textarea{min-height:110px;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:.78rem;}
+  .field.grow{flex:1;min-width:180px;}
+  button{
+    cursor:pointer;border:none;border-radius:8px;padding:9px 16px;font-size:.85rem;
+    font-weight:600;font-family:inherit;transition:filter .15s;
+  }
+  button:hover{filter:brightness(1.07);}
+  .btn-primary{background:var(--navy-900);color:#fff;}
+  .btn-gold{background:var(--gold);color:var(--navy-950);}
+  .btn-ghost{background:#eee;color:#333;}
+  .btn-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .tabs{display:flex;gap:6px;margin-bottom:14px;}
+  .tab-btn{background:#eee;color:#555;padding:7px 14px;border-radius:7px 7px 0 0;font-size:.82rem;}
+  .tab-btn.active{background:var(--navy-900);color:#fff;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+  .status{font-size:.8rem;margin-top:10px;padding:8px 10px;border-radius:7px;display:none;}
+  .status.ok{display:block;background:#e6f6ea;color:#1a7a3a;border:1px solid #bfe6c9;}
+  .status.err{display:block;background:#fdeaea;color:#a3242c;border:1px solid #f3c2c5;}
+  .mapping-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;}
+  table.data-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:6px;}
+  table.data-table th,table.data-table td{
+    border:1px solid var(--line);padding:6px 8px;text-align:left;
+  }
+  table.data-table th{background:var(--navy-900);color:#fff;position:sticky;top:0;}
+  table.data-table tr:nth-child(even){background:#faf9f4;}
+  .table-wrap{max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:8px;margin-top:10px;}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .count-pill{background:var(--navy-900);color:#fff;border-radius:999px;padding:4px 12px;font-size:.78rem;}
+
+  /* ===== LABEL PREVIEW / PRINT ===== */
+  #labelSheet{
+    display:grid;
+    gap: var(--gap,3mm);
+    margin-top:16px;
+  }
+  .label{
+    border:1px solid #000;
+    display:flex;
+    background:#fff;
+    overflow:hidden;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .label-strip{
+    width: var(--stripW,10mm);
+    flex:none;
+    position:relative;
+    border-right:1px solid #000;
+    overflow:hidden;
+  }
+  .label-strip .rot{
+    position:absolute;
+    left:50%; top:50%;
+    transform-origin:center center;
+    transform:translate(-50%,-50%) rotate(-90deg);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    white-space:nowrap;
+  }
+  .label-strip .rot .title-snip{
+    font-size: 6.2pt;
+    font-weight:600;
+    letter-spacing:.2px;
+    margin-bottom:2px;
+    max-width: none;
+  }
+  .label-strip svg{display:block;}
+  .label-main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+  }
+  .label-header{
+    background:#c9c9c9;
+    color:#000;
+    font-weight:700;
+    text-align:center;
+    font-size: 8.4pt;
+    line-height:1.15;
+    padding:2px 4px;
+    border-bottom:1px solid #000;
+  }
+  .label-codes{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:0;
+    padding:2px 4px 4px;
+  }
+  .label-codes .klas{font-size:15pt;font-weight:800;line-height:1.1;}
+  .label-codes .kode{font-size:15pt;font-weight:800;line-height:1.1;letter-spacing:.5px;}
+  .label-codes .judulcode{font-size:11pt;font-weight:700;line-height:1.1;}
+
+  .empty-hint{
+    color:#888;font-size:.85rem;text-align:center;padding:30px 10px;
+    border:1px dashed #ccc;border-radius:10px;
+  }
+
+  @media print{
+    body *{visibility:hidden;}
+    #printArea, #printArea *{visibility:visible;}
+    #printArea{position:absolute;left:0;top:0;width:100%;margin:0;padding:0;}
+    #labelSheet{margin:0;}
+    .label{border:1px solid #000 !important;}
+    @page{margin:8mm;}
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="top">
+    <div>
+      <h1>Generator Label Barcode Perpustakaan</h1>
+      <p>Ambil data buku dari Google Sheets atau CSV &rarr; buat &amp; cetak label barcode siap tempel</p>
+    </div>
+    <span class="badge">Wiyata Pustaka Toolkit</span>
+  </header>
+
+  <!-- STEP 1: LOAD DATA -->
+  <div class="card">
+    <h2><span class="step-no">1</span> Muat Data Buku</h2>
+    <p class="sub">Gunakan Google Sheets yang sudah dibagikan publik ("Siapa saja dengan tautan ini dapat melihat"), atau tempel data CSV secara manual.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="sheet">Google Sheets</button>
+      <button class="tab-btn" data-tab="csv">Tempel CSV</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-sheet">
+      <div class="row">
+        <div class="field grow">
+          <label>Link atau ID Google Sheet</label>
+          <input type="text" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/xxxxx/edit#gid=0 atau ID saja">
+        </div>
+        <div class="field">
+          <label>GID (opsional, default 0)</label>
+          <input type="text" id="sheetGid" placeholder="0" style="width:110px;">
+        </div>
+        <button class="btn-primary" id="btnLoadSheet">Muat dari Sheets</button>
+      </div>
+      <div class="status" id="statusSheet"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-csv">
+      <div class="field">
+        <label>Tempel data (format CSV, baris pertama = judul kolom)</label>
+        <textarea id="csvInput" placeholder="No_Barcode,Judul,Pengarang,Klasifikasi,Kode_Buku,Kode_Judul&#10;140862,Ensiklopedi pengukuran,Iskandar,510.1,ISK,e"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" id="btnLoadCsv">Muat dari CSV</button>
+      </div>
+      <div class="status" id="statusCsv"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: MAPPING -->
+  <div class="card" id="cardMapping" style="display:none;">
+    <h2><span class="step-no">2</span> Cocokkan Kolom</h2>
+    <p class="sub">Pilih kolom pada data Anda yang sesuai dengan setiap bagian label.</p>
+    <div class="mapping-grid" id="mappingGrid"></div>
+  </div>
+
+  <!-- STEP 3: LABEL SETTINGS -->
+  <div class="card" id="cardSettings" style="display:none;">
+    <h2><span class="step-no">3</span> Pengaturan Label</h2>
+    <div class="row">
+      <div class="field">
+        <label>Nama Perpustakaan (header label)</label>
+        <input type="text" id="libName" value="PERPUSTAKAAN WIYATA PUSTAKA" style="width:260px;">
+      </div>
+      <div class="field">
+        <label>Jenis Barcode</label>
+        <select id="barcodeType">
+          <option value="CODE128" selected>Code 128 (umum, angka+huruf)</option>
+          <option value="CODE39">Code 39 (klasik, sering dipakai SLiMS)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Lebar Label (mm)</label>
+        <input type="number" id="labelW" value="70" style="width:90px;">
+      </div>
+      <div class="field">
+        <label>Tinggi Label (mm)</label>
+        <input type="number" id="labelH" value="32" style="width:90px;">
+      </div>
+      <div class="field">
+        <label>Kolom per Baris (cetak)</label>
+        <input type="number" id="cols" value="2" min="1" max="4" style="width:90px;">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-gold" id="btnRender">Buat / Perbarui Pratinjau Label</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: DATA TABLE -->
+  <div class="card" id="cardTable" style="display:none;">
+    <h2><span class="step-no">4</span> Pilih Buku yang Akan Dicetak</h2>
+    <div class="toolbar">
+      <div>
+        <button class="btn-ghost" id="btnSelectAll">Pilih Semua</button>
+        <button class="btn-ghost" id="btnSelectNone">Kosongkan</button>
+      </div>
+      <span class="count-pill" id="countPill">0 dipilih</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="dataTable"></table>
+    </div>
+  </div>
+
+  <!-- STEP 5: PREVIEW / PRINT -->
+  <div class="card" id="printArea">
+    <h2><span class="step-no">5</span> Pratinjau &amp; Cetak</h2>
+    <div class="btn-row" style="margin-top:0;">
+      <button class="btn-primary" id="btnPrint">Cetak Label</button>
+    </div>
+    <div id="labelSheet"></div>
+    <div class="empty-hint" id="emptyHint">Belum ada label. Muat data lalu pilih buku pada tabel di atas.</div>
+  </div>
+
+</div>
+
+<script>
+let rawRows = [];      // array of objects, keyed by header
+let headers = [];
+let mapping = {};      // target field -> source header
+let selected = new Set();
+
+const targetFields = [
+  {key:'barcode', label:'No. Barcode / ID Item', required:true},
+  {key:'judul', label:'Judul Buku', required:true},
+  {key:'klasifikasi', label:'No. Klasifikasi (DDC)', required:false},
+  {key:'kodebuku', label:'Kode Buku / 3 Huruf Pengarang', required:false},
+  {key:'kodejudul', label:'Kode Judul (1 huruf)', required:false},
+];
+
+// ---------- tabs ----------
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+function showStatus(id, ok, msg){
+  const el = document.getElementById(id);
+  el.className = 'status ' + (ok?'ok':'err');
+  el.textContent = msg;
+}
+
+// ---------- CSV parsing (simple, handles quoted commas) ----------
+function parseCsv(text){
+  const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.trim().length>0);
+  if(lines.length < 2) throw new Error('Data minimal harus punya baris judul kolom + 1 baris data.');
+  const splitLine = (line)=>{
+    const out=[]; let cur=''; let inQ=false;
+    for(let i=0;i<line.length;i++){
+      const c=line[i];
+      if(c==='"'){ inQ = !inQ; continue; }
+      if(c===',' && !inQ){ out.push(cur); cur=''; continue; }
+      cur+=c;
+    }
+    out.push(cur);
+    return out.map(s=>s.trim());
+  };
+  const hdrs = splitLine(lines[0]);
+  const rows = lines.slice(1).map(line=>{
+    const cells = splitLine(line);
+    const obj = {};
+    hdrs.forEach((h,i)=>obj[h]=cells[i] ?? '');
+    return obj;
+  });
+  return {hdrs, rows};
+}
+
+function extractSheetId(input){
+  input = input.trim();
+  const m = input.match(/\/d\/([a-zA-Z0-9-_]+)/);
+  if(m) return m[1];
+  return input; // assume raw ID pasted
+}
+
+// ---------- load from Google Sheets (gviz JSON) ----------
+document.getElementById('btnLoadSheet').addEventListener('click', async ()=>{
+  const raw = document.getElementById('sheetUrl').value.trim();
+  let gid = document.getElementById('sheetGid').value.trim();
+  if(!raw){ showStatus('statusSheet', false, 'Masukkan link atau ID Google Sheet dulu.'); return; }
+  const id = extractSheetId(raw);
+  const gidMatch = raw.match(/[#&]gid=([0-9]+)/);
+  if(!gid && gidMatch) gid = gidMatch[1];
+  if(!gid) gid = '0';
+
+  const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&gid=${gid}`;
+  try{
+    showStatus('statusSheet', true, 'Memuat data...');
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('Gagal mengambil sheet (pastikan sheet dibagikan publik "Siapa saja dengan tautan").');
+    const text = await res.text();
+    const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}')+1);
+    const data = JSON.parse(jsonStr);
+    const cols = data.table.cols.map((c,i)=> (c.label && c.label.trim()) || (c.id) || ('Kolom'+(i+1)) );
+    const rows = data.table.rows.map(r=>{
+      const obj = {};
+      cols.forEach((h,i)=>{
+        const cell = r.c[i];
+        obj[h] = cell ? (cell.f !== undefined && cell.f !== null ? cell.f : cell.v) : '';
+        if(obj[h]===null || obj[h]===undefined) obj[h]='';
+      });
+      return obj;
+    });
+    if(rows.length===0) throw new Error('Sheet berhasil dibuka tapi tidak ada baris data.');
+    ingestData(cols, rows);
+    showStatus('statusSheet', true, `Berhasil memuat ${rows.length} baris dari Google Sheets.`);
+  }catch(err){
+    showStatus('statusSheet', false, 'Gagal memuat: ' + err.message + ' — coba gunakan tab "Tempel CSV" sebagai alternatif (File > Bagikan ke web > CSV, atau salin-tempel dari Sheets).');
+  }
+});
+
+document.getElementById('btnLoadCsv').addEventListener('click', ()=>{
+  const text = document.getElementById('csvInput').value;
+  try{
+    const {hdrs, rows} = parseCsv(text);
+    ingestData(hdrs, rows);
+    showStatus('statusCsv', true, `Berhasil memuat ${rows.length} baris dari CSV.`);
+  }catch(err){
+    showStatus('statusCsv', false, 'Gagal membaca CSV: ' + err.message);
+  }
+});
+
+function guessMapping(hdrs){
+  const lower = hdrs.map(h=>h.toLowerCase());
+  const find = (...keys)=>{
+    for(const k of keys){
+      const idx = lower.findIndex(h=>h.includes(k));
+      if(idx>-1) return hdrs[idx];
+    }
+    return '';
+  };
+  return {
+    barcode: find('barcode','id_item','no. barcode','no_barcode'),
+    judul: find('judul'),
+    klasifikasi: find('klasifikasi','ddc','no. klas'),
+    kodebuku: find('kode_buku','kode buku','kode pengarang'),
+    kodejudul: find('kode_judul','kode judul'),
+  };
+}
+
+function ingestData(hdrs, rows){
+  headers = hdrs;
+  rawRows = rows.map((r,i)=>({...r, __idx:i}));
+  mapping = guessMapping(hdrs);
+  buildMappingUI();
+  buildTable();
+  document.getElementById('cardMapping').style.display='block';
+  document.getElementById('cardSettings').style.display='block';
+  document.getElementById('cardTable').style.display='block';
+  selected = new Set(rawRows.map(r=>r.__idx));
+  updateCountPill();
+  renderLabels();
+}
+
+function buildMappingUI(){
+  const grid = document.getElementById('mappingGrid');
+  grid.innerHTML = '';
+  targetFields.forEach(tf=>{
+    const wrap = document.createElement('div');
+    wrap.className = 'field';
+    const lab = document.createElement('label');
+    lab.textContent = tf.label + (tf.required?' *':' (opsional)');
+    const sel = document.createElement('select');
+    const optNone = document.createElement('option');
+    optNone.value=''; optNone.textContent='— tidak dipakai —';
+    sel.appendChild(optNone);
+    headers.forEach(h=>{
+      const opt = document.createElement('option');
+      opt.value=h; opt.textContent=h;
+      if(mapping[tf.key]===h) opt.selected=true;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', ()=>{ mapping[tf.key]=sel.value; renderLabels(); });
+    wrap.appendChild(lab); wrap.appendChild(sel);
+    grid.appendChild(wrap);
+  });
+}
+
+function buildTable(){
+  const table = document.getElementById('dataTable');
+  const showCols = headers.slice(0, 6); // keep the table readable
+  let html = '<thead><tr><th></th>' + showCols.map(h=>`<th>${escapeHtml(h)}</th>`).join('') + '</tr></thead><tbody>';
+  rawRows.forEach(r=>{
+    html += `<tr><td><input type="checkbox" class="rowchk" data-idx="${r.__idx}" checked></td>` +
+      showCols.map(h=>`<td>${escapeHtml(String(r[h] ?? ''))}</td>`).join('') + '</tr>';
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+  table.querySelectorAll('.rowchk').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      const idx = parseInt(chk.dataset.idx);
+      if(chk.checked) selected.add(idx); else selected.delete(idx);
+      updateCountPill();
+      renderLabels();
+    });
+  });
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('btnSelectAll').addEventListener('click', ()=>{
+  selected = new Set(rawRows.map(r=>r.__idx));
+  document.querySelectorAll('.rowchk').forEach(c=>c.checked=true);
+  updateCountPill(); renderLabels();
+});
+document.getElementById('btnSelectNone').addEventListener('click', ()=>{
+  selected = new Set();
+  document.querySelectorAll('.rowchk').forEach(c=>c.checked=false);
+  updateCountPill(); renderLabels();
+});
+function updateCountPill(){
+  document.getElementById('countPill').textContent = `${selected.size} dipilih`;
+}
+
+document.getElementById('btnRender').addEventListener('click', renderLabels);
+document.getElementById('btnPrint').addEventListener('click', ()=>window.print());
+
+function renderLabels(){
+  const sheet = document.getElementById('labelSheet');
+  const hint = document.getElementById('emptyHint');
+  sheet.innerHTML = '';
+
+  if(rawRows.length===0 || selected.size===0){
+    hint.style.display='block';
+    return;
+  }
+  hint.style.display='none';
+
+  const libName = document.getElementById('libName').value.trim() || 'PERPUSTAKAAN';
+  const barcodeType = document.getElementById('barcodeType').value;
+  const labelW = parseFloat(document.getElementById('labelW').value) || 70;
+  const labelH = parseFloat(document.getElementById('labelH').value) || 32;
+  const cols = parseInt(document.getElementById('cols').value) || 2;
+
+  sheet.style.gridTemplateColumns = `repeat(${cols}, ${labelW}mm)`;
+
+  const rows = rawRows.filter(r=>selected.has(r.__idx));
+
+  rows.forEach(r=>{
+    const barcodeVal = String(r[mapping.barcode] ?? '').trim();
+    const judul = String(r[mapping.judul] ?? '').trim();
+    const klas = String(r[mapping.klasifikasi] ?? '').trim();
+    const kodebuku = String(r[mapping.kodebuku] ?? '').trim();
+    const kodejudul = String(r[mapping.kodejudul] ?? '').trim();
+
+    const label = document.createElement('div');
+    label.className = 'label';
+    label.style.width = labelW+'mm';
+    label.style.height = labelH+'mm';
+    label.style.setProperty('--stripW', Math.max(9, labelW*0.16)+'mm');
+
+    const strip = document.createElement('div');
+    strip.className = 'label-strip';
+    const rot = document.createElement('div');
+    rot.className = 'rot';
+    const titleSnip = document.createElement('div');
+    titleSnip.className = 'title-snip';
+    titleSnip.textContent = judul.length>34 ? judul.slice(0,34)+'…' : (judul || ' ');
+    rot.appendChild(titleSnip);
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    rot.appendChild(svg);
+    strip.appendChild(rot);
+
+    const main = document.createElement('div');
+    main.className = 'label-main';
+    main.innerHTML = `
+      <div class="label-header">${escapeHtml(libName)}</div>
+      <div class="label-codes">
+        ${klas ? `<div class="klas">${escapeHtml(klas)}</div>` : ''}
+        ${kodebuku ? `<div class="kode">${escapeHtml(kodebuku)}</div>` : ''}
+        ${kodejudul ? `<div class="judulcode">${escapeHtml(kodejudul.toLowerCase())}</div>` : ''}
+      </div>
+    `;
+
+    label.appendChild(strip);
+    label.appendChild(main);
+    sheet.appendChild(label);
+
+    if(barcodeVal){
+      try{
+        JsBarcode(svg, barcodeVal, {
+          format: barcodeType,
+          width: 1.1,
+          height: Math.max(20, labelW*0.5),
+          fontSize: 8,
+          margin: 2,
+          displayValue: true
+        });
+      }catch(e){
+        svg.outerHTML = `<div style="writing-mode:vertical-rl;font-size:8pt;">(barcode tidak valid: ${escapeHtml(barcodeVal)})</div>`;
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>

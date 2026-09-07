@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Ruang AI - Wiyata Pustaka</title>
+<title>Tentang Kami - Wiyata Pustaka</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -191,6 +191,102 @@
     color:var(--text-gray);
     font-weight:400;
   }
+  .card-locked{
+    cursor:pointer;
+    position:relative;
+  }
+  .lock-badge{
+    position:absolute;
+    top:26px;
+    right:26px;
+    font-size:16px;
+    opacity:0.75;
+  }
+
+  /* Password modal */
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(8,6,18,0.72);
+    backdrop-filter:blur(3px);
+    z-index:50;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal-box{
+    background:var(--navy-900);
+    border:1px solid rgba(232,184,75,0.25);
+    border-radius:16px;
+    padding:32px 28px;
+    width:100%;
+    max-width:340px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  }
+  .modal-box .modal-icon{
+    font-size:30px;
+    margin-bottom:10px;
+    display:block;
+  }
+  .modal-box h4{
+    font-family:'Cormorant Garamond', serif;
+    font-size:22px;
+    color:var(--gold2);
+    margin-bottom:8px;
+  }
+  .modal-box p.modal-desc{
+    font-size:13.5px;
+    color:var(--text-gray-dim);
+    margin-bottom:18px;
+  }
+  .modal-box input[type="password"]{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:var(--navy-800);
+    color:var(--text-white);
+    font-size:15px;
+    margin-bottom:12px;
+    outline:none;
+    font-family:'DM Sans', sans-serif;
+  }
+  .modal-box input[type="password"]:focus{
+    border-color:var(--gold2);
+  }
+  .modal-error{
+    color:#f28b82;
+    font-size:13px;
+    margin-bottom:10px;
+    min-height:16px;
+  }
+  .modal-actions{
+    display:flex;
+    gap:10px;
+  }
+  .modal-actions button{
+    flex:1;
+    padding:11px 0;
+    border-radius:10px;
+    border:none;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'DM Sans', sans-serif;
+  }
+  .btn-cancel{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.15) !important;
+    color:var(--text-gray);
+  }
+  .btn-submit{
+    background:var(--gold2);
+    color:#1c1636;
+  }
+  .btn-submit:hover{ background:var(--gold); }
 
   /* Responsive */
   @media (max-width: 900px){
@@ -263,17 +359,19 @@
   <main>
     <div class="grid">
 
-      <a class="card" href="visi-kami.html">
+      <div class="card card-locked" data-target="visi-kami.html" role="button" tabindex="0">
         <span class="card-icon">🎯</span>
+        <span class="lock-badge">🔒</span>
         <h3>Visi Kami</h3>
         <p>Menjadi perpustakaan digital terdepan yang memberikan akses pendidikan dan literasi kepada seluruh masyarakat Indonesia tanpa batasan geografis dan ekonomi.</p>
-      </a>
+      </div>
 
-      <a class="card" href="misi-kami.html">
+      <div class="card card-locked" data-target="misi-kami.html" role="button" tabindex="0">
         <span class="card-icon">🚀</span>
+        <span class="lock-badge">🔒</span>
         <h3>Misi Kami</h3>
         <p>Menyediakan koleksi e-book yang lengkap, berkualitas, dan mudah diakses untuk mendukung kegiatan belajar mengajar serta meningkatkan minat baca generasi muda.</p>
-      </a>
+      </div>
 
       <a class="card" href="cari-buku.html">
         <span class="card-icon">📖</span>
@@ -301,6 +399,20 @@
 
     </div>
   </main>
+</div>
+
+<div class="modal-overlay" id="pwOverlay">
+  <div class="modal-box">
+    <span class="modal-icon">🔒</span>
+    <h4>Konten Terkunci</h4>
+    <p class="modal-desc">Masukkan password untuk melanjutkan ke halaman ini.</p>
+    <input type="password" id="pwInput" placeholder="Password">
+    <div class="modal-error" id="pwError"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="pwCancel">Batal</button>
+      <button class="btn-submit" id="pwSubmit">Buka</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -333,6 +445,53 @@
   });
   navOverlay.addEventListener('click', closeNav);
   navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeNav));
+
+  // Password-protected cards
+  const CARD_PASSWORD = "pustaka2026";
+  const pwOverlay = document.getElementById('pwOverlay');
+  const pwInput = document.getElementById('pwInput');
+  const pwError = document.getElementById('pwError');
+  const pwSubmit = document.getElementById('pwSubmit');
+  const pwCancel = document.getElementById('pwCancel');
+  let pendingTarget = null;
+
+  function openPwModal(target){
+    pendingTarget = target;
+    pwInput.value = "";
+    pwError.textContent = "";
+    pwOverlay.classList.add('show');
+    setTimeout(()=>pwInput.focus(), 50);
+  }
+  function closePwModal(){
+    pwOverlay.classList.remove('show');
+    pendingTarget = null;
+  }
+  function attemptUnlock(){
+    if(pwInput.value === CARD_PASSWORD){
+      const target = pendingTarget;
+      closePwModal();
+      window.location.href = target;
+    } else {
+      pwError.textContent = "Password salah, coba lagi.";
+      pwInput.value = "";
+      pwInput.focus();
+    }
+  }
+
+  document.querySelectorAll('.card-locked').forEach(card=>{
+    card.addEventListener('click', ()=> openPwModal(card.dataset.target));
+    card.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openPwModal(card.dataset.target);
+      }
+    });
+  });
+
+  pwSubmit.addEventListener('click', attemptUnlock);
+  pwInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') attemptUnlock(); });
+  pwCancel.addEventListener('click', closePwModal);
+  pwOverlay.addEventListener('click', (e)=>{ if(e.target === pwOverlay) closePwModal(); });
 </script>
 
 </body>

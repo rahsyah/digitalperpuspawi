@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Ruang AI - Wiyata Pustaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#0d0b1a;
+    --navy-900:#151229;
+    --navy-800:#1c1836;
+    --card-bg:#211c3e;
+    --card-border:rgba(255,255,255,0.06);
+    --gold:#e8b84b;
+    --gold2:#f2cc6b;
+    --text-white:#f5f4fa;
+    --text-gray:#a9a6c4;
+    --text-gray-dim:#8c89ab;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html,body{
+    background:var(--navy-950);
+    color:var(--text-white);
+    font-family:'DM Sans', sans-serif;
+    overflow-x:hidden;
+    min-height:100%;
+  }
+
+  body{
+    position:relative;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(232,184,75,0.05), transparent 40%),
+      radial-gradient(circle at 85% 60%, rgba(120,110,255,0.06), transparent 45%),
+      var(--navy-950);
+  }
+
+  /* Star field */
+  #stars{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+  .star{
+    position:absolute;
+    background:var(--gold2);
+    border-radius:50%;
+    opacity:0.5;
+    animation:twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:0.15; }
+    50%{ opacity:0.8; }
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1220px;
+    margin:0 auto;
+    padding:0 44px;
+  }
+
+  /* NAVBAR */
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:26px 0;
+    max-width:1220px;
+    margin:0 auto;
+    padding-left:44px;
+    padding-right:44px;
+    position:relative;
+    z-index:2;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+  }
+  .brand-name{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:700;
+    font-size:22px;
+    color:var(--gold2);
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:38px;
+    list-style:none;
+  }
+  .nav-links a{
+    color:var(--text-gray);
+    text-decoration:none;
+    font-size:15px;
+    font-weight:500;
+    padding-bottom:6px;
+    transition:color .2s;
+  }
+  .nav-links a:hover{ color:var(--text-white); }
+  .nav-links a.active{
+    color:var(--gold2);
+    border-bottom:2px solid var(--gold2);
+  }
+  .nav-toggle{
+    display:none;
+    background:none;
+    border:none;
+    color:var(--text-white);
+    font-size:26px;
+    cursor:pointer;
+  }
+
+  /* HERO */
+  header.hero{
+    padding:60px 0 40px;
+    position:relative;
+    z-index:1;
+  }
+  h1.title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:700;
+    font-size:56px;
+    line-height:1.1;
+    color:var(--text-white);
+    margin-bottom:16px;
+  }
+  p.subtitle{
+    font-size:17px;
+    color:var(--text-gray);
+    font-weight:400;
+  }
+
+  /* GRID */
+  main{
+    padding:20px 0 90px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+  .card{
+    display:block;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:34px 30px;
+    text-decoration:none;
+    color:inherit;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(232,184,75,0.35);
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
+  }
+  .card-icon{
+    font-size:34px;
+    margin-bottom:22px;
+    display:block;
+  }
+  .card h3{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:700;
+    font-size:23px;
+    color:var(--gold2);
+    margin-bottom:14px;
+  }
+  .card p{
+    font-size:15px;
+    line-height:1.65;
+    color:var(--text-gray);
+    font-weight:400;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px){
+    .grid{ grid-template-columns:repeat(2, 1fr); }
+    h1.title{ font-size:44px; }
+  }
+
+  @media (max-width: 640px){
+    .wrap{ padding:0 22px; }
+    nav{ padding:20px 22px; }
+    .nav-links{
+      position:fixed;
+      top:0; right:0;
+      height:100vh;
+      width:230px;
+      background:var(--navy-900);
+      flex-direction:column;
+      align-items:flex-start;
+      padding:90px 28px;
+      gap:26px;
+      transform:translateX(100%);
+      transition:transform .3s ease;
+      z-index:10;
+      box-shadow:-8px 0 24px rgba(0,0,0,0.4);
+    }
+    .nav-links.open{ transform:translateX(0); }
+    .nav-toggle{ display:block; }
+    header.hero{ padding:40px 0 28px; }
+    h1.title{ font-size:34px; }
+    p.subtitle{ font-size:15px; }
+    .grid{ grid-template-columns:1fr; gap:20px; }
+    .card{ padding:28px 24px; }
+  }
+
+  .nav-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    z-index:9;
+  }
+  .nav-overlay.show{ display:block; }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<nav>
+  <a href="beranda.html" class="brand">
+    <span class="brand-logo">📚</span>
+    <span class="brand-name">Wiyata Pustaka</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="beranda.html">Beranda</a></li>
+    <li><a href="cari-buku.html">Cari Buku</a></li>
+    <li><a href="tentang-kami.html" class="active">Tentang Kami</a></li>
+    <li><a href="kontak.html">Kontak</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <h1 class="title">Tentang Wiyata Pustaka</h1>
+    <p class="subtitle">Menghubungkan pelajar dengan ilmu pengetahuan tanpa batas</p>
+  </header>
+
+  <main>
+    <div class="grid">
+
+      <a class="card" href="visi-kami.html">
+        <span class="card-icon">🎯</span>
+        <h3>Visi Kami</h3>
+        <p>Menjadi perpustakaan digital terdepan yang memberikan akses pendidikan dan literasi kepada seluruh masyarakat Indonesia tanpa batasan geografis dan ekonomi.</p>
+      </a>
+
+      <a class="card" href="misi-kami.html">
+        <span class="card-icon">🚀</span>
+        <h3>Misi Kami</h3>
+        <p>Menyediakan koleksi e-book yang lengkap, berkualitas, dan mudah diakses untuk mendukung kegiatan belajar mengajar serta meningkatkan minat baca generasi muda.</p>
+      </a>
+
+      <a class="card" href="cari-buku.html">
+        <span class="card-icon">📖</span>
+        <h3>Koleksi Kami</h3>
+        <p>Novel untuk pengembangan imajinasi, Modul Ajar untuk mendukung proses pembelajaran Kurikulum Merdeka, serta Buku Umum untuk pengembangan diri dan pengetahuan profesional.</p>
+      </a>
+
+      <a class="card" href="komitmen-kami.html">
+        <span class="card-icon">💡</span>
+        <h3>Komitmen Kami</h3>
+        <p>Kami berkomitmen untuk terus memperbarui dan memperluas koleksi e-book agar tetap relevan dan bermanfaat bagi semua kalangan sivitas akademika SMK Pawiyatan.</p>
+      </a>
+
+      <a class="card" href="https://smkpawiyatan.sch.id" target="_blank" rel="noopener">
+        <span class="card-icon">🏫</span>
+        <h3>Tentang SMK Pawiyatan</h3>
+        <p>SMK Pawiyatan Surabaya adalah sekolah kejuruan terkemuka di Surabaya yang berkomitmen mencetak lulusan berkarakter, kompeten, dan siap menghadapi tantangan industri 4.0.</p>
+      </a>
+
+      <a class="card" href="cari-buku.html">
+        <span class="card-icon">🌐</span>
+        <h3>Akses Digital</h3>
+        <p>Seluruh koleksi dapat diakses melalui Google Drive, tersedia 24 jam sehari, 7 hari seminggu — di mana saja menggunakan smartphone, tablet, atau komputer Anda.</p>
+      </a>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // Generate star field
+  const starsContainer = document.getElementById('stars');
+  const starCount = window.innerWidth < 640 ? 40 : 70;
+  for(let i=0;i<starCount;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random()*2 + 1;
+    s.style.width = size+'px';
+    s.style.height = size+'px';
+    s.style.top = Math.random()*100+'%';
+    s.style.left = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*4)+'s';
+    starsContainer.appendChild(s);
+  }
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  const navOverlay = document.getElementById('navOverlay');
+  function closeNav(){
+    navLinks.classList.remove('open');
+    navOverlay.classList.remove('show');
+  }
+  navToggle.addEventListener('click', ()=>{
+    navLinks.classList.toggle('open');
+    navOverlay.classList.toggle('show');
+  });
+  navOverlay.addEventListener('click', closeNav);
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeNav));
+</script>
+
+</body>
+</html>

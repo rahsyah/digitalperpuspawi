@@ -134,7 +134,13 @@
 
     /* floating emojis hero */
     .hfb{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-    .hfp{position:absolute;opacity:.04;animation:rise linear infinite}
+    .hfp{
+      position:absolute;border-radius:50%;
+      background:radial-gradient(circle at 32% 28%, #fff, var(--gold2) 25%, var(--gold) 55%, transparent 78%);
+      box-shadow:0 0 10px 2px rgba(103,232,249,.55), 0 0 22px 6px rgba(124,107,240,.22);
+      opacity:.55;animation:rise linear infinite;
+    }
+    .hfp.v2{background:radial-gradient(circle at 32% 28%, #fff, var(--gold3) 25%, #4b3fb8 55%, transparent 78%);box-shadow:0 0 10px 2px rgba(124,107,240,.5), 0 0 22px 6px rgba(103,232,249,.2)}
     @keyframes rise{0%{transform:translateY(110vh) rotate(0deg)}100%{transform:translateY(-15vh) rotate(360deg)}}
 
     .badge{display:inline-flex;align-items:center;gap:.45rem;background:var(--glass-fill);border:1px solid var(--glass-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--muted);font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.32rem 1rem;border-radius:50px;margin-bottom:1.8rem;animation:fu .7s var(--ease) .32s both}
@@ -773,7 +779,7 @@ function fluidSimulation(canvas) {
         PRESSURE_DISSIPATION: 0.8,
         PRESSURE_ITERATIONS: 20,
         CURL: 42,
-        SPLAT_RADIUS: 0.22,
+        SPLAT_RADIUS: 0.30,
         SHADING: true,
         COLORFUL: true,
         PAUSED: false,
@@ -1519,7 +1525,7 @@ function fluidSimulation(canvas) {
     let virtualColor = null;
     let lastVColorTime = 0;
     const engineStart = Date.now();
-    const ORBIT_RADIUS = 300;
+    const ORBIT_RADIUS = 480;
     const ORBIT_SPEED = 0.026;
     const ORBIT_START_DELAY = 700;
 
@@ -1542,9 +1548,11 @@ function fluidSimulation(canvas) {
     function driveVirtualPointer() {
         if (Date.now() - engineStart < ORBIT_START_DELAY)
             return;
+        // Pusat orbit disejajarkan dengan posisi vertikal judul "Tentang Wiyata Pustaka"
+        // (hero hanya ~70svh di bagian atas halaman, bukan seluruh viewport).
         const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-        const base = Math.min(ORBIT_RADIUS, canvas.width * 0.35, canvas.height * 0.35);
+        const cy = canvas.height * 0.34;
+        const base = Math.min(ORBIT_RADIUS, canvas.width * 0.42, canvas.height * 0.42);
         const r = base * (0.72 + 0.28 * Math.sin(orbitAngle * 0.37));
         orbitAngle += ORBIT_SPEED;
         const x = cx + Math.cos(orbitAngle) * r;
@@ -1974,12 +1982,14 @@ function fluidSimulation(canvas) {
 const cv=document.getElementById('stars');
 if(cv){ fluidSimulation(cv); }
 
-/* ── HERO PARTICLES ── */
-'📚📖📝📕📗📘✏️🎓💡🔖'.split('').forEach(e=>{
-  const el=document.createElement('span');el.className='hfp';el.textContent=e;
-  el.style.cssText=`left:${Math.random()*100}%;font-size:${.9+Math.random()*1.4}rem;animation-duration:${13+Math.random()*20}s;animation-delay:-${Math.random()*30}s`;
+/* ── HERO PARTICLES: bola pijar berputar (tanpa font emoji) ── */
+for(let i=0;i<16;i++){
+  const el=document.createElement('span');
+  el.className='hfp'+(Math.random()<0.5?' v2':'');
+  const size=(6+Math.random()*14).toFixed(1);
+  el.style.cssText=`left:${Math.random()*100}%;width:${size}px;height:${size}px;animation-duration:${13+Math.random()*20}s;animation-delay:-${Math.random()*30}s`;
   document.getElementById('hfb').appendChild(el);
-});
+}
 
 /* ── HEADER SCROLL ── */
 const hdr=document.getElementById('hdr'),btt=document.getElementById('btt');

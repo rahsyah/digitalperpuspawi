@@ -196,7 +196,7 @@ var $ = function (id) { return document.getElementById(id); };
 var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
 
 // GANTI dengan URL Web App hasil deploy (tetap di dalam tanda kutip)
-var CONFIG = { API_URL: 'GANTI_DENGAN_URL_WEB_APP' };
+var CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbxDM3YQuj5tp6kYe1aKZXQ7rJ0MCeu3yMP_JvqW4Gp4G5bxtlPt4L6Z66iiZMGGTtzCBw/exec' };
 
 async function run(fn) {
   var args = [].slice.call(arguments, 1);

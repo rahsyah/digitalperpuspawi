@@ -3,8 +3,7 @@
 <head>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://revenant-three.vercel.app/img/passe.gif" type="image/png">
-    <!DOCTYPE html>
-
+    
 <base target="_top">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -198,8 +197,12 @@ var $ = function (id) { return document.getElementById(id); };
 var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
 
 function run(fn) {
+  var args = [].slice.call(arguments, 1);
   return new Promise(function (ok, no) {
-    google.script.run.withSuccessHandler(ok).withFailureHandler(function (e) { no(new Error((e && e.message || String(e)).replace(/^Error:\s*/, ''))); })[fn].apply(null, [].slice.call(arguments, 1));
+    var r = google.script.run.withSuccessHandler(ok).withFailureHandler(function (e) {
+      no(new Error((e && e.message || String(e)).replace(/^Error:\s*/, '')));
+    });
+    r[fn].apply(r, args);
   });
 }
 function show(id, cls, text) { var el = $(id); el.textContent = text; el.className = 'msg show ' + cls; }

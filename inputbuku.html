@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Input Buku Baru — Wiyata Pustaka</title>
 <style>
-:root{--bg:#000;--panel:#1b140d;--panel2:#241c12;--in:#171009;--bd:#3a2e1c;--gold:#e8b84b;--gold2:#c99a3a;--tx:#f1e9da;--mu:#a89a82;--err:#e0685a;--ok:#7fbf7f}
+:root{--bg:#000;--panel:rgba(255,255,255,.06);--panel2:rgba(255,255,255,.09);--in:rgba(255,255,255,.05);--bd:rgba(255,255,255,.14);--gold:#e8b84b;--gold2:#c99a3a;--tx:#f1e9da;--mu:#a89a82;--err:#e0685a;--ok:#7fbf7f}
 *{box-sizing:border-box}
 body{margin:0;background:#04050c;color:var(--tx);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:50px}
 .wrap{max-width:860px;margin:0 auto;padding:0 18px}
@@ -19,24 +19,24 @@ header{display:flex;align-items:center;gap:12px;padding:22px 18px;max-width:860p
 .logo-img{width:44px;height:44px;border-radius:12px;background:#fff;padding:3px;object-fit:contain;box-shadow:0 0 0 1px var(--bd)}
 h1{margin:0;font-size:20px;font-family:Georgia,serif}
 .sub{font-size:11px;letter-spacing:.12em;color:var(--gold2);font-weight:600}
-.home{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--bd);border-radius:999px;padding:7px 14px;font-size:12px;color:var(--tx);text-decoration:none}
+.home{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--bd);border-radius:999px;padding:7px 14px;font-size:12px;color:var(--tx);text-decoration:none}
 .home:hover{border-color:var(--gold);color:var(--gold)}
-.badge{margin-left:8px;background:var(--panel2);border:1px solid var(--bd);border-radius:999px;padding:7px 14px;font-size:12px;color:var(--mu)}
-.card{background:var(--panel);border:1px solid var(--bd);border-radius:18px;padding:24px;margin-bottom:18px}
+.badge{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin-left:8px;background:var(--panel2);border:1px solid var(--bd);border-radius:999px;padding:7px 14px;font-size:12px;color:var(--mu)}
+.card{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);background:var(--panel);border:1px solid var(--bd);border-radius:18px;padding:24px;margin-bottom:18px}
 h2{font-family:Georgia,serif;margin:0 0 4px;font-size:22px}
 .desc{color:var(--mu);margin:0 0 20px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
 .full{grid-column:1/-1}
 label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
 label i{color:var(--err);font-style:normal}
-input,select{width:100%;background:var(--in);border:1px solid var(--bd);border-radius:10px;padding:11px 13px;color:var(--tx);font:inherit}
+input,select{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);width:100%;background:var(--in);border:1px solid var(--bd);border-radius:10px;padding:11px 13px;color:var(--tx);font:inherit}
 input:focus,select:focus{outline:none;border-color:var(--gold)}
 input::placeholder{color:#6e6250}
 .hint{font-size:11.5px;color:var(--mu);margin-top:4px}
 .row{display:flex;gap:8px}
 .btn{border:0;border-radius:12px;padding:14px;font:700 15px inherit;font-family:inherit;cursor:pointer;width:100%}
 .pri{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#100c08}
-.sec{background:var(--panel2);border:1px solid var(--bd);color:var(--tx);width:auto;padding:0 14px;font-size:12px;white-space:nowrap}
+.sec{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);background:var(--panel2);border:1px solid var(--bd);color:var(--tx);width:auto;padding:0 14px;font-size:12px;white-space:nowrap}
 .btn:disabled{opacity:.55;cursor:not-allowed}
 details{grid-column:1/-1;border:1px dashed var(--bd);border-radius:12px;padding:10px 14px}
 summary{cursor:pointer;color:var(--gold);font-weight:600}

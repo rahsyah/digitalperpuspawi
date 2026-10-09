@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Wiyata Pustaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--side:#0f172a;--blue:#2563eb;--bg:#f4f6fa;--line:#e5e9f0;--ink:#0f172a;--mute:#64748b}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh;line-height:1.45}
+aside{width:244px;flex:none;background:var(--side);color:#cbd5e1;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow-y:auto}
+.brand{display:flex;gap:12px;align-items:center;padding:18px 16px;border-bottom:1px solid #1e293b}
+.logo{width:40px;height:40px;border-radius:10px;background:var(--blue);display:grid;place-items:center;color:#fff}
+.brand b{color:#fff;display:block}.brand small{font-size:.75rem;color:#94a3b8}
+nav{padding:10px 12px;flex:1}
+nav h6{font-size:.7rem;color:#64748b;letter-spacing:.06em;margin:16px 8px 6px;font-weight:600}
+nav button{width:100%;display:flex;gap:12px;align-items:center;padding:11px 12px;border:0;border-radius:8px;background:none;color:#cbd5e1;font:inherit;font-size:.92rem;cursor:pointer;text-align:left}
+nav button:hover{background:#1e293b}
+nav button.on{background:var(--blue);color:#fff;font-weight:600}
+#status{padding:14px 16px;font-size:.75rem;color:#94a3b8;border-top:1px solid #1e293b}
+#status.err{color:#fca5a5}
+.main{flex:1;min-width:0}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.top h1{font-size:1.15rem;font-weight:700}
+.ctl{display:flex;gap:10px}
+select,.btn{font:inherit;font-size:.9rem;padding:9px 14px;border-radius:10px;border:1px solid var(--line);background:#f1f5f9;color:var(--ink);cursor:pointer}
+.btn{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;text-decoration:none;display:inline-block}
+:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.wrap{padding:24px 28px 40px;max-width:1240px}
+.hero{background:linear-gradient(110deg,#0f172a,#1e3a8a 62%,#172554);color:#fff;border-radius:16px;padding:26px 28px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center;margin-bottom:20px;box-shadow:0 8px 24px #0f172a33}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#ffffff1f;border-radius:99px;padding:5px 12px;font-size:.78rem;margin-bottom:12px}
+.pill i{width:8px;height:8px;border-radius:50%;background:#34d399}
+.hero h2{font-size:1.7rem;font-weight:800;margin-bottom:6px}
+.hero p{opacity:.85;max-width:480px;font-size:.92rem}
+.hero .acts{display:flex;gap:10px}
+.hero .btn{background:#ffffff26;border-color:#ffffff33}
+.hero .btn.w{background:#fff;color:var(--ink);border-color:#fff}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px;margin-bottom:20px}
+.k{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 2px #0f172a0a}
+.k small{font-size:.72rem;font-weight:600;color:var(--mute);letter-spacing:.04em;text-transform:uppercase}
+.k b{display:block;font-size:1.9rem;font-weight:800;margin:2px 0}
+.k span{font-size:.8rem}
+.ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;flex:none}
+.c-blue{background:#eff6ff;color:#2563eb}.c-green{background:#ecfdf5;color:#059669}.c-amber{background:#fffbeb;color:#d97706}.c-red{background:#fef2f2;color:#dc2626}.c-violet{background:#f5f3ff;color:#7c3aed}.c-cyan{background:#ecfeff;color:#0891b2}
+.t-blue{color:#2563eb}.t-green{color:#059669}.t-amber{color:#d97706}.t-red{color:#dc2626}.t-violet{color:#7c3aed}.t-cyan{color:#0891b2}
+.view{display:none}.view.on{display:block}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));margin-bottom:20px}
+.p{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px #0f172a0a}
+.p h3{font-size:1rem;font-weight:700}.p>p{font-size:.8rem;color:var(--mute);margin-bottom:10px}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.hd input{font:inherit;font-size:.85rem;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#f1f5f9;min-width:200px}
+.cv{position:relative;height:260px}.wide{grid-column:1/-1}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td:nth-child(2){white-space:normal;min-width:200px}th{color:var(--mute);font-weight:600;font-size:.78rem}
+.bd{padding:3px 10px;border-radius:99px;font-size:.76rem;font-weight:600;background:#dbeafe;color:#1d4ed8}
+.bd.ok{background:#d1fae5;color:#047857}.bd.late{background:#fee2e2;color:#b91c1c}
+.kom{list-style:none;padding:0;font-size:.9rem}.kom li{padding:10px 0;border-bottom:1px solid var(--line)}
+.empty{color:var(--mute);font-size:.9rem;padding:10px 0}
+@media(max-width:820px){body{flex-direction:column}aside{width:100%;height:auto;position:static}
+nav{display:flex;gap:6px;overflow-x:auto;padding:8px}nav h6,#status,.brand small{display:none}nav button{width:auto;white-space:nowrap}
+.brand{padding:12px 16px}.wrap{padding:16px}.top{padding:12px 16px}}
+</style>
+</head>
+<body>
+<aside>
+  <div class="brand"><div class="logo" id="logo"></div><div><b>Wiyata Pustaka</b><small>Dashboard Perpustakaan</small></div></div>
+  <nav id="nav"></nav>
+  <div id="status">Memuat data…</div>
+</aside>
+<div class="main">
+  <div class="top">
+    <h1 id="judul">Dashboard</h1>
+    <div class="ctl">
+      <select id="periode" aria-label="Periode data">
+        <option value="all">Semua waktu</option><option value="year">Tahun ini</option>
+        <option value="month">Bulan ini</option><option value="30">30 hari terakhir</option>
+      </select>
+      <button class="btn" id="muat">Muat ulang</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <section class="view on" id="v-dash">
+      <div class="hero">
+        <div>
+          <div class="pill"><i></i>Data tersambung ke spreadsheet</div>
+          <h2>Selamat Datang, <span id="nama"></span>!</h2>
+          <p>Pantau kunjungan, sirkulasi peminjaman, koleksi buku, dan kepuasan pemustaka dalam satu halaman.</p>
+        </div>
+        <div class="acts"><a class="btn" id="lnkP" target="_blank" rel="noopener">Buka data peminjaman</a><a class="btn w" id="lnkB" target="_blank" rel="noopener">Buka data buku</a></div>
+      </div>
+      <div class="kpi" id="kpi"></div>
+      <div class="p wide" style="margin-bottom:16px">
+        <div class="hd"><div><h3>Transaksi Peminjaman Terbaru</h3><p style="margin:0">10 transaksi terakhir dari data peminjaman</p></div>
+        <input id="cari" placeholder="Filter nama / buku..." aria-label="Filter transaksi"></div>
+        <div class="tw" id="tb"></div>
+      </div>
+      <div class="grid">
+        <div class="p"><h3>Kunjungan per bulan</h3><p>12 bulan terakhir</p><div class="cv"><canvas id="c-kun"></canvas></div></div>
+        <div class="p"><h3>Peminjaman per bulan</h3><p>12 bulan terakhir</p><div class="cv"><canvas id="c-pin"></canvas></div></div>
+      </div>
+    </section>
+    <section class="view" id="v-kun"><div class="grid">
+      <div class="p"><h3>Kategori anggota</h3><p>Sesuai periode terpilih</p><div class="cv"><canvas id="c-kat"></canvas></div></div>
+      <div class="p"><h3>Keperluan berkunjung</h3><p>Sesuai periode terpilih</p><div class="cv"><canvas id="c-kep"></canvas></div></div>
+    </div></section>
+    <section class="view" id="v-pin"><div class="grid">
+      <div class="p wide"><h3>Belum dikembalikan</h3><p>Yang terlambat tampil paling atas</p><div class="tw" id="tb2"></div></div>
+      <div class="p wide"><h3>10 buku paling sering dipinjam</h3><p>Sesuai periode terpilih</p><div class="cv"><canvas id="c-top"></canvas></div></div>
+    </div></section>
+    <section class="view" id="v-kol"><div class="grid">
+      <div class="p wide"><h3>Eksemplar menurut kategori</h3><p>10 kategori terbesar</p><div class="cv"><canvas id="c-kol"></canvas></div></div>
+    </div></section>
+    <section class="view" id="v-pus"><div class="grid">
+      <div class="p"><h3>Rata-rata skor per aspek</h3><p id="skl"></p><div class="cv"><canvas id="c-pus"></canvas></div></div>
+      <div class="p"><h3>Saran dan komentar terbaru</h3><p>6 komentar terakhir</p><ul class="kom" id="kom"></ul></div>
+    </div></section>
+  </div>
+</div>
+
+<script>
+// Nama pustakawan pada sapaan
+const PUSTAKAWAN = 'Ibu Siti';
+// Spreadsheet harus dibagikan "Siapa saja yang memiliki link: Pelihat".
+// Isi gid ATAU nama sheet; jika keduanya kosong, sheet pertama yang dibaca.
+const SUMBER = {
+  peminjaman: { id: '18RnZ2HFbHrDszFeBQUWWsx3tgvPmkarK6P-af8U1o0Q', gid: 1596122271 },
+  kunjungan:  { id: '18RnZ2HFbHrDszFeBQUWWsx3tgvPmkarK6P-af8U1o0Q', gid: 1741821717 },
+  buku:       { id: '1Csee5NuyzzolFaqykEvAkt6l3ieK4mk8r3m-D1FQ-6A', nama: '' },
+  kepuasan:   { id: '16rZkxEuG33fCHcULgDaMn42bQ9Gw7gwVmrS7PQCFssQ', gid: 368922811 }
+};
+
+const IC = {
+  grid: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+  book: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  repeat: '<path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+  alert: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+  star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  layers: '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>'
+};
+const ic = (n, s = 20) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
+const NAV = [['UTAMA'], ['dash', 'Dashboard', 'grid'], ['DATA PERPUSTAKAAN'], ['kun', 'Kunjungan', 'users'], ['pin', 'Peminjaman', 'repeat'], ['kol', 'Koleksi Buku', 'layers'], ['LAYANAN'], ['pus', 'Kepuasan Pemustaka', 'star']];
+const PAL = ['#2563eb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#64748b', '#ec4899'];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, '');
+const fd = d => d ? d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+let D = null, charts = {}, TR = [], cur = 'dash';
+Chart.defaults.font.family = "Inter,system-ui,sans-serif";
+
+$('#logo').innerHTML = ic('book', 22);
+$('#nama').textContent = PUSTAKAWAN;
+$('#lnkP').href = 'https://docs.google.com/spreadsheets/d/' + SUMBER.peminjaman.id;
+$('#lnkB').href = 'https://docs.google.com/spreadsheets/d/' + SUMBER.buku.id;
+$('#nav').innerHTML = NAV.map(n => n.length === 1 ? `<h6>${n[0]}</h6>` : `<button data-v="${n[0]}">${ic(n[2])}${n[1]}</button>`).join('');
+const JUDUL = { dash: 'Dashboard', kun: 'Kunjungan', pin: 'Peminjaman', kol: 'Koleksi Buku', pus: 'Kepuasan Pemustaka' };
+function show(v) {
+  cur = v;
+  document.querySelectorAll('.view').forEach(e => e.classList.toggle('on', e.id === 'v-' + v));
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  $('#judul').textContent = JUDUL[v];
+  Object.values(charts).forEach(c => c.resize());
+}
+$('#nav').onclick = e => { const b = e.target.closest('button'); if (b) show(b.dataset.v); };
+
+function col(rows, ...keys) {
+  if (!rows.length) return null;
+  const hs = Object.keys(rows[0]);
+  for (const k of keys) { const h = hs.find(h => norm(h).includes(k)); if (h) return h; }
+  return null;
+}
+function pd(v) {
+  if (!v) return null; v = String(v).trim();
+  let m = v.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return new Date(+m[1], m[2] - 1, +m[3]);
+  m = v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/); if (m) return new Date(+m[3], m[2] - 1, +m[1]);
+  const d = new Date(v); return isNaN(d) ? null : d;
+}
+function inRange(d) {
+  const p = $('#periode').value; if (p === 'all') return true; if (!d) return false;
+  const n = new Date();
+  if (p === 'year') return d.getFullYear() === n.getFullYear();
+  if (p === 'month') return d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth();
+  return (n - d) / 864e5 <= 30 && d <= n;
+}
+function tally(vals, top) {
+  const m = new Map();
+  vals.forEach(v => { v = String(v ?? '').trim(); if (v) m.set(v, (m.get(v) || 0) + 1); });
+  const a = [...m.entries()].sort((x, y) => y[1] - x[1]);
+  return top ? a.slice(0, top) : a;
+}
+function monthly(dates) {
+  const m = new Map();
+  dates.forEach(d => { if (d) { const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); m.set(k, (m.get(k) || 0) + 1); } });
+  return [...m.entries()].sort().slice(-12).map(([k, v]) => {
+    const [y, mo] = k.split('-'); return [new Date(y, mo - 1).toLocaleDateString('id-ID', { month: 'short', year: '2-digit' }), v];
+  });
+}
+function mk(id, type, pairs, o = {}) {
+  charts[id] && charts[id].destroy();
+  const pie = type === 'doughnut', labels = pairs.map(p => p[0]), data = pairs.map(p => p[1]);
+  const grid = { color: '#e5e9f0' }, none = { grid: { display: false } }, tk = { precision: o.dec ? undefined : 0 };
+  const scales = pie ? {} : o.h
+    ? { x: { beginAtZero: true, max: o.max, grid, ticks: tk }, y: none }
+    : { x: none, y: { beginAtZero: true, max: o.max, grid, ticks: tk } };
+  charts[id] = new Chart($('#' + id), {
+    type,
+    data: { labels, datasets: [{ data, backgroundColor: pie ? labels.map((_, i) => PAL[i % 8]) : (o.color || PAL[0]), borderColor: o.color || PAL[0], borderWidth: type === 'line' ? 2.5 : 0, borderRadius: type === 'bar' ? 5 : 0, tension: .35, pointRadius: type === 'line' ? 3 : 0 }] },
+    options: { indexAxis: o.h ? 'y' : 'x', maintainAspectRatio: false, plugins: { legend: { display: pie, position: 'right' } }, scales }
+  });
+}
+function setStatus(t, err) { const s = $('#status'); s.textContent = t; s.className = err ? 'err' : ''; }
+
+const z = n => String(n).padStart(2, '0');
+function nilai(c) {
+  if (!c || c.v === null || c.v === undefined) return '';
+  if (typeof c.v === 'string') {
+    const m = c.v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/);
+    if (m) return `${m[1]}-${z(+m[2] + 1)}-${z(m[3])} ${z(m[4] || 0)}:${z(m[5] || 0)}:${z(m[6] || 0)}`;
+  }
+  return c.v;
+}
+async function ambil(s) {
+  let u = `https://docs.google.com/spreadsheets/d/${s.id}/gviz/tq?tqx=out:json&headers=1`;
+  if (s.gid !== undefined && s.gid !== '') u += '&gid=' + s.gid; else if (s.nama) u += '&sheet=' + encodeURIComponent(s.nama);
+  const t = await (await fetch(u)).text();
+  const m = t.match(/setResponse\(([\s\S]*)\);?\s*$/);
+  if (!m) throw new Error('sheet tidak dapat diakses, pastikan dibagikan "Siapa saja yang memiliki link"');
+  const j = JSON.parse(m[1]);
+  if (j.status === 'error') throw new Error((j.errors && j.errors[0].detailed_message) || 'gagal membaca sheet');
+  const heads = j.table.cols.map(c => (c.label || '').trim());
+  return j.table.rows.map(r => { const o = {}; heads.forEach((h, i) => { if (h) o[h] = nilai(r.c[i]); }); return o; })
+    .filter(o => Object.values(o).some(v => v !== ''));
+}
+async function load() {
+  setStatus('Memuat data…');
+  try {
+    const ks = Object.keys(SUMBER);
+    const hasil = await Promise.all(ks.map(k => ambil(SUMBER[k]).catch(e => { throw new Error(k + ': ' + e.message); })));
+    D = {}; ks.forEach((k, i) => D[k] = hasil[i]); render();
+    setStatus('Diperbarui ' + new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }));
+  } catch (e) { setStatus('Gagal memuat data (' + e.message + ')', true); }
+}
+
+function tabel(rows) {
+  return '<table><tr><th>Peminjam</th><th>Judul buku</th><th>Tgl pinjam</th><th>Estimasi kembali</th><th>Status</th></tr>' +
+    rows.map(o => `<tr><td>${esc(o.n)}</td><td>${esc(o.j)}</td><td>${fd(o.tgl)}</td><td>${fd(o.est)}</td><td><span class="bd ${o.cls}">${o.st}</span></td></tr>`).join('') + '</table>';
+}
+function drawTr() {
+  const q = $('#cari').value.toLowerCase();
+  const rows = TR.filter(o => !q || (o.n + ' ' + o.j).toLowerCase().includes(q)).slice(0, 10);
+  $('#tb').innerHTML = rows.length ? tabel(rows) : '<p class="empty">Tidak ada transaksi yang cocok.</p>';
+}
+
+function render() {
+  // Kunjungan
+  const kun = D.kunjungan, kT = col(kun, 'tanggal'), kK = col(kun, 'kategori'), kP = col(kun, 'keperluan');
+  const kunF = kun.filter(r => inRange(pd(r[kT])));
+  mk('c-kun', 'bar', monthly(kun.map(r => pd(r[kT]))));
+  mk('c-kat', 'doughnut', tally(kunF.map(r => r[kK]), 8));
+  mk('c-kep', 'bar', tally(kunF.map(r => r[kP]), 8), { h: true, color: PAL[2] });
+  const now = new Date();
+  const bulanIni = kun.filter(r => { const d = pd(r[kT]); return d && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); }).length;
+
+  // Peminjaman
+  const pin = D.peminjaman, pT = col(pin, 'tanggalpinjam', 'tanggal'), pE = col(pin, 'estimasi'), pJ = col(pin, 'judul'), pS = col(pin, 'status'), pN = col(pin, 'nama');
+  const pinF = pin.filter(r => inRange(pd(r[pT])));
+  const kembali = r => /(dikembalikan|selesai|kembali)/i.test(String(r[pS] || '')) && !/(aju|menunggu|belum)/i.test(String(r[pS] || ''));
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  TR = pin.filter(r => r[pJ]).map(r => {
+    const est = pd(r[pE]), tgl = pd(r[pT]), k = kembali(r), l = !k && est && est < today;
+    return { n: r[pN], j: r[pJ], est, tgl, open: !k, late: l, st: k ? 'Dikembalikan' : l ? 'Terlambat' : 'Dipinjam', cls: k ? 'ok' : l ? 'late' : '' };
+  }).sort((a, b) => (b.tgl || 0) - (a.tgl || 0));
+  const OP = TR.filter(o => o.open).sort((a, b) => (a.est || 9e15) - (b.est || 9e15));
+  const late = OP.filter(o => o.late).length, due = OP.filter(o => o.est && o.est.getTime() === today.getTime()).length;
+  drawTr();
+  $('#tb2').innerHTML = OP.length ? tabel(OP.slice(0, 25)) : '<p class="empty">Tidak ada buku yang sedang dipinjam.</p>';
+  mk('c-pin', 'line', monthly(pin.map(r => pd(r[pT]))), { color: PAL[1] });
+  mk('c-top', 'bar', tally(pinF.map(r => r[pJ]), 10).map(([k, v]) => [k.length > 45 ? k.slice(0, 44) + '…' : k, v]), { h: true, color: PAL[1] });
+
+  // Koleksi
+  const bk = D.buku, bJ = col(bk, 'judul'), bK = col(bk, 'kategori', 'klasifikasi', 'subjek', 'jenis'), bQ = col(bk, 'eksemplar', 'jumlah', 'stok', 'qty');
+  const qty = r => bQ && !isNaN(parseFloat(r[bQ])) ? parseFloat(r[bQ]) : 1;
+  const totalEks = bk.reduce((s, r) => s + qty(r), 0), kat = new Map();
+  bk.forEach(r => { const k = String(r[bK] || '').trim() || 'Tanpa kategori'; kat.set(k, (kat.get(k) || 0) + qty(r)); });
+  mk('c-kol', 'bar', [...kat.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10), { h: true, color: PAL[4] });
+
+  // Kepuasan
+  const ks = D.kepuasan, hs = ks.length ? Object.keys(ks[0]) : [], aspek = [];
+  hs.forEach(h => {
+    if (/(timestamp|waktu|tanggal|^no$|id)/i.test(h)) return;
+    const v = ks.map(r => r[h]).filter(x => x !== '' && x != null);
+    const n = v.filter(x => !isNaN(parseFloat(x)) && parseFloat(x) >= 1 && parseFloat(x) <= 10);
+    if (v.length && n.length / v.length >= .6) aspek.push([h, n.reduce((s, x) => s + parseFloat(x), 0) / n.length, Math.max(...n.map(Number))]);
+  });
+  const skala = aspek.length && Math.max(...aspek.map(a => a[2])) > 5 ? 10 : 5;
+  $('#skl').textContent = 'Skala 1 sampai ' + skala;
+  mk('c-pus', 'bar', aspek.map(a => [a[0].length > 40 ? a[0].slice(0, 39) + '…' : a[0], +a[1].toFixed(2)]), { h: true, color: PAL[2], max: skala, dec: true });
+  const skor = aspek.length ? aspek.reduce((s, a) => s + a[1], 0) / aspek.length : null;
+  const cK = hs.find(h => /(saran|komentar|masukan|kritik|pesan)/i.test(h));
+  const kom = cK ? ks.filter(r => String(r[cK] || '').trim().length > 2).slice(-6).reverse() : [];
+  $('#kom').innerHTML = kom.length ? kom.map(r => `<li>${esc(r[cK])}</li>`).join('') : '<li class="empty">Belum ada komentar.</li>';
+
+  // KPI
+  const n = x => x.toLocaleString('id-ID');
+  $('#kpi').innerHTML = [
+    ['Total judul buku', n(bk.filter(r => r[bJ]).length), n(totalEks) + ' eksemplar', 'blue', 'book', 'blue'],
+    ['Kunjungan bulan ini', n(bulanIni), n(kunF.length) + ' pada periode terpilih', 'green', 'users', 'green'],
+    ['Peminjaman aktif', n(OP.length), n(due) + ' jatuh tempo hari ini', 'amber', 'repeat', 'amber'],
+    ['Keterlambatan', n(late), 'buku melewati batas kembali', 'red', 'alert', 'red'],
+    ['Peminjaman (periode)', n(pinF.length), n(TR.filter(o => !o.open).length) + ' sudah dikembalikan', 'violet', 'layers', 'violet'],
+    ['Skor kepuasan', skor == null ? '-' : skor.toFixed(2).replace('.', ',') + '/' + skala, n(ks.length) + ' responden', 'cyan', 'star', 'cyan']
+  ].map(([l, v, s, t, i, c]) => `<div class="k"><div><small>${l}</small><b>${v}</b><span class="t-${t}">${s}</span></div><div class="ico c-${c}">${ic(i, 24)}</div></div>`).join('');
+}
+
+$('#muat').onclick = load;
+$('#periode').onchange = () => D && render();
+$('#cari').oninput = drawTr;
+show('dash');
+load();
+</script>
+</body>
+</html>

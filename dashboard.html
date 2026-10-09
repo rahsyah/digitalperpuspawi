@@ -86,7 +86,7 @@ nav{display:flex;gap:6px;overflow-x:auto;padding:8px}nav h6,#status,.brand small
     <section class="view on" id="v-dash">
       <div class="hero">
         <div>
-          <div class="pill"><i></i>Data tersambung ke spreadsheet</div>
+          <div class="pill"><i></i>Data dari Google Spreadsheet</div>
           <h2>Selamat Datang, <span id="nama"></span>!</h2>
           <p>Pantau kunjungan, sirkulasi peminjaman, koleksi buku, dan kepuasan pemustaka dalam satu halaman.</p>
         </div>
@@ -124,14 +124,10 @@ nav{display:flex;gap:6px;overflow-x:auto;padding:8px}nav h6,#status,.brand small
 <script>
 // Nama pustakawan pada sapaan
 const PUSTAKAWAN = 'Ibu Siti';
-// Spreadsheet harus dibagikan "Siapa saja yang memiliki link: Pelihat".
-// Isi gid ATAU nama sheet; jika keduanya kosong, sheet pertama yang dibaca.
-const SUMBER = {
-  peminjaman: { id: '18RnZ2HFbHrDszFeBQUWWsx3tgvPmkarK6P-af8U1o0Q', gid: 1596122271 },
-  kunjungan:  { id: '18RnZ2HFbHrDszFeBQUWWsx3tgvPmkarK6P-af8U1o0Q', gid: 1741821717 },
-  buku:       { id: '1Csee5NuyzzolFaqykEvAkt6l3ieK4mk8r3m-D1FQ-6A', nama: '' },
-  kepuasan:   { id: '16rZkxEuG33fCHcULgDaMn42bQ9Gw7gwVmrS7PQCFssQ', gid: 368922811 }
-};
+// Tempel URL Web App Apps Script (berakhiran /exec) hasil Deploy
+const API_URL = 'GANTI_DENGAN_URL_WEB_APP_ANDA';
+// Hanya untuk tombol "Buka data" di banner
+const SHEET_ID = { peminjaman: '18RnZ2HFbHrDszFeBQUWWsx3tgvPmkarK6P-af8U1o0Q', buku: '1Csee5NuyzzolFaqykEvAkt6l3ieK4mk8r3m-D1FQ-6A' };
 
 const IC = {
   grid: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
@@ -154,8 +150,8 @@ Chart.defaults.font.family = "Inter,system-ui,sans-serif";
 
 $('#logo').innerHTML = ic('book', 22);
 $('#nama').textContent = PUSTAKAWAN;
-$('#lnkP').href = 'https://docs.google.com/spreadsheets/d/' + SUMBER.peminjaman.id;
-$('#lnkB').href = 'https://docs.google.com/spreadsheets/d/' + SUMBER.buku.id;
+$('#lnkP').href = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID.peminjaman;
+$('#lnkB').href = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID.buku;
 $('#nav').innerHTML = NAV.map(n => n.length === 1 ? `<h6>${n[0]}</h6>` : `<button data-v="${n[0]}">${ic(n[2])}${n[1]}</button>`).join('');
 const JUDUL = { dash: 'Dashboard', kun: 'Kunjungan', pin: 'Peminjaman', kol: 'Koleksi Buku', pus: 'Kepuasan Pemustaka' };
 function show(v) {
@@ -214,35 +210,19 @@ function mk(id, type, pairs, o = {}) {
 }
 function setStatus(t, err) { const s = $('#status'); s.textContent = t; s.className = err ? 'err' : ''; }
 
-const z = n => String(n).padStart(2, '0');
-function nilai(c) {
-  if (!c || c.v === null || c.v === undefined) return '';
-  if (typeof c.v === 'string') {
-    const m = c.v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/);
-    if (m) return `${m[1]}-${z(+m[2] + 1)}-${z(m[3])} ${z(m[4] || 0)}:${z(m[5] || 0)}:${z(m[6] || 0)}`;
-  }
-  return c.v;
-}
-async function ambil(s) {
-  let u = `https://docs.google.com/spreadsheets/d/${s.id}/gviz/tq?tqx=out:json&headers=1`;
-  if (s.gid !== undefined && s.gid !== '') u += '&gid=' + s.gid; else if (s.nama) u += '&sheet=' + encodeURIComponent(s.nama);
-  const t = await (await fetch(u)).text();
-  const m = t.match(/setResponse\(([\s\S]*)\);?\s*$/);
-  if (!m) throw new Error('sheet tidak dapat diakses, pastikan dibagikan "Siapa saja yang memiliki link"');
-  const j = JSON.parse(m[1]);
-  if (j.status === 'error') throw new Error((j.errors && j.errors[0].detailed_message) || 'gagal membaca sheet');
-  const heads = j.table.cols.map(c => (c.label || '').trim());
-  return j.table.rows.map(r => { const o = {}; heads.forEach((h, i) => { if (h) o[h] = nilai(r.c[i]); }); return o; })
-    .filter(o => Object.values(o).some(v => v !== ''));
-}
 async function load() {
+  if (API_URL.startsWith('GANTI')) { setStatus('API_URL belum diisi. Tempel URL Web App (berakhiran /exec) di script dashboard.', true); return; }
   setStatus('Memuat data…');
   try {
-    const ks = Object.keys(SUMBER);
-    const hasil = await Promise.all(ks.map(k => ambil(SUMBER[k]).catch(e => { throw new Error(k + ': ' + e.message); })));
-    D = {}; ks.forEach((k, i) => D[k] = hasil[i]); render();
-    setStatus('Diperbarui ' + new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }));
-  } catch (e) { setStatus('Gagal memuat data (' + e.message + ')', true); }
+    const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'dashboard' }) });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || 'respons tidak valid');
+    D = j.data; ['peminjaman', 'kunjungan', 'buku', 'kepuasan'].forEach(k => D[k] = D[k] || []);
+    render();
+    const g = j.galat || {}, e = Object.keys(g);
+    setStatus(e.length ? 'Sebagian gagal: ' + e.map(k => k + ' (' + g[k] + ')').join('; ')
+      : 'Diperbarui ' + new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }), !!e.length);
+  } catch (e) { setStatus('Gagal memuat (' + e.message + '). Pastikan Web App diset "Anyone" dan URL berakhiran /exec.', true); }
 }
 
 function tabel(rows) {

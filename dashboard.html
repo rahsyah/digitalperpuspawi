@@ -95,10 +95,8 @@ nav{display:flex;gap:6px;overflow-x:auto;padding:8px}nav h6,#status,.brand small
   <div class="top">
     <h1 id="judul">Dashboard</h1>
     <div class="ctl">
-      <select id="periode" aria-label="Periode data">
-        <option value="all">Semua waktu</option><option value="year">Tahun ini</option>
-        <option value="month">Bulan ini</option><option value="30">30 hari terakhir</option>
-      </select>
+      <a class="btn" href="https://wiyatapustaka.vercel.app" aria-label="Kembali ke beranda Wiyata Pustaka"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Home</a>
+      <input type="hidden" id="periode" value="all">
       <button class="btn" id="muat">Muat ulang</button>
     </div>
   </div>
@@ -124,12 +122,12 @@ nav{display:flex;gap:6px;overflow-x:auto;padding:8px}nav h6,#status,.brand small
       </div>
     </section>
     <section class="view" id="v-kun"><div class="grid">
-      <div class="p"><h3>Kategori anggota</h3><p>Sesuai periode terpilih</p><div class="cv"><canvas id="c-kat"></canvas></div></div>
-      <div class="p"><h3>Keperluan berkunjung</h3><p>Sesuai periode terpilih</p><div class="cv"><canvas id="c-kep"></canvas></div></div>
+      <div class="p"><h3>Kategori anggota</h3><p>Seluruh data</p><div class="cv"><canvas id="c-kat"></canvas></div></div>
+      <div class="p"><h3>Keperluan berkunjung</h3><p>Seluruh data</p><div class="cv"><canvas id="c-kep"></canvas></div></div>
     </div></section>
     <section class="view" id="v-pin"><div class="grid">
       <div class="p wide"><h3>Belum dikembalikan</h3><p>Yang terlambat tampil paling atas</p><div class="tw" id="tb2"></div></div>
-      <div class="p wide"><h3>10 buku paling sering dipinjam</h3><p>Sesuai periode terpilih</p><div class="cv"><canvas id="c-top"></canvas></div></div>
+      <div class="p wide"><h3>10 buku paling sering dipinjam</h3><p>Seluruh data</p><div class="cv"><canvas id="c-top"></canvas></div></div>
     </div></section>
     <section class="view" id="v-kol"><div class="grid">
       <div class="p wide"><h3>Eksemplar menurut kategori</h3><p>10 kategori terbesar</p><div class="cv"><canvas id="c-kol"></canvas></div></div>
@@ -325,10 +323,10 @@ function render() {
   const n = x => x.toLocaleString('id-ID');
   $('#kpi').innerHTML = [
     ['Total judul buku', n(bk.filter(r => r[bJ]).length), n(totalEks) + ' eksemplar', 'blue', 'book', 'blue'],
-    ['Kunjungan bulan ini', n(bulanIni), n(kunF.length) + ' pada periode terpilih', 'green', 'users', 'green'],
+    ['Kunjungan bulan ini', n(bulanIni), n(kunF.length) + ' sepanjang waktu', 'green', 'users', 'green'],
     ['Peminjaman aktif', n(OP.length), n(due) + ' jatuh tempo hari ini', 'amber', 'repeat', 'amber'],
     ['Keterlambatan', n(late), 'buku melewati batas kembali', 'red', 'alert', 'red'],
-    ['Peminjaman (periode)', n(pinF.length), n(TR.filter(o => !o.open).length) + ' sudah dikembalikan', 'violet', 'layers', 'violet'],
+    ['Total peminjaman', n(pinF.length), n(TR.filter(o => !o.open).length) + ' sudah dikembalikan', 'violet', 'layers', 'violet'],
     ['Skor kepuasan', skor == null ? '-' : skor.toFixed(2).replace('.', ',') + '/' + skala, n(ks.length) + ' responden', 'cyan', 'star', 'cyan']
   ].map(([l, v, s, t, i, c]) => `<div class="k"><div><small>${l}</small><b>${v}</b><span class="t-${t}">${s}</span></div><div class="ico c-${c}">${ic(i, 24)}</div></div>`).join('');
 }
